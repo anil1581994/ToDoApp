@@ -1,0 +1,82 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<beans xmlns="http://www.springframework.org/schema/beans"
+	xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xmlns:mvc="http://www.springframework.org/schema/mvc"
+	xmlns:tx="http://www.springframework.org/schema/tx" xmlns:context="http://www.springframework.org/schema/context"
+	xsi:schemaLocation="
+        http://www.springframework.org/schema/beans http://www.springframework.org/schema/beans/spring-beans.xsd
+http://www.springframework.org/schema/mvc
+http://www.springframework.org/schema/mvc/spring-mvc.xsd
+http://www.springframework.org/schema/tx http://www.springframework.org/schema/tx/spring-tx.xsd
+http://www.springframework.org/schema/context http://www.springframework.org/schema/context/spring-context.xsd"> <!-- bean definitions here -->
+
+	<context:component-scan base-package="com.bridgelabz" />
+	<tx:annotation-driven proxy-target-class="true"
+		transaction-manager="transactionManager" />
+	<mvc:annotation-driven />
+    <context:annotation-config />
+	<bean
+		class="org.springframework.web.servlet.view.InternalResourceViewResolver">
+		<property name="prefix" value="/WEB-INF/jsp/" />
+		<property name="suffix" value=".jsp" />
+	</bean>
+	<bean id="transactionManager"
+		class="org.springframework.jdbc.datasource.DataSourceTransactionManager">
+		<property name="dataSource" ref="dataSource" />
+	</bean>
+	
+	<bean id="dataSource"
+		class="org.springframework.jdbc.datasource.DriverManagerDataSource">
+		<property name="driverClassName" value="${dbdriver}" />
+		<property name="url" value="${url}" />
+		<property name="username" value="${dbuser}" />
+		<property name="password" value="${dbpassword}" />
+		</bean>
+	
+
+	<bean id="jdbcTemplate" class="org.springframework.jdbc.core.JdbcTemplate">
+		<property name="dataSource" ref="dataSource"></property>
+	</bean>
+
+
+
+	<bean id="userValidator" class="com.bridgelabz.user.validation.UserValidator" />
+
+
+	<bean id="bcryptEncoder"
+		class="org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder" />
+	<!-- mail api configuration and smtp configuration -->
+	
+	<bean id="mailSender" class="org.springframework.mail.javamail.JavaMailSenderImpl">
+		<property name="host" value="smtp.gmail.com" />
+		<property name="port" value="587" />
+		<property name="username" value="${userId}" /><!-- 
+			dummy mail who is sending mail -->
+		<property name="password" value="${password}" />
+		<property name="javaMailProperties">
+			<props>
+				<prop key="mail.transport.protocol">smtp</prop>
+				<prop key="mail.smtp.auth">true</prop>
+				<prop key="mail.smtp.starttls.enable">true</prop>
+				<prop key="mail.debug">true</prop>
+			</props>
+		</property>
+	</bean>
+
+	<bean id="mailService" class="com.bridgelabz.user.service.MailService">
+		<property name="mailSender" ref="mailSender" />
+	</bean>
+	<bean id="emailProperties" class="com.bridgelabz.user.model.EmailProperties">
+	<property name="email" value="${userId}"></property>
+	<property name="password" value="${password}"></property>
+	<property name="emailAddress" value="${emailAddress:#{null}}" />
+	</bean>
+	 <bean id="tokenObj" class="com.bridgelabz.user.util.TokenUtils">
+	 </bean>
+	 <beans profile="development">
+		<context:property-placeholder
+			ignore-resource-not-found="true" location="classpath*:/development.properties" />
+	</beans>
+	
+	
+	
+</beans>
