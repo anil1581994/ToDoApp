@@ -2,6 +2,7 @@ package com.bridgelabz.note.dao;
 
 import java.sql.Connection;
 
+
 import java.sql.Date;
 import java.sql.PreparedStatement;
 import java.sql.ResultSet;
@@ -57,7 +58,7 @@ public class INoteDaoImpl implements INoteDao {
 		String sql = "UPDATE Notes SET title=?,description=?,lastUpdateDate=? where noteId=?";
 
 		count = jdbcTemplate.update(sql,
-				new Object[] { note.getTitle(), note.getDescription(), note.getLastUpdateDate() });
+				new Object[] { note.getTitle(), note.getDescription(), note.getLastUpdateDate(), note.getNoteId() });
 		System.out.println(count);
 		if (count == 0) {
 			return false;
@@ -68,8 +69,8 @@ public class INoteDaoImpl implements INoteDao {
 
 	@Override
 	public Note getNoteById(int noteId) {
-		String sql = "select * from Notes where userId= ?";
-		List<Note> list = jdbcTemplate.query(sql, new Object[] {noteId}, new NoteMapper());
+		String sql = "select * from Notes where noteId= ?";
+		List<Note> list = jdbcTemplate.query(sql, new Object[] { noteId }, new NoteMapper());
 		if (list.size() > 0) {
 			System.out.println(list.get(0));
 			return list.get(0);
@@ -79,40 +80,47 @@ public class INoteDaoImpl implements INoteDao {
 
 	}
 
-
 	@Override
 	public boolean deleteNote(int noteId) {
-		String sql="delete from Notes where noteId=?";
-		int count=jdbcTemplate.update(sql,noteId);
+		String sql = "delete from Notes where noteId=?";
+		int count = jdbcTemplate.update(sql, noteId);
 		if (count == 0) {
 			return false;
 		} else {
 			return true;
 		}
-		
-	}
-	@Override
-	public List<Note> getAllNotes(int userid) {
-		String sql="select * from notes where userid = ?";
-		List<Note> notes=jdbcTemplate.query(sql,  new NoteMapper());
-         return notes;
+
 	}
 
-	
-	class NoteMapper implements RowMapper {
+	@Override
+	public List<Note> getAllNotes(int userId) {
+		String sql = "select * from Notes where userId = ?";
+		List<Note> notes=jdbcTemplate.query(sql,new Object[]{userId},new NoteMapper());
+		return notes;
+	}
+	public int noteCreatorByNoteId(int noteId)
+	{
+		String query = "select userId from Notes where noteId=?";
+		Object[] obj = new Object[] { noteId };
+		int creatorId = jdbcTemplate.queryForObject(query, obj, Integer.class);
+		return creatorId;
+	}
+
+	class NoteMapper implements RowMapper<Note> {
 
 		public Note mapRow(ResultSet rs, int rowNum) throws SQLException {
-			Note note=new Note();
+			Note note = new Note();
 			note.setNoteId(rs.getInt("noteId"));
 			note.setTitle(rs.getString("title"));
 			note.setDescription(rs.getString("description"));
 			note.setCreateDate(rs.getDate("createDate"));
 			note.setLastUpdateDate(rs.getDate("lastUpdateDate"));
+			int userId=rs.getInt("userId");
+			User user=new User();
+			user.setId(userId);
+			note.setUser(user);
 			return note;
 		}
 	}
-
-	
-
 
 }

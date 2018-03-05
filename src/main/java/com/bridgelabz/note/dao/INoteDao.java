@@ -11,12 +11,11 @@ public interface INoteDao {
 
 	boolean updateNote(Note note);
 
-	Note getNoteById(int userId);
-
 	boolean deleteNote(int noteId);
-	
-	List<Note> getAllNotes(int userId);
-	
 
+	Note getNoteById(int noteId);
+
+	List<Note> getAllNotes(int userId);
+	int noteCreatorByNoteId(int noteId);
 
 }

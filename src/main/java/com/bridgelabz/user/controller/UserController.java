@@ -37,7 +37,7 @@ public class UserController {
 	@Autowired
 	private UserValidator userValidator;
 	@Autowired
-	private TokenUtils tokenObj;
+	private TokenUtils tokenUtils;
 	RegisterErrors response = new RegisterErrors();
 
 	// .................register api...............

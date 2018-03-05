@@ -13,7 +13,21 @@ http://www.springframework.org/schema/context http://www.springframework.org/sch
 	<tx:annotation-driven proxy-target-class="true"
 		transaction-manager="transactionManager" />
 	<mvc:annotation-driven />
-    <context:annotation-config />
+	<context:annotation-config />
+     
+
+	<!-- Configuring interceptors based on URI -->
+	
+		<interceptor>
+			<mapping path="/user" />
+			<bean class="com.bridgelabz.note.util.RequestInterceptor"></bean>
+		</interceptor>
+	
+     
+	<mvc:interceptors>
+	<mapping path="/user" />
+		<bean class="com.bridgelabz.note.util.RequestInterceptor" />
+	</mvc:interceptors>
 	<bean
 		class="org.springframework.web.servlet.view.InternalResourceViewResolver">
 		<property name="prefix" value="/WEB-INF/jsp/" />
@@ -23,15 +37,15 @@ http://www.springframework.org/schema/context http://www.springframework.org/sch
 		class="org.springframework.jdbc.datasource.DataSourceTransactionManager">
 		<property name="dataSource" ref="dataSource" />
 	</bean>
-	
+
 	<bean id="dataSource"
 		class="org.springframework.jdbc.datasource.DriverManagerDataSource">
 		<property name="driverClassName" value="${dbdriver}" />
 		<property name="url" value="${url}" />
 		<property name="username" value="${dbuser}" />
 		<property name="password" value="${dbpassword}" />
-		</bean>
-	
+	</bean>
+
 
 	<bean id="jdbcTemplate" class="org.springframework.jdbc.core.JdbcTemplate">
 		<property name="dataSource" ref="dataSource"></property>
@@ -45,12 +59,12 @@ http://www.springframework.org/schema/context http://www.springframework.org/sch
 	<bean id="bcryptEncoder"
 		class="org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder" />
 	<!-- mail api configuration and smtp configuration -->
-	
+
 	<bean id="mailSender" class="org.springframework.mail.javamail.JavaMailSenderImpl">
 		<property name="host" value="smtp.gmail.com" />
 		<property name="port" value="587" />
-		<property name="username" value="${userId}" /><!-- 
-			dummy mail who is sending mail -->
+		<property name="username" value="${userId}" /><!-- dummy mail 
+			who is sending mail -->
 		<property name="password" value="${password}" />
 		<property name="javaMailProperties">
 			<props>
@@ -66,17 +80,21 @@ http://www.springframework.org/schema/context http://www.springframework.org/sch
 		<property name="mailSender" ref="mailSender" />
 	</bean>
 	<bean id="emailProperties" class="com.bridgelabz.user.model.EmailProperties">
-	<property name="email" value="${userId}"></property>
-	<property name="password" value="${password}"></property>
-	<property name="emailAddress" value="${emailAddress:#{null}}" />
+		<property name="email" value="${userId}"></property>
+		<property name="password" value="${password}"></property>
+		<property name="emailAddress" value="${emailAddress:#{null}}" />
 	</bean>
-	 <bean id="tokenObj" class="com.bridgelabz.user.util.TokenUtils">
-	 </bean>
-	 <beans profile="development">
+	<bean id="tokenObj" class="com.bridgelabz.user.util.TokenUtils">
+	</bean>
+	<bean id="noteDao" class="com.bridgelabz.note.dao.INoteDaoImpl"></bean>
+	<bean id="userDao" class="com.bridgelabz.user.dao.UserDaoImpl"></bean>
+	<bean id="userService" class="com.bridgelabz.user.service.UserServiceImpl"></bean>
+
+	<bean id="noteService" class="com.bridgelabz.note.service.INoteServiceImpl"></bean>
+
+	<beans profile="development">
 		<context:property-placeholder
 			ignore-resource-not-found="true" location="classpath*:/development.properties" />
 	</beans>
-	
-	
 	
 </beans>

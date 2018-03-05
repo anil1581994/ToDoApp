@@ -15,7 +15,10 @@ public interface INoteService {
 
 	Note getNoteById(int noteId);
 
-	boolean deleteNote(int noteId);
-	List<Note> getAllNotes(int userId);
+	
+	List<NoteResponseDto> getAllNotes(int userId);
+
+	void deleteNote(int noteId, int userId);
+	int noteCreatorByNoteId(int noteId);
 
 }

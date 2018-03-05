@@ -129,9 +129,5 @@ public class UserServiceImpl implements UserService {
 		return id;
 	}
 
-	/*
-	 * public boolean saveToken(String email, String token) { boolean
-	 * status=userDao.saveToken(email, token); return status; }
-	 */
 
 }

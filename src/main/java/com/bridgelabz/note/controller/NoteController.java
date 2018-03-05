@@ -23,7 +23,7 @@ import com.bridgelabz.note.service.INoteService;
 import com.bridgelabz.user.ResponseDTO.Response;
 import com.bridgelabz.user.util.TokenUtils;
 
-@RestController
+@RestController(value="/user")
 public class NoteController {
 	@Autowired
 	INoteService noteService;
@@ -31,7 +31,9 @@ public class NoteController {
 
 	@RequestMapping(value = "/createNote", method = RequestMethod.POST, produces = MediaType.APPLICATION_JSON_VALUE)
 	public ResponseEntity<?> createNote(@RequestBody NoteRequestDto noteRequestDto, HttpServletRequest request) {
+		
 		int userId = TokenUtils.verifyToken(request.getHeader("Authorization"));
+		//
 		Response response = new Response();
 
 		NoteResponseDto noteResponse = noteService.createNote(noteRequestDto, userId);
@@ -67,51 +69,43 @@ public class NoteController {
 		}
 	}
 
-	@RequestMapping(value = "/getNote", method = RequestMethod.GET, produces = MediaType.APPLICATION_JSON_VALUE)
-	public ResponseEntity<?> getNote(@RequestBody NoteRequestDto noteRequestDto, @PathVariable("noteId") int noteId) {
+	@RequestMapping(value = "/getNote/{noteId}", method = RequestMethod.GET, produces = MediaType.APPLICATION_JSON_VALUE)
+	public ResponseEntity<?> getNote(@PathVariable("noteId") int noteId) {
 
 		Response response = new Response();
 		Note note = noteService.getNoteById(noteId);
 
 		response.setMsg("note receieve successfully");
-		response.setStatus(200);
+		response.setStatus(1);
 		logger.info("note receieve successfully");
 
 		return new ResponseEntity<Note>(note, HttpStatus.OK);
 
 	}
 
-	@RequestMapping(value = "/deleteNote", method = RequestMethod.POST, produces = MediaType.APPLICATION_JSON_VALUE)
-	public ResponseEntity<?> deleteNote(@RequestBody NoteRequestDto noteRequestDto, HttpServletRequest request) {
+	@RequestMapping(value = "/deleteNote/{noteId}", method = RequestMethod.DELETE, produces = MediaType.APPLICATION_JSON_VALUE)
+	public ResponseEntity<?> deleteNote(@PathVariable("noteId") int noteId, HttpServletRequest request) {
 		int userId = TokenUtils.verifyToken(request.getHeader("Authorization"));
+		
+		noteService.deleteNote(noteId, userId);
+		
 		Response response = new Response();
-		try {
-			noteService.deleteNote(userId);
-			response.setMsg("note update successfully");
-			response.setStatus(200);
-			logger.info("note deleted successfully");
-
-			return new ResponseEntity<Response>(response, HttpStatus.OK);
-		} catch (Exception e) {
-			e.printStackTrace();
-
-			response.setMsg("note is not deleted");
-			response.setStatus(418);
-			logger.error("note is not deleted");
-
-			return new ResponseEntity<Response>(response, HttpStatus.CONFLICT);
-		}
+		response.setMsg("note deleted successfully");
+		response.setStatus(1);
+		logger.info("note deleted successfully");
+		return new ResponseEntity<Response>(response, HttpStatus.OK);
 	}
 
-@RequestMapping(value = "/getAllNotes", method = RequestMethod.GET, produces = MediaType.APPLICATION_JSON_VALUE)
-	public ResponseEntity<List<Note>> getAllNotes(@RequestBody NoteRequestDto noteRequestDto, HttpServletRequest request)
-{
+	@RequestMapping(value = "/getAllNotes", method = RequestMethod.GET, produces = MediaType.APPLICATION_JSON_VALUE)
+	public ResponseEntity<List<NoteResponseDto>> getAllNotes(HttpServletRequest request) {
 		int userId = TokenUtils.verifyToken(request.getHeader("Authorization"));
 		Response response = new Response();
-		List<Note> notes=noteService.getAllNotes(userId);
-		return new ResponseEntity<List<Note>>(notes, HttpStatus.OK);
-		
-		
+		List<NoteResponseDto> notes = noteService.getAllNotes(userId);
+		response.setMsg("note receieve successfully");
+		response.setStatus(1);
+		logger.info("note receieve successfully");
 
-}
+		return new ResponseEntity<List<NoteResponseDto>>(notes, HttpStatus.OK);
+
+	}
 }

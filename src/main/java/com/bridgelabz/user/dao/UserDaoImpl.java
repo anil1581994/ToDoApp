@@ -165,7 +165,12 @@ public class UserDaoImpl implements UserDao {
 		}
 
 	}
-
+	/*int noteCreatorByNoteId(int noteId)
+	{
+		return creatorId;
+		
+	}
+*/
 	class UserMapper implements RowMapper {
 
 		public User mapRow(ResultSet rs, int rowNum) throws SQLException {
