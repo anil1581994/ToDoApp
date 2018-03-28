@@ -29,7 +29,7 @@ public class INoteDaoImpl implements INoteDao
 
 	public void saveNote(Note note) 
 	{
-		String INSERT_SQL = "insert into Notes values(?,?,?,?,?,?,?)";
+		String INSERT_SQL = "insert into Notes values(?,?,?,?,?,?,?,?)";
 		KeyHolder holder = new GeneratedKeyHolder();
 		jdbcTemplate.update(new PreparedStatementCreator() {
 
@@ -43,6 +43,7 @@ public class INoteDaoImpl implements INoteDao
 				ps.setDate(5, new Date(note.getLastUpdateDate().getTime()));
 				ps.setInt(6, note.getUser().getId());
 				ps.setInt(7,note.getStatus());
+				ps.setString(8,note.getColor());
 				return ps;
 			}
 		}, holder);
@@ -55,10 +56,10 @@ public class INoteDaoImpl implements INoteDao
 	public boolean updateNote(Note note) {
 
 		int count = 0;
-		String sql = "UPDATE Notes SET title=?,description=?,lastUpdateDate=?,status=? where noteId=?";
+		String sql = "UPDATE Notes SET title=?,description=?,lastUpdateDate=?,status=?,color=? where noteId=?";
 
 		count = jdbcTemplate.update(sql,
-				new Object[] { note.getTitle(), note.getDescription(), note.getLastUpdateDate(),note.getStatus(), note.getNoteId() });
+				new Object[] { note.getTitle(), note.getDescription(), note.getLastUpdateDate(),note.getStatus(), note.getNoteId(),note.getColor() });
 		System.out.println(count);
 		if (count == 0) {
 			return false;
@@ -116,6 +117,7 @@ public class INoteDaoImpl implements INoteDao
 			note.setCreateDate(rs.getDate("createDate"));
 			note.setLastUpdateDate(rs.getDate("lastUpdateDate"));
 			note.setStatus(rs.getInt("status"));
+			note.setColor(rs.getString("color"));
 			int userId=rs.getInt("userId");
 			
 			User user=new User();

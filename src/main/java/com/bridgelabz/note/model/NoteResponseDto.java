@@ -14,15 +14,11 @@ public class NoteResponseDto {
 
 	private Date lastUpdateDate;
 	
-      private int status;
+    private int status;
+    
+    private String color;
       
-	public int getStatus() {
-		return status;
-	}
-
-	public void setStatus(int status) {
-		this.status = status;
-	}
+	
 
 	public NoteResponseDto() {
 	}
@@ -34,6 +30,7 @@ public class NoteResponseDto {
 		this.createDate = note.getCreateDate();
 		this.lastUpdateDate = note.getLastUpdateDate();
 		this.status=note.getStatus();
+		this.color=note.getColor();
 	}
 
 	public int getNoteId() {
@@ -74,6 +71,21 @@ public class NoteResponseDto {
 
 	public void setLastUpdateDate(Date lastUpdateDate) {
 		this.lastUpdateDate = lastUpdateDate;
+	}
+	public String getColor() {
+		return color;
+	}
+
+	public void setColor(String color) {
+		this.color = color;
+	}
+
+	public int getStatus() {
+		return status;
+	}
+
+	public void setStatus(int status) {
+		this.status = status;
 	}
 
 }

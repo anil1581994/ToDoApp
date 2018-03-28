@@ -12,14 +12,9 @@ public class Note {
 	private Date lastUpdateDate;
 	private User user;
 	private int status;
+	private String color;
 
-	public int getStatus() {
-		return status;
-	}
-
-	public void setStatus(int status) {
-		this.status = status;
-	}
+	
 
 	public Note() {
 	}
@@ -84,5 +79,20 @@ public class Note {
 
 	public void setUser(User user) {
 		this.user = user;
+	}
+	public String getColor() {
+		return color;
+	}
+
+	public void setColor(String color) {
+		this.color = color;
+	}
+
+	public int getStatus() {
+		return status;
+	}
+
+	public void setStatus(int status) {
+		this.status = status;
 	}
 }
