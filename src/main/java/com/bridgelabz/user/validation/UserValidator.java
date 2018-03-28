@@ -3,8 +3,7 @@ package com.bridgelabz.user.validation;
 import java.util.regex.Pattern;
 
 
-import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.context.support.ResourceBundleMessageSource;
+
 import org.springframework.validation.Errors;
 import org.springframework.validation.ValidationUtils;
 import org.springframework.validation.Validator;
@@ -36,15 +35,16 @@ public class UserValidator implements Validator {
 		      {
 		         err.rejectValue("name", "user name invalid");
 		      }
-
-	      Pattern pattern1 = Pattern.compile("^[A-Z0-9._%+-]+@[A-Z0-9.-]+\\.[A-Z]{2,6}$",
+               //"^[A-Z0-9._%+-]+@[A-Z0-9.-]+\\.[A-Z]{2,6}$"..java
+		      //
+	      Pattern pattern1 = Pattern.compile("^[a-z0-9._%+-]+@[a-z0-9.-]+\\.[a-z]{2,3}$",
 	            Pattern.CASE_INSENSITIVE);
 	      if (!(pattern1.matcher(userDto.getEmail()).matches())) 
 	      {
 	         err.rejectValue("email", "user email invalid");
 	      }
            
-	      Pattern pattern2 = Pattern.compile("[a-zA-Z0-9]{8,16}");
+	      Pattern pattern2 = Pattern.compile("[A-Za-z0-9]{8}");
 	      if (!(pattern2.matcher(userDto.getPassword()).matches())) 
 	      {
 	         err.rejectValue("password", "user password empty");

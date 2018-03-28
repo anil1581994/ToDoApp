@@ -22,14 +22,14 @@ import com.bridgelabz.note.model.Note;
 import com.bridgelabz.user.model.User;
 
 @Repository
-public class INoteDaoImpl implements INoteDao {
+public class INoteDaoImpl implements INoteDao 
+{
 	@Autowired
-	INoteDao noteDao;
-	@Autowired
-	JdbcTemplate jdbcTemplate;
+	private JdbcTemplate jdbcTemplate;
 
-	public void saveNote(Note note) {
-		String INSERT_SQL = "insert into Notes values(?,?,?,?,?,?)";
+	public void saveNote(Note note) 
+	{
+		String INSERT_SQL = "insert into Notes values(?,?,?,?,?,?,?)";
 		KeyHolder holder = new GeneratedKeyHolder();
 		jdbcTemplate.update(new PreparedStatementCreator() {
 
@@ -42,23 +42,23 @@ public class INoteDaoImpl implements INoteDao {
 				ps.setDate(4, new Date(note.getCreateDate().getTime()));
 				ps.setDate(5, new Date(note.getLastUpdateDate().getTime()));
 				ps.setInt(6, note.getUser().getId());
+				ps.setInt(7,note.getStatus());
 				return ps;
 			}
 		}, holder);
 
 		int noteId = holder.getKey().intValue();
 		note.setNoteId(noteId);
-
 	}
 
 	@Override
 	public boolean updateNote(Note note) {
 
 		int count = 0;
-		String sql = "UPDATE Notes SET title=?,description=?,lastUpdateDate=? where noteId=?";
+		String sql = "UPDATE Notes SET title=?,description=?,lastUpdateDate=?,status=? where noteId=?";
 
 		count = jdbcTemplate.update(sql,
-				new Object[] { note.getTitle(), note.getDescription(), note.getLastUpdateDate(), note.getNoteId() });
+				new Object[] { note.getTitle(), note.getDescription(), note.getLastUpdateDate(),note.getStatus(), note.getNoteId() });
 		System.out.println(count);
 		if (count == 0) {
 			return false;
@@ -105,7 +105,7 @@ public class INoteDaoImpl implements INoteDao {
 		int creatorId = jdbcTemplate.queryForObject(query, obj, Integer.class);
 		return creatorId;
 	}
-
+	
 	class NoteMapper implements RowMapper<Note> {
 
 		public Note mapRow(ResultSet rs, int rowNum) throws SQLException {
@@ -115,7 +115,9 @@ public class INoteDaoImpl implements INoteDao {
 			note.setDescription(rs.getString("description"));
 			note.setCreateDate(rs.getDate("createDate"));
 			note.setLastUpdateDate(rs.getDate("lastUpdateDate"));
+			note.setStatus(rs.getInt("status"));
 			int userId=rs.getInt("userId");
+			
 			User user=new User();
 			user.setId(userId);
 			note.setUser(user);

@@ -2,10 +2,8 @@ package com.bridgelabz.user.ResponseDTO;
 
 public class Response 
 {
-	
 	private int status;
 	private String msg;
-	
 	public int getStatus() {
 		return status;
 	}
@@ -18,6 +16,8 @@ public class Response
 	public void setMsg(String msg) {
 		this.msg = msg;
 	}
+	
+	
 	
 	
 }

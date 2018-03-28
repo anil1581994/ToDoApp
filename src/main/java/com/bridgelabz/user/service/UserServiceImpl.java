@@ -2,6 +2,7 @@ package com.bridgelabz.user.service;
 
 import java.util.UUID;
 
+
 import javax.servlet.http.HttpServletRequest;
 
 import org.apache.log4j.Logger;
@@ -127,6 +128,12 @@ public class UserServiceImpl implements UserService {
 	public int getIdByEmail(String email) {
 		int id = userDao.getIdByEmail(email);
 		return id;
+	}
+
+	@Override
+	public User getUserById(int userId) {
+		User user=userDao.getUserById(userId);
+		return user;
 	}
 
 

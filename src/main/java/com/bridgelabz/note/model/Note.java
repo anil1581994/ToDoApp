@@ -11,25 +11,37 @@ public class Note {
 	private Date createDate;
 	private Date lastUpdateDate;
 	private User user;
+	private int status;
+
+	public int getStatus() {
+		return status;
+	}
+
+	public void setStatus(int status) {
+		this.status = status;
+	}
 
 	public Note() {
 	}
 
 	public Note(NoteRequestDto noteRequestDto) {
 
-		this.title =noteRequestDto.getTitle();
+		this.title = noteRequestDto.getTitle();
 		this.description = noteRequestDto.getDescription();
 	}
-    public Note(UpdateNoteDto updateNoteDto)
-    {    this.noteId=updateNoteDto.getNoteId();
-    	this.title=updateNoteDto.getTitle();
-    	this.description=updateNoteDto.getDescription();
-    	this.lastUpdateDate=updateNoteDto.getLastUpdateDate();
-    }
+
+	public Note(UpdateNoteDto updateNoteDto) {
+		this.noteId = updateNoteDto.getNoteId();
+		this.title = updateNoteDto.getTitle();
+		this.description = updateNoteDto.getDescription();
+		this.lastUpdateDate = updateNoteDto.getLastUpdateDate();
+		this.status=updateNoteDto.getStatus();
+	}
+
 	public int getNoteId() {
 		return noteId;
 	}
- 
+
 	public void setNoteId(int noteId) {
 		this.noteId = noteId;
 	}

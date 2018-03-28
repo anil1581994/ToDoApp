@@ -22,7 +22,8 @@ public class TokenUtils {
 		return generatedToken;
 	}
 
-	public static int verifyToken(String token) {
+	public static int verifyToken(String token) 
+	{
 		int id = 0;
 		Claims claims = Jwts.parser().setSigningKey(key).parseClaimsJws(token).getBody();
 		System.out.println("ID: " + claims.getId());

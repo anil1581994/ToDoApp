@@ -19,6 +19,7 @@ public interface UserService {
 	 
 	public int getIdByEmail(String email);
 	//public boolean saveToken(String email, String token);
+	public User getUserById(int userId);
 		
 	
 

@@ -13,21 +13,30 @@ http://www.springframework.org/schema/context http://www.springframework.org/sch
 	<tx:annotation-driven proxy-target-class="true"
 		transaction-manager="transactionManager" />
 	<mvc:annotation-driven />
-	<context:annotation-config />
-     
+	<!-- <context:annotation-config /> -->
+
 
 	<!-- Configuring interceptors based on URI -->
-	
-		<interceptor>
-			<mapping path="/user" />
-			<bean class="com.bridgelabz.note.util.RequestInterceptor"></bean>
-		</interceptor>
-	
-     
+
+
+	<!-- <mvc:interceptors> <mvc:interceptor> <mvc:mapping path="/note/**" /> 
+		<bean class="com.bridgelabz.filter.LoggingInterceptor" /> </mvc:interceptor> 
+		</mvc:interceptors> -->
 	<mvc:interceptors>
-	<mapping path="/user" />
-		<bean class="com.bridgelabz.note.util.RequestInterceptor" />
+		<mvc:interceptor>
+			<mvc:mapping path="/note/**" />
+			<!-- <mvc:exclude-mapping path="/home/login/" />
+			<mvc:exclude-mapping path="/home/register/" /> -->
+			<bean class="com.bridgelabz.filter.LoggingInterceptor"/>
+		</mvc:interceptor>
+		<!-- <mvc:interceptor>
+			<mvc:mapping path="/**" />
+			<mvc:exclude-mapping path="/home/login/" />
+			<bean class="com.bridgelabz.filter.LoggingInterceptor" />
+		</mvc:interceptor> -->
+
 	</mvc:interceptors>
+
 	<bean
 		class="org.springframework.web.servlet.view.InternalResourceViewResolver">
 		<property name="prefix" value="/WEB-INF/jsp/" />
@@ -96,5 +105,5 @@ http://www.springframework.org/schema/context http://www.springframework.org/sch
 		<context:property-placeholder
 			ignore-resource-not-found="true" location="classpath*:/development.properties" />
 	</beans>
-	
+
 </beans>

@@ -5,10 +5,24 @@ import java.util.Date;
 public class NoteResponseDto {
 
 	private int noteId;
+
 	private String title;
+
 	private String description;
+
 	private Date createDate;
+
 	private Date lastUpdateDate;
+	
+      private int status;
+      
+	public int getStatus() {
+		return status;
+	}
+
+	public void setStatus(int status) {
+		this.status = status;
+	}
 
 	public NoteResponseDto() {
 	}
@@ -18,7 +32,8 @@ public class NoteResponseDto {
 		this.title = note.getTitle();
 		this.description = note.getDescription();
 		this.createDate = note.getCreateDate();
-		this.lastUpdateDate=note.getLastUpdateDate();
+		this.lastUpdateDate = note.getLastUpdateDate();
+		this.status=note.getStatus();
 	}
 
 	public int getNoteId() {

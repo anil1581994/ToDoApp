@@ -2,6 +2,8 @@ package com.bridgelabz.user.controller;
 
 import java.util.List;
 
+
+
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 
@@ -21,7 +23,7 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.RestController;
 
-import com.bridgelabz.user.ResponseDTO.CustomerResponse;
+import com.bridgelabz.user.ResponseDTO.CustomResponse;
 import com.bridgelabz.user.ResponseDTO.RegisterErrors;
 import com.bridgelabz.user.model.UserDto;
 import com.bridgelabz.user.service.UserService;
@@ -53,9 +55,10 @@ public class UserController {
 		if (bindingResult.hasErrors()) {
 			logger.info("This is an info log entry");
 			response.setMsg("fill your details properly");
+			
 			response.setErrors(errors);
 			response.setStatus(400);
-
+		
 			return new ResponseEntity<RegisterErrors>(response, HttpStatus.CONFLICT);
 		}
 
@@ -64,6 +67,7 @@ public class UserController {
 
 		response.setMsg("user register successfully");
 		response.setStatus(200);
+		
 		logger.info("This is info message");
 
 		return new ResponseEntity<RegisterErrors>(response, HttpStatus.CREATED);
@@ -74,18 +78,21 @@ public class UserController {
 	@RequestMapping(value = "login", method = RequestMethod.POST, produces = MediaType.APPLICATION_JSON_VALUE)
 	public ResponseEntity<?> login(@RequestBody UserDto userDto, HttpServletResponse response) {
 
-		CustomerResponse customRes = new CustomerResponse();
+		CustomResponse customRes = new CustomResponse();
 		String token = userService.login(userDto);
 		if (token != null) {
 			response.setHeader("Authorization", token);
 			customRes.setMessage("user login successfully");
 			customRes.setStatusCode(100);
-
-			return new ResponseEntity<CustomerResponse>(customRes, HttpStatus.OK);
+			
+      
+			return new ResponseEntity<CustomResponse>(customRes, HttpStatus.OK);
 		} else {
 			customRes.setMessage("login fail");
 			customRes.setStatusCode(410);
-			return new ResponseEntity<CustomerResponse>(customRes, HttpStatus.CONFLICT);
+			/*customRes.setMsg("login fail");
+			customRes.setStatus(410);*/
+			return new ResponseEntity<CustomResponse>(customRes, HttpStatus.CONFLICT);
 		}
 
 	}
@@ -109,39 +116,44 @@ public class UserController {
 	// ........reset password api................
 
 	@RequestMapping(value = "/resetPassword/{randomUUID}", method = RequestMethod.POST)
-	public ResponseEntity<CustomerResponse> resetPassword(@RequestBody UserDto userDto,
+	public ResponseEntity<CustomResponse> resetPassword(@RequestBody UserDto userDto,
 			@PathVariable("randomUUID") String randomUUID) {
 
-		CustomerResponse customRes = new CustomerResponse();
+		CustomResponse customRes = new CustomResponse();
 		String email = userService.getUserEmailId(randomUUID);
 		userDto.setEmail(email);
 
 		if (userService.resetPassword(userDto)) {
 			customRes.setMessage("Reset Password Sucessfully........");
-
-			return new ResponseEntity<CustomerResponse>(customRes, HttpStatus.OK);
+			/*customRes.setMsg("Reset Password Sucessfully........");*/
+			return new ResponseEntity<CustomResponse>(customRes, HttpStatus.OK);
 
 		} else {
 			customRes.setMessage("Password Not Updated.......");
+		/*	customRes.setMsg("Password Not Updated.......");*/
 
-			return new ResponseEntity<CustomerResponse>(customRes, HttpStatus.BAD_REQUEST);
+			return new ResponseEntity<CustomResponse>(customRes, HttpStatus.BAD_REQUEST);
 		}
 	}
 
 	// ............./isActivUser Api............................
 	@RequestMapping(value = "/RegistrationConfirm/{randomUUID}", method = RequestMethod.POST)
-	public ResponseEntity<CustomerResponse> isActiveUser(@PathVariable("randomUUID") String randomUUID) {
+	public ResponseEntity<CustomResponse> isActiveUser(@PathVariable("randomUUID") String randomUUID) {
 
-		CustomerResponse customRes = new CustomerResponse();
+		CustomResponse customRes = new CustomResponse();
 
 		if (userService.userActivation(randomUUID)) {
+			/*customRes.setMsg("user activation done successfully");
+			customRes.setStatus(200);*/
 			customRes.setMessage("user activation done successfully");
 			customRes.setStatusCode(200);
-			return new ResponseEntity<CustomerResponse>(customRes, HttpStatus.CREATED);
+			return new ResponseEntity<CustomResponse>(customRes, HttpStatus.CREATED);
 		} else {
+			/*customRes.setMsg("activation fail");
+			customRes.setStatus(409);*/
 			customRes.setMessage("activation fail");
 			customRes.setStatusCode(409);
-			return new ResponseEntity<CustomerResponse>(customRes, HttpStatus.CONFLICT);
+			return new ResponseEntity<CustomResponse>(customRes, HttpStatus.CONFLICT);
 		}
 
 	}

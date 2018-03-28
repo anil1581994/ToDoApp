@@ -3,7 +3,15 @@ package com.bridgelabz.note.model;
 import java.util.Date;
 
 public class NoteRequestDto {
+
 	private int noteId;
+
+	private String title;
+
+	private String description;
+
+	private Date createDate;
+
 	public int getNoteId() {
 		return noteId;
 	}
@@ -12,9 +20,6 @@ public class NoteRequestDto {
 		this.noteId = noteId;
 	}
 
-	private String title;
-	private String description;
-	private Date createDate;
 	public Date getCreateDate() {
 		return createDate;
 	}

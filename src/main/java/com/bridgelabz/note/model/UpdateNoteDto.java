@@ -3,12 +3,24 @@ package com.bridgelabz.note.model;
 import java.util.Date;
 
 public class UpdateNoteDto {
-	private int noteId;
-	private String title;
-	private String description;
-	private Date lastUpdateDate;
 
-	
+	private int noteId;
+
+	private String title;
+
+	private String description;
+
+	private Date lastUpdateDate;
+	private int status;
+
+	public int getStatus() {
+		return status;
+	}
+
+	public void setStatus(int status) {
+		this.status = status;
+	}
+
 	public int getNoteId() {
 		return noteId;
 	}
