@@ -53,6 +53,8 @@ public class INoteServiceImpl implements INoteService {
 		
 		Date date = new Date();
 		note.setLastUpdateDate(date);
+		//set reminder null
+		note.setReminder(null);
 		
 		boolean status = noteDao.updateNote(note);
 		return status;

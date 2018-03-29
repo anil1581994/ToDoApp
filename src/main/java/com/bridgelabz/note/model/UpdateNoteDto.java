@@ -15,6 +15,16 @@ public class UpdateNoteDto {
 	private int status;
 	
     private String color;
+    
+    private Date reminder;
+
+	public Date getReminder() {
+		return reminder;
+	}
+
+	public void setReminder(Date reminder) {
+		this.reminder = reminder;
+	}
 
 	public String getColor() {
 		return color;

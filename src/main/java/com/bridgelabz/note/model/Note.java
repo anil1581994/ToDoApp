@@ -13,6 +13,9 @@ public class Note {
 	private User user;
 	private int status;
 	private String color;
+	private Date reminder;
+
+	
 
 	
 
@@ -31,6 +34,7 @@ public class Note {
 		this.description = updateNoteDto.getDescription();
 		this.lastUpdateDate = updateNoteDto.getLastUpdateDate();
 		this.status=updateNoteDto.getStatus();
+		this.color=updateNoteDto.getColor();
 	}
 
 	public int getNoteId() {
@@ -94,5 +98,12 @@ public class Note {
 
 	public void setStatus(int status) {
 		this.status = status;
+	}
+	public Date getReminder() {
+		return reminder;
+	}
+
+	public void setReminder(Date reminder) {
+		this.reminder = reminder;
 	}
 }

@@ -38,7 +38,7 @@ public class NoteController {
 		Response response = new Response();
 
 		NoteResponseDto noteResponse = noteService.createNote(noteRequestDto, userId);
-		response.setMsg("note save successfully");
+		response.setMsg("note created successfully");
 		response.setStatus(200);
 
 		logger.info(response.getMsg());
@@ -67,7 +67,7 @@ public class NoteController {
 			response.setMsg("note is not update");
 			response.setStatus(418);
 
-			logger.error("note is not saved");
+			logger.error("note is not update");
 
 			return new ResponseEntity<Response>(response, HttpStatus.CONFLICT);
 		}
@@ -109,10 +109,10 @@ public class NoteController {
 		int userId = (int) request.getAttribute("userId");
 		Response response = new Response();
 		List<NoteResponseDto> notes = noteService.getAllNotes(userId);
-		response.setMsg("note receieve successfully");
+		response.setMsg("notes receieve successfully");
 		response.setStatus(1);
 
-		logger.info("note receieve successfully");
+		logger.info("notes receieve successfully");
 
 		return new ResponseEntity<List<NoteResponseDto>>(notes, HttpStatus.OK);
 
