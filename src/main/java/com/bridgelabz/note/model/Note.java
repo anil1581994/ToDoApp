@@ -2,6 +2,7 @@ package com.bridgelabz.note.model;
 
 import java.util.Date;
 
+
 import com.bridgelabz.user.model.User;
 
 public class Note {
@@ -14,10 +15,6 @@ public class Note {
 	private int status;
 	private String color;
 	private Date reminder;
-
-	
-
-	
 
 	public Note() {
 	}

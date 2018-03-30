@@ -17,8 +17,18 @@ public class NoteResponseDto {
     private int status;
     
     private String color;
+    
+    private Date reminder;
       
 	
+
+	public Date getReminder() {
+		return reminder;
+	}
+
+	public void setReminder(Date reminder) {
+		this.reminder = reminder;
+	}
 
 	public NoteResponseDto() {
 	}
@@ -31,6 +41,8 @@ public class NoteResponseDto {
 		this.lastUpdateDate = note.getLastUpdateDate();
 		this.status=note.getStatus();
 		this.color=note.getColor();
+		this.reminder=note.getReminder();
+	
 	}
 
 	public int getNoteId() {

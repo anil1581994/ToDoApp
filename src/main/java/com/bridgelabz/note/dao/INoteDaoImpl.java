@@ -8,6 +8,7 @@ import java.sql.PreparedStatement;
 import java.sql.ResultSet;
 import java.sql.SQLException;
 import java.sql.Statement;
+import java.sql.Timestamp;
 import java.util.List;
 
 import org.springframework.beans.factory.annotation.Autowired;
@@ -44,7 +45,7 @@ public class INoteDaoImpl implements INoteDao
 				ps.setInt(6, note.getUser().getId());
 				ps.setInt(7,note.getStatus());
 				ps.setString(8,note.getColor());
-				ps.setDate(9,new Date(note.getReminder().getTime()));
+				ps.setDate(9,null);
 				return ps;
 			}
 		}, holder);
@@ -119,8 +120,20 @@ public class INoteDaoImpl implements INoteDao
 			note.setLastUpdateDate(rs.getDate("lastUpdateDate"));
 			note.setStatus(rs.getInt("status"));
 			note.setColor(rs.getString("color"));
-			note.setReminder(rs.getDate("reminder"));
+			
 			int userId=rs.getInt("userId");
+		
+			try {
+				java.util.Date date=null;
+				Timestamp timestamp = rs.getTimestamp("reminder");
+				if (timestamp != null)
+				    date = new java.util.Date(timestamp.getTime());
+					note.setReminder(date);
+				}catch(Exception e) {
+					e.printStackTrace();
+				}
+			
+         System.out.println(" indao date"+note.getReminder());
 			
 			User user=new User();
 			user.setId(userId);

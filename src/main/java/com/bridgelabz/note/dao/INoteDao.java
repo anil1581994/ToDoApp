@@ -16,6 +16,7 @@ public interface INoteDao {
 	Note getNoteById(int noteId);
 
 	List<Note> getAllNotes(int userId);
+	
 	int noteCreatorByNoteId(int noteId);
 
 }

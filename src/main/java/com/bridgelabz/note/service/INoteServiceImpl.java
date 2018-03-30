@@ -54,12 +54,31 @@ public class INoteServiceImpl implements INoteService {
 		Date date = new Date();
 		note.setLastUpdateDate(date);
 		//set reminder null
-		note.setReminder(null);
+		note.setReminder(updateNoteDto.getReminder());
 		
 		boolean status = noteDao.updateNote(note);
 		return status;
 	}
-
+	/*@Override
+	public NoteResponseDto updateNote(UpdateNoteDto updateNoteDto) {
+	
+		System.out.println("reminder :"+updateNoteDto.getReminder());
+		
+		Note note =new Note(updateNoteDto);
+		note.setTitle(updateNoteDto.getTitle());
+		note.setDescription(updateNoteDto.getDescription());
+		
+		Date date = new Date();
+		note.setLastUpdateDate(date);
+		
+		
+		note.setReminder(updateNoteDto.getReminder());
+		noteDao.updateNote(note);
+	
+		return new NoteResponseDto(note);
+		
+}*/
+	
 	@Override
 	public Note getNoteById(int noteId) {
 		return noteDao.getNoteById(noteId);
@@ -80,7 +99,8 @@ public class INoteServiceImpl implements INoteService {
 		List<Note> list = noteDao.getAllNotes(userId);
 
 		List<NoteResponseDto> notes = new ArrayList<>();
-		for (Note note : list) {
+		for (Note note : list) 
+		{
 			NoteResponseDto dto = new NoteResponseDto(note);
 			notes.add(dto);
 		}

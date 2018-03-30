@@ -105,7 +105,7 @@ public class NoteController {
 
 	@RequestMapping(value = "/getAllNotes", method = RequestMethod.GET, produces = MediaType.APPLICATION_JSON_VALUE)
 	public ResponseEntity<List<NoteResponseDto>> getAllNotes(HttpServletRequest request) {
-		// int userId = TokenUtils.verifyToken(request.getHeader("Authorization"));
+		
 		int userId = (int) request.getAttribute("userId");
 		Response response = new Response();
 		List<NoteResponseDto> notes = noteService.getAllNotes(userId);

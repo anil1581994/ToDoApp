@@ -13,7 +13,9 @@ public interface INoteService {
 	NoteResponseDto createNote(NoteRequestDto noteRequestDto, int noteId);
 
 	boolean updateNote(UpdateNoteDto updateNoteDto);
-
+   
+	//NoteResponseDto updateNote(UpdateNoteDto updateNoteDto);
+	
 	Note getNoteById(int noteId);
 
 	List<NoteResponseDto> getAllNotes(int userId);
