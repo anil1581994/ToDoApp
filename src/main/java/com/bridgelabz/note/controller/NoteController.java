@@ -16,6 +16,7 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.RestController;
 
+import com.bridgelabz.note.model.Label;
 import com.bridgelabz.note.model.Note;
 import com.bridgelabz.note.model.NoteRequestDto;
 import com.bridgelabz.note.model.NoteResponseDto;
@@ -117,4 +118,35 @@ public class NoteController {
 		return new ResponseEntity<List<NoteResponseDto>>(notes, HttpStatus.OK);
 
 	}
+	//.................label api..................
+	@RequestMapping(value = "/createLabel", method = RequestMethod.POST, produces = MediaType.APPLICATION_JSON_VALUE)
+	public ResponseEntity<?> createLabel(@RequestBody Label label,
+			@RequestAttribute(name = "userId") int userId) {
+
+		Response response = new Response();
+
+	noteService.createLabel(label, userId);
+		response.setMsg("label created successfully");
+		response.setStatus(200);
+
+		logger.info(response.getMsg());
+
+		return new ResponseEntity<Response>(response, HttpStatus.OK);
+
+	}
+	@RequestMapping(value = "/getAllLabels", method = RequestMethod.GET, produces = MediaType.APPLICATION_JSON_VALUE)
+	public ResponseEntity<List<Label>> getAllLabels(HttpServletRequest request) {
+		
+		int userId = (int) request.getAttribute("userId");
+		Response response = new Response();
+		List<Label> labels = noteService.getAllLabels(userId);
+		response.setMsg("labels successfully");
+		response.setStatus(1);
+
+		logger.info("notes receieve successfully");
+
+		return new ResponseEntity<List<Label>>(labels, HttpStatus.OK);
+
+	}
+
 }

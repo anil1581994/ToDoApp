@@ -19,6 +19,8 @@ import org.springframework.jdbc.support.GeneratedKeyHolder;
 import org.springframework.jdbc.support.KeyHolder;
 import org.springframework.stereotype.Repository;
 
+import com.bridgelabz.exceptions.DatabaseException;
+import com.bridgelabz.note.model.Label;
 import com.bridgelabz.note.model.Note;
 import com.bridgelabz.user.model.User;
 
@@ -141,5 +143,35 @@ public class INoteDaoImpl implements INoteDao
 			return note;
 		}
 	}
+  //label insertion
 
+	public void saveLabel(Label label) {
+
+		String query = "insert into Labels values (?,?,?)";
+		int update = jdbcTemplate.update(query, new Object[] {label.getLabelId(),label.getLabelTitle(),label.getUser().getId()});
+		System.out.println(update);
+
+		if (update != 1) {
+			throw new DatabaseException();
+		}
+	}
+
+	@Override
+	public List<Label> getAllLabels(int userId) {
+		String sql = "select * from Labels where userId = ?";
+		List<Label> labels=jdbcTemplate.query(sql,new Object[]{userId},new LabelMapper());
+		return labels;
+	}
+	//Label Mapper
+	class LabelMapper implements RowMapper {
+
+		public Label mapRow(ResultSet rs, int rowNum) throws SQLException {
+		Label label = new Label();
+			 label.setLabelId(rs.getInt("labelId"));
+			 label.setLabelTitle(rs.getString("labelTitle"));
+		    	return label;
+
+		}
+	}
+	
 }

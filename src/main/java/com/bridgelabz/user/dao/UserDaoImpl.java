@@ -76,15 +76,7 @@ public class UserDaoImpl implements UserDao {
 		}
 	}
 
-	/*
-	 * public boolean saveToken(String email, String token)throws
-	 * DataAccessException { int count = 0;
-	 * 
-	 * String sql = "update Users set token = ? where email=?"; count =
-	 * jdbcTemplate.update(sql, new Object[] { token, email });
-	 * System.out.println(count); if (count == 0) { return false; } else { return
-	 * true; } }
-	 */
+	
 	public int getIdByEmail(String email) {
 
 		String query = "select id from Users where email=?";

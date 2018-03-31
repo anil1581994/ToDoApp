@@ -11,6 +11,7 @@ import org.springframework.stereotype.Service;
 import com.bridgelabz.exceptions.UnAuthorizedAccessUser;
 import com.bridgelabz.note.controller.NoteController;
 import com.bridgelabz.note.dao.INoteDao;
+import com.bridgelabz.note.model.Label;
 import com.bridgelabz.note.model.Note;
 import com.bridgelabz.note.model.NoteRequestDto;
 import com.bridgelabz.note.model.NoteResponseDto;
@@ -106,5 +107,30 @@ public class INoteServiceImpl implements INoteService {
 		}
 		return notes;
 	}
+	@Override
+	public void createLabel(Label label, int userId) {
 
+		
+		User user = new User();
+		user.setId(userId);
+		label.setUser(user);
+
+		noteDao.saveLabel(label);
+
+		
+	}
+	@Override
+	public List<Label> getAllLabels(int userId) {
+		
+		List<Label> list = noteDao.getAllLabels(userId);
+
+		List<Label> labels = new ArrayList<>();
+		for (Label label : list) 
+		{
+			//Label dto = new Label(label);
+			labels.add(label);
+		}
+		return labels;
+	}
+    
 }
