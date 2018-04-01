@@ -11,7 +11,8 @@ public class TokenUtils {
 
 	private static final String key = "QwErTyUiOp";
 
-	public static String generateToken(int id) {
+	public static String generateToken(int id)
+	{
 		long currentTime = System.currentTimeMillis();
 		Date currentDate = new Date(currentTime);
 		Date expireDate = new Date(currentTime + 24 * 60 * 60 * 1000);

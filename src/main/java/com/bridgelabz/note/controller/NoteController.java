@@ -140,10 +140,10 @@ public class NoteController {
 		int userId = (int) request.getAttribute("userId");
 		Response response = new Response();
 		List<Label> labels = noteService.getAllLabels(userId);
-		response.setMsg("labels successfully");
+		response.setMsg("labels received successfully");
 		response.setStatus(1);
 
-		logger.info("notes receieve successfully");
+		logger.info("labels received succesfully");
 
 		return new ResponseEntity<List<Label>>(labels, HttpStatus.OK);
 

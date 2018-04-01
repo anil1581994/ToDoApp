@@ -169,6 +169,10 @@ public class INoteDaoImpl implements INoteDao
 		Label label = new Label();
 			 label.setLabelId(rs.getInt("labelId"));
 			 label.setLabelTitle(rs.getString("labelTitle"));
+			 int userId=rs.getInt("userId");
+			 User user=new User();
+				user.setId(userId);
+				label.setUser(user);
 		    	return label;
 
 		}

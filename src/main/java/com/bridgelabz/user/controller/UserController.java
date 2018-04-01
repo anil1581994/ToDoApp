@@ -18,6 +18,7 @@ import org.springframework.validation.FieldError;
 
 import org.springframework.validation.annotation.Validated;
 import org.springframework.web.bind.annotation.PathVariable;
+import org.springframework.web.bind.annotation.RequestAttribute;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
@@ -25,12 +26,14 @@ import org.springframework.web.bind.annotation.RestController;
 
 import com.bridgelabz.user.ResponseDTO.CustomResponse;
 import com.bridgelabz.user.ResponseDTO.RegisterErrors;
+import com.bridgelabz.user.model.User;
 import com.bridgelabz.user.model.UserDto;
 import com.bridgelabz.user.service.UserService;
 import com.bridgelabz.user.util.TokenUtils;
 import com.bridgelabz.user.validation.UserValidator;
 
 @RestController
+@RequestMapping("/user")
 public class UserController {
 
 	private static final Logger logger = Logger.getLogger(UserController.class);
@@ -158,4 +161,18 @@ public class UserController {
 
 	}
 	// ......................./tokenGenartion Api
+	//.................//loggeduser..APi
+	
+	@RequestMapping(value="/loggeduser" , method = RequestMethod.GET)
+	public ResponseEntity<?> getLoggeddUser(@RequestAttribute(name="userId") int userId) {
+	     CustomResponse customRes = new CustomResponse();
+		User user =userService.getUserById(userId); 
+			if(user!=null) 
+			{
+				return new ResponseEntity<User>(user,HttpStatus.OK);
+			}
+		customRes.setMessage("no logged user");
+		customRes.setStatusCode(409);
+		return new ResponseEntity<CustomResponse>(customRes,HttpStatus.CONFLICT); 
+	}
 }

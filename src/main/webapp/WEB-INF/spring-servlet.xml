@@ -25,15 +25,12 @@ http://www.springframework.org/schema/context http://www.springframework.org/sch
 	<mvc:interceptors>
 		<mvc:interceptor>
 			<mvc:mapping path="/note/**" />
-			<!-- <mvc:exclude-mapping path="/home/login/" />
-			<mvc:exclude-mapping path="/home/register/" /> -->
 			<bean class="com.bridgelabz.filter.LoggingInterceptor"/>
 		</mvc:interceptor>
-		<!-- <mvc:interceptor>
-			<mvc:mapping path="/**" />
-			<mvc:exclude-mapping path="/home/login/" />
-			<bean class="com.bridgelabz.filter.LoggingInterceptor" />
-		</mvc:interceptor> -->
+		 <mvc:interceptor>
+			<mvc:mapping path="/user/**" />
+			<bean class="com.bridgelabz.filter.UserInterceptor" />
+		</mvc:interceptor> 
 
 	</mvc:interceptors>
 

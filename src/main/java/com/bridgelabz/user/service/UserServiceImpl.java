@@ -134,6 +134,8 @@ public class UserServiceImpl implements UserService {
 	@Override
 	public User getUserById(int userId) {
 		User user=userDao.getUserById(userId);
+		System.out.println("name of user"+user.getName());
+		System.out.println("email of user"+user.getEmail());
 		return user;
 	}
 

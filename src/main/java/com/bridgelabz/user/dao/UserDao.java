@@ -9,7 +9,7 @@ public interface UserDao
 
 	public User getUserByEmail(User user);
 
-	User getUserByEmailId(String email);
+	User getUserByEmailId(String email);//logged user
 
 	boolean saveUsernameUid(String name, String randomUUID);
 
