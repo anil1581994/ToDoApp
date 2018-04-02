@@ -33,7 +33,7 @@ import com.bridgelabz.user.util.TokenUtils;
 import com.bridgelabz.user.validation.UserValidator;
 
 @RestController
-@RequestMapping("/user")
+//@RequestMapping("/user")
 public class UserController {
 
 	private static final Logger logger = Logger.getLogger(UserController.class);
@@ -78,7 +78,7 @@ public class UserController {
 	}
 	// ........login api...........
 
-	@RequestMapping(value = "login", method = RequestMethod.POST, produces = MediaType.APPLICATION_JSON_VALUE)
+	@RequestMapping(value = "/login", method = RequestMethod.POST, produces = MediaType.APPLICATION_JSON_VALUE)
 	public ResponseEntity<?> login(@RequestBody UserDto userDto, HttpServletResponse response) {
 
 		CustomResponse customRes = new CustomResponse();
@@ -163,7 +163,7 @@ public class UserController {
 	// ......................./tokenGenartion Api
 	//.................//loggeduser..APi
 	
-	@RequestMapping(value="/loggeduser" , method = RequestMethod.GET)
+	@RequestMapping(value="/user/loggeduser" , method = RequestMethod.GET)
 	public ResponseEntity<?> getLoggeddUser(@RequestAttribute(name="userId") int userId) {
 	     CustomResponse customRes = new CustomResponse();
 		User user =userService.getUserById(userId); 
