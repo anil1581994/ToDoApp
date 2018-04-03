@@ -107,6 +107,7 @@ public class INoteServiceImpl implements INoteService {
 		}
 		return notes;
 	}
+	//label 
 	@Override
 	public void createLabel(Label label, int userId) {
 
@@ -131,6 +132,22 @@ public class INoteServiceImpl implements INoteService {
 			labels.add(label);
 		}
 		return labels;
+	}
+
+	@Override
+	public boolean updateLabel(Label label) {
+		boolean status=noteDao.updateLabel(label);
+		return status;
+	}
+
+	@Override
+	public void deleteLabel(int labelId, int userId) {
+		Label label=noteDao.getLabelById(labelId);
+		if(label.getUser().getId()!=userId)
+		{
+			throw new UnAuthorizedAccessUser();
+		}
+		noteDao.deleteLabel(labelId);
 	}
     
 }

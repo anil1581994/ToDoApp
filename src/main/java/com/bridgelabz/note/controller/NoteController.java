@@ -125,7 +125,7 @@ public class NoteController {
 
 		Response response = new Response();
 
-	noteService.createLabel(label, userId);
+	   noteService.createLabel(label, userId);
 		response.setMsg("label created successfully");
 		response.setStatus(200);
 
@@ -148,5 +148,71 @@ public class NoteController {
 		return new ResponseEntity<List<Label>>(labels, HttpStatus.OK);
 
 	}
+	@RequestMapping(value = "/updateLabel", method = RequestMethod.PUT, produces = MediaType.APPLICATION_JSON_VALUE)
+	public ResponseEntity<?> updateLabel(@RequestBody Label label, HttpServletRequest request) {
 
+		// int userId = TokenUtils.verifyToken(request.getHeader("Authorization"));
+		   int userId = (int) request.getAttribute("userId");
+	     	Response response = new Response();
+
+			try {
+	     	noteService.updateLabel(label);
+			response.setMsg("label update successfully");
+			response.setStatus(200);
+			logger.info("label updated successFully");
+			return new ResponseEntity<Response>(response, HttpStatus.OK);
+		
+			}catch (Exception e) 
+			{
+				e.printStackTrace();
+			response.setMsg("label  is not update");
+			response.setStatus(418);
+
+			logger.error("label is not update");
+
+			return new ResponseEntity<Response>(response, HttpStatus.CONFLICT);
+			}
+		}
+	@RequestMapping(value = "/deleteLabel/{labelId}", method = RequestMethod.DELETE, produces = MediaType.APPLICATION_JSON_VALUE)
+	public ResponseEntity<?> deleteLabel(@PathVariable("labelId") int labelId, HttpServletRequest request) {
+		// int userId = TokenUtils.verifyToken(request.getHeader("Authorization"));
+
+		int userId = (int) request.getAttribute("userId");
+		noteService.deleteLabel(labelId, userId);
+		Response response = new Response();
+		response.setMsg("label deleted successfully");
+		response.setStatus(1);
+
+		logger.info("label deleted successfully");
+		return new ResponseEntity<Response>(response, HttpStatus.OK);
+	}
+	/*@RequestMapping(value = "/addLabelToNote/{labelId}", method = RequestMethod.DELETE, produces = MediaType.APPLICATION_JSON_VALUE)
+	public ResponseEntity<?> addLabelToNote(@PathVariable("labelId") int labelId, HttpServletRequest request) 
+	{
+		// int userId = TokenUtils.verifyToken(request.getHeader("Authorization"));
+
+		int userId = (int) request.getAttribute("userId");
+		noteService.deleteLabel(labelId, userId);
+		Response response = new Response();
+		response.setMsg("label deleted successfully");
+		response.setStatus(1);
+
+		logger.info("label deleted successfully");
+		return new ResponseEntity<Response>(response, HttpStatus.OK);
+	}*
+	/@RequestMapping(value = "/deleteLabelFromNote/{labelId}", method = RequestMethod.DELETE, produces = MediaType.APPLICATION_JSON_VALUE)
+	/*public ResponseEntity<?> deleteLabel(@PathVariable("labelId") int labelId, HttpServletRequest request) {
+		// int userId = TokenUtils.verifyToken(request.getHeader("Authorization"));
+
+		int userId = (int) request.getAttribute("userId");
+		noteService.deleteLabel(labelId, userId);
+		Response response = new Response();
+		response.setMsg("label deleted successfully");
+		response.setStatus(1);
+
+		logger.info("label deleted successfully");
+		return new ResponseEntity<Response>(response, HttpStatus.OK);
+	}
+	*/
 }
+	

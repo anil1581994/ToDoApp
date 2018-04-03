@@ -24,6 +24,7 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.RestController;
 
+import com.bridgelabz.exceptions.UnAuthorizedAccessUser;
 import com.bridgelabz.user.ResponseDTO.CustomResponse;
 import com.bridgelabz.user.ResponseDTO.RegisterErrors;
 import com.bridgelabz.user.model.User;
@@ -91,11 +92,12 @@ public class UserController {
       
 			return new ResponseEntity<CustomResponse>(customRes, HttpStatus.OK);
 		} else {
-			customRes.setMessage("login fail");
+			/*customRes.setMessage("login fail");
 			customRes.setStatusCode(410);
-			/*customRes.setMsg("login fail");
-			customRes.setStatus(410);*/
-			return new ResponseEntity<CustomResponse>(customRes, HttpStatus.CONFLICT);
+			customRes.setMsg("login fail");
+			customRes.setStatus(410);
+			return new ResponseEntity<CustomResponse>(customRes, HttpStatus.CONFLICT);*/
+			throw new UnAuthorizedAccessUser();
 		}
 
 	}
@@ -146,14 +148,12 @@ public class UserController {
 		CustomResponse customRes = new CustomResponse();
 
 		if (userService.userActivation(randomUUID)) {
-			/*customRes.setMsg("user activation done successfully");
-			customRes.setStatus(200);*/
+			
 			customRes.setMessage("user activation done successfully");
 			customRes.setStatusCode(200);
 			return new ResponseEntity<CustomResponse>(customRes, HttpStatus.CREATED);
 		} else {
-			/*customRes.setMsg("activation fail");
-			customRes.setStatus(409);*/
+			
 			customRes.setMessage("activation fail");
 			customRes.setStatusCode(409);
 			return new ResponseEntity<CustomResponse>(customRes, HttpStatus.CONFLICT);

@@ -17,9 +17,19 @@ public interface INoteDao {
 	Note getNoteById(int noteId);
 
 	List<Note> getAllNotes(int userId);
-	
+
 	int noteCreatorByNoteId(int noteId);
-	 void saveLabel(Label label);
-	 List<Label> getAllLabels(int userId);
+   //...................................
+	void saveLabel(Label label);
+
+	List<Label> getAllLabels(int userId);
+	
+	boolean updateLabel(Label label);
+	
+	boolean deleteLabel(int labelId);
+	
+	Label getLabelById(int labelId);
+
+	
 
 }

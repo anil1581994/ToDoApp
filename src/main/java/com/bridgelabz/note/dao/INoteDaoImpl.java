@@ -162,6 +162,8 @@ public class INoteDaoImpl implements INoteDao
 		List<Label> labels=jdbcTemplate.query(sql,new Object[]{userId},new LabelMapper());
 		return labels;
 	}
+
+	
 	//Label Mapper
 	class LabelMapper implements RowMapper {
 
@@ -176,6 +178,48 @@ public class INoteDaoImpl implements INoteDao
 		    	return label;
 
 		}
+	}
+
+	@Override
+	public boolean updateLabel(Label label) {
+
+		int count = 0;
+		String sql = "UPDATE Labels SET labelTitle=? where labelId=?";
+
+		count = jdbcTemplate.update(sql,
+				new Object[] {label.getLabelTitle(),label.getLabelId()});
+		System.out.println(count);
+		if (count == 0) {
+			return false;
+		} else {
+			return true;
+		}
+	}
+
+	@Override
+	public boolean deleteLabel(int labelId) {
+		String sql = "delete from Labels where labelId=?";
+		int count = jdbcTemplate.update(sql, labelId);
+		if (count == 0) {
+			return false;
+		} else {
+			return true;
+		}
+	}
+
+	@Override
+	public Label getLabelById(int labelId) {
+		String sql = "select * from Labels where labelId= ?";
+		List<Label> list = jdbcTemplate.query(sql, new Object[] { labelId }, new LabelMapper());
+		if (list.size() > 0) 
+		{
+			System.out.println(list.get(0));
+			return list.get(0);
+		} else 
+		{
+			return null;
+		}
+		
 	}
 	
 }

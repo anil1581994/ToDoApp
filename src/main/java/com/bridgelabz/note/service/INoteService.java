@@ -20,7 +20,14 @@ public interface INoteService {
 	List<NoteResponseDto> getAllNotes(int userId);
 
 	void deleteNote(int noteId, int userId);
+	
 	void createLabel(Label label,int userId);
+	
 	List<Label> getAllLabels(int userId);
+	
+	boolean updateLabel(Label label);
+	
+	void deleteLabel(int labelId, int userId);
+	
 
 }
