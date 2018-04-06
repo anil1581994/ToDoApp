@@ -1,6 +1,8 @@
 package com.bridgelabz.note.model;
 
 import java.util.Date;
+import java.util.HashSet;
+import java.util.Set;
 
 public class NoteResponseDto {
 
@@ -13,14 +15,14 @@ public class NoteResponseDto {
 	private Date createDate;
 
 	private Date lastUpdateDate;
-	
-    private int status;
-    
-    private String color;
-    
-    private Date reminder;
-      
-	
+
+	private int status;
+
+	private String color;
+
+	private Date reminder;
+
+	private Set<Label> labels = new HashSet<>();
 
 	public Date getReminder() {
 		return reminder;
@@ -39,10 +41,10 @@ public class NoteResponseDto {
 		this.description = note.getDescription();
 		this.createDate = note.getCreateDate();
 		this.lastUpdateDate = note.getLastUpdateDate();
-		this.status=note.getStatus();
-		this.color=note.getColor();
-		this.reminder=note.getReminder();
-	
+		this.status = note.getStatus();
+		this.color = note.getColor();
+		this.reminder = note.getReminder();
+
 	}
 
 	public int getNoteId() {
@@ -84,6 +86,7 @@ public class NoteResponseDto {
 	public void setLastUpdateDate(Date lastUpdateDate) {
 		this.lastUpdateDate = lastUpdateDate;
 	}
+
 	public String getColor() {
 		return color;
 	}
@@ -98,6 +101,14 @@ public class NoteResponseDto {
 
 	public void setStatus(int status) {
 		this.status = status;
+	}
+
+	public Set<Label> getLabels() {
+		return labels;
+	}
+
+	public void setLabels(Set<Label> labels) {
+		this.labels = labels;
 	}
 
 }

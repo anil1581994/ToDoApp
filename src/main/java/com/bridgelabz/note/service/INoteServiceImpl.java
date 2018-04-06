@@ -13,6 +13,7 @@ import com.bridgelabz.note.controller.NoteController;
 import com.bridgelabz.note.dao.INoteDao;
 import com.bridgelabz.note.model.Label;
 import com.bridgelabz.note.model.Note;
+import com.bridgelabz.note.model.NoteLabel;
 import com.bridgelabz.note.model.NoteRequestDto;
 import com.bridgelabz.note.model.NoteResponseDto;
 import com.bridgelabz.note.model.UpdateNoteDto;
@@ -103,6 +104,7 @@ public class INoteServiceImpl implements INoteService {
 		for (Note note : list) 
 		{
 			NoteResponseDto dto = new NoteResponseDto(note);
+			dto.setLabels(noteDao.getLabelsByNote(note));
 			notes.add(dto);
 		}
 		return notes;
@@ -148,6 +150,24 @@ public class INoteServiceImpl implements INoteService {
 			throw new UnAuthorizedAccessUser();
 		}
 		noteDao.deleteLabel(labelId);
+	}
+
+	@Override
+	public void addLabel(int noteId, int labelId) {
+		NoteLabel noteLabel=new NoteLabel();
+		noteLabel.setLabelId(labelId);
+		noteLabel.setNoteId(noteId);
+		noteDao.addLabel(noteLabel);
+		
+	}
+
+	@Override
+	public void deleteLabelFromNote(int noteId, int labelId) {
+		NoteLabel noteLabel=new NoteLabel();
+		noteLabel.setLabelId(labelId);
+		noteLabel.setNoteId(noteId);
+		noteDao.deleteLabelFromNote(noteLabel);
+		
 	}
     
 }

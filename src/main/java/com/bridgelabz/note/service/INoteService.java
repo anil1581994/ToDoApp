@@ -4,6 +4,7 @@ import java.util.List;
 
 import com.bridgelabz.note.model.Label;
 import com.bridgelabz.note.model.Note;
+import com.bridgelabz.note.model.NoteLabel;
 import com.bridgelabz.note.model.NoteRequestDto;
 import com.bridgelabz.note.model.NoteResponseDto;
 import com.bridgelabz.note.model.UpdateNoteDto;
@@ -28,6 +29,10 @@ public interface INoteService {
 	boolean updateLabel(Label label);
 	
 	void deleteLabel(int labelId, int userId);
+	
+	void addLabel(int noteId,int labelId);
+	
+	void deleteLabelFromNote(int noteId,int labelId);
 	
 
 }

@@ -24,6 +24,11 @@ import com.bridgelabz.note.model.UpdateNoteDto;
 import com.bridgelabz.note.service.INoteService;
 import com.bridgelabz.user.ResponseDTO.Response;
 
+/**
+ * 
+ * @author bridgeit
+ *
+ */
 @RestController
 @RequestMapping("/note")
 public class NoteController {
@@ -32,6 +37,12 @@ public class NoteController {
 
 	private static final Logger logger = Logger.getLogger(NoteController.class);
 
+	/**
+	 * 
+	 * @param noteRequestDto
+	 * @param userId
+	 * @return
+	 */
 	@RequestMapping(value = "/createNote", method = RequestMethod.POST, produces = MediaType.APPLICATION_JSON_VALUE)
 	public ResponseEntity<?> createNote(@RequestBody NoteRequestDto noteRequestDto,
 			@RequestAttribute(name = "userId") int userId) {
@@ -106,7 +117,7 @@ public class NoteController {
 
 	@RequestMapping(value = "/getAllNotes", method = RequestMethod.GET, produces = MediaType.APPLICATION_JSON_VALUE)
 	public ResponseEntity<List<NoteResponseDto>> getAllNotes(HttpServletRequest request) {
-		
+
 		int userId = (int) request.getAttribute("userId");
 		Response response = new Response();
 		List<NoteResponseDto> notes = noteService.getAllNotes(userId);
@@ -118,14 +129,14 @@ public class NoteController {
 		return new ResponseEntity<List<NoteResponseDto>>(notes, HttpStatus.OK);
 
 	}
-	//.................label api..................
-	@RequestMapping(value = "/createLabel", method = RequestMethod.POST, produces = MediaType.APPLICATION_JSON_VALUE)
-	public ResponseEntity<?> createLabel(@RequestBody Label label,
-			@RequestAttribute(name = "userId") int userId) {
+
+	// .................label api..................
+	@RequestMapping(value = "/createlabel", method = RequestMethod.POST, produces = MediaType.APPLICATION_JSON_VALUE)
+	public ResponseEntity<?> createLabel(@RequestBody Label label, @RequestAttribute(name = "userId") int userId) {
 
 		Response response = new Response();
 
-	   noteService.createLabel(label, userId);
+		noteService.createLabel(label, userId);
 		response.setMsg("label created successfully");
 		response.setStatus(200);
 
@@ -134,9 +145,10 @@ public class NoteController {
 		return new ResponseEntity<Response>(response, HttpStatus.OK);
 
 	}
+
 	@RequestMapping(value = "/getAllLabels", method = RequestMethod.GET, produces = MediaType.APPLICATION_JSON_VALUE)
 	public ResponseEntity<List<Label>> getAllLabels(HttpServletRequest request) {
-		
+
 		int userId = (int) request.getAttribute("userId");
 		Response response = new Response();
 		List<Label> labels = noteService.getAllLabels(userId);
@@ -148,31 +160,32 @@ public class NoteController {
 		return new ResponseEntity<List<Label>>(labels, HttpStatus.OK);
 
 	}
+
 	@RequestMapping(value = "/updateLabel", method = RequestMethod.PUT, produces = MediaType.APPLICATION_JSON_VALUE)
 	public ResponseEntity<?> updateLabel(@RequestBody Label label, HttpServletRequest request) {
 
 		// int userId = TokenUtils.verifyToken(request.getHeader("Authorization"));
-		   int userId = (int) request.getAttribute("userId");
-	     	Response response = new Response();
+		int userId = (int) request.getAttribute("userId");
+		Response response = new Response();
 
-			try {
-	     	noteService.updateLabel(label);
+		try {
+			noteService.updateLabel(label);
 			response.setMsg("label update successfully");
 			response.setStatus(200);
 			logger.info("label updated successFully");
 			return new ResponseEntity<Response>(response, HttpStatus.OK);
-		
-			}catch (Exception e) 
-			{
-				e.printStackTrace();
+
+		} catch (Exception e) {
+			e.printStackTrace();
 			response.setMsg("label  is not update");
 			response.setStatus(418);
 
 			logger.error("label is not update");
 
 			return new ResponseEntity<Response>(response, HttpStatus.CONFLICT);
-			}
 		}
+	}
+
 	@RequestMapping(value = "/deleteLabel/{labelId}", method = RequestMethod.DELETE, produces = MediaType.APPLICATION_JSON_VALUE)
 	public ResponseEntity<?> deleteLabel(@PathVariable("labelId") int labelId, HttpServletRequest request) {
 		// int userId = TokenUtils.verifyToken(request.getHeader("Authorization"));
@@ -186,26 +199,23 @@ public class NoteController {
 		logger.info("label deleted successfully");
 		return new ResponseEntity<Response>(response, HttpStatus.OK);
 	}
-	/*@RequestMapping(value = "/addLabelToNote/{labelId}", method = RequestMethod.DELETE, produces = MediaType.APPLICATION_JSON_VALUE)
-	public ResponseEntity<?> addLabelToNote(@PathVariable("labelId") int labelId, HttpServletRequest request) 
-	{
-		// int userId = TokenUtils.verifyToken(request.getHeader("Authorization"));
 
-		int userId = (int) request.getAttribute("userId");
-		noteService.deleteLabel(labelId, userId);
-		Response response = new Response();
-		response.setMsg("label deleted successfully");
+	@RequestMapping(value = "/addLabelToNote/{noteId}/{labelId}", method = RequestMethod.PUT, produces = MediaType.APPLICATION_JSON_VALUE)
+	public ResponseEntity<?> addLabelToNote(@PathVariable("noteId") int noteId, @PathVariable("labelId") int labelId,
+			HttpServletRequest request) {
+		noteService.addLabel(noteId, labelId);
+		Response response = new Response();:
+		response.setMsg("note update with label");
 		response.setStatus(1);
 
-		logger.info("label deleted successfully");
+		logger.info("note update with label successfully");
 		return new ResponseEntity<Response>(response, HttpStatus.OK);
-	}*
-	/@RequestMapping(value = "/deleteLabelFromNote/{labelId}", method = RequestMethod.DELETE, produces = MediaType.APPLICATION_JSON_VALUE)
-	/*public ResponseEntity<?> deleteLabel(@PathVariable("labelId") int labelId, HttpServletRequest request) {
-		// int userId = TokenUtils.verifyToken(request.getHeader("Authorization"));
+	}
 
-		int userId = (int) request.getAttribute("userId");
-		noteService.deleteLabel(labelId, userId);
+	@RequestMapping(value = "/deleteLabelFromNote/{noteId}/{labelId}", method = RequestMethod.DELETE, produces = MediaType.APPLICATION_JSON_VALUE)
+	public ResponseEntity<?> deleteLabelFromNote(@PathVariable("noteId") int noteId,
+			@PathVariable("labelId") int labelId, HttpServletRequest request) {
+		noteService.deleteLabelFromNote(noteId, labelId);
 		Response response = new Response();
 		response.setMsg("label deleted successfully");
 		response.setStatus(1);
@@ -213,6 +223,5 @@ public class NoteController {
 		logger.info("label deleted successfully");
 		return new ResponseEntity<Response>(response, HttpStatus.OK);
 	}
-	*/
+
 }
-	

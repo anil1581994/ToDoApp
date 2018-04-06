@@ -2,7 +2,6 @@ package com.bridgelabz.note.model;
 
 import java.util.Date;
 
-
 import com.bridgelabz.user.model.User;
 
 public class Note {

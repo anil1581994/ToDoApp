@@ -1,11 +1,14 @@
 package com.bridgelabz.note.model;
 
+import java.util.Set;
+
 import com.bridgelabz.user.model.User;
 
 public class Label {
 	private int labelId;
 	private String labelTitle;
 	private User user;
+	private Set<Note> notes;//set notes
 
 	public int getLabelId() {
 		return labelId;
@@ -29,6 +32,13 @@ public class Label {
 
 	public void setUser(User user) {
 		this.user = user;
+	}
+	public Set<Note> getNotes() {
+		return notes;
+	}
+
+	public void setNotes(Set<Note> notes) {
+		this.notes = notes;
 	}
 
 }

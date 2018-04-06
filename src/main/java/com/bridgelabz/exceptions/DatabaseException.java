@@ -1,5 +1,6 @@
 package com.bridgelabz.exceptions;
 
+import com.bridgelabz.user.ResponseDTO.ErrorResponse;
 import com.bridgelabz.user.ResponseDTO.Response;
 
 public class DatabaseException extends RuntimeException{
@@ -11,7 +12,7 @@ public class DatabaseException extends RuntimeException{
 	}
 
 	public Response getResponse() {
-		Response response = new Response();
+		ErrorResponse response = new ErrorResponse();
 		response.setMsg(this.getMessage());
 		response.setStatus(-1);
 		return response;
