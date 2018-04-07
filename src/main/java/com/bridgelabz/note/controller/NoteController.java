@@ -204,7 +204,7 @@ public class NoteController {
 	public ResponseEntity<?> addLabelToNote(@PathVariable("noteId") int noteId, @PathVariable("labelId") int labelId,
 			HttpServletRequest request) {
 		noteService.addLabel(noteId, labelId);
-		Response response = new Response();:
+		Response response = new Response();
 		response.setMsg("note update with label");
 		response.setStatus(1);
 
