@@ -22,7 +22,7 @@ public class NoteResponseDto {
 
 	private Date reminder;
 
-	private Set<Label> labels = new HashSet<>();
+	private Set<Label> labels = new HashSet<>();//get all label
 
 	public Date getReminder() {
 		return reminder;
@@ -44,6 +44,7 @@ public class NoteResponseDto {
 		this.status = note.getStatus();
 		this.color = note.getColor();
 		this.reminder = note.getReminder();
+		this.labels=note.getLabels();
 
 	}
 

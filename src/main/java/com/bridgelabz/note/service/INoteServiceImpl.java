@@ -113,7 +113,6 @@ public class INoteServiceImpl implements INoteService {
 	@Override
 	public void createLabel(Label label, int userId) {
 
-		
 		User user = new User();
 		user.setId(userId);
 		label.setUser(user);
@@ -154,6 +153,9 @@ public class INoteServiceImpl implements INoteService {
 
 	@Override
 	public void addLabel(int noteId, int labelId) {
+		//get all labels by noteId
+		             
+		  //noteDao.
 		NoteLabel noteLabel=new NoteLabel();
 		noteLabel.setLabelId(labelId);
 		noteLabel.setNoteId(noteId);
@@ -168,6 +170,26 @@ public class INoteServiceImpl implements INoteService {
 		noteLabel.setNoteId(noteId);
 		noteDao.deleteLabelFromNote(noteLabel);
 		
+	}
+
+	@Override
+	public List<Label> getNoteLabels(int noteId) {
+		List<Label> list = noteDao.getNoteLabels(noteId);
+
+		List<Label> labels = new ArrayList<>();
+		for (Label label : list) 
+		{
+			
+			labels.add(label);
+		}
+		return labels;
+		
+	}
+
+	@Override
+	public boolean isLabelExists(String labelTitle) {
+          boolean status=noteDao.isLabelExists(labelTitle);
+		  return status;
 	}
     
 }

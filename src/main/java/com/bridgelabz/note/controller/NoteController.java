@@ -114,7 +114,7 @@ public class NoteController {
 		logger.info("note deleted successfully");
 		return new ResponseEntity<Response>(response, HttpStatus.OK);
 	}
-
+       //add labels to this notes whichever i add by clicking whoose labelId=1
 	@RequestMapping(value = "/getAllNotes", method = RequestMethod.GET, produces = MediaType.APPLICATION_JSON_VALUE)
 	public ResponseEntity<List<NoteResponseDto>> getAllNotes(HttpServletRequest request) {
 
@@ -200,28 +200,51 @@ public class NoteController {
 		return new ResponseEntity<Response>(response, HttpStatus.OK);
 	}
 
-	@RequestMapping(value = "/addLabelToNote/{noteId}/{labelId}", method = RequestMethod.PUT, produces = MediaType.APPLICATION_JSON_VALUE)
-	public ResponseEntity<?> addLabelToNote(@PathVariable("noteId") int noteId, @PathVariable("labelId") int labelId,
-			HttpServletRequest request) {
-		noteService.addLabel(noteId, labelId);
-		Response response = new Response();
-		response.setMsg("note update with label");
-		response.setStatus(1);
+	@RequestMapping(value = "/addLabelToNote/{noteId}/{labelId}/{operation}", method = RequestMethod.PUT, produces = MediaType.APPLICATION_JSON_VALUE)
+	public void addLabelToNote(@PathVariable("noteId") int noteId, @PathVariable("labelId") int labelId,@PathVariable("operation") String operation,
+			HttpServletRequest request) 
+	  {
+		boolean operation1=Boolean.valueOf(operation);
+		//boolean operation1=false;
+		if(operation1 ==true) 
+		 {
+			noteService.addLabel(noteId, labelId);
+			Response response = new Response();
+			response.setMsg("note update with label");
+			response.setStatus(1);
 
-		logger.info("note update with label successfully");
-		return new ResponseEntity<Response>(response, HttpStatus.OK);
+			logger.info("note update with label successfully");
+			//return new ResponseEntity<Response>(response, HttpStatus.OK);
+			
+		   }else if(operation1== false) {
+			noteService.deleteLabelFromNote(noteId, labelId);
+			Response response = new Response();
+			response.setMsg("label deleted successfully");
+			response.setStatus(1);
+
+			logger.info("label deleted successfully");
+			//return new ResponseEntity<Response>(response, HttpStatus.OK);
+		}else
+		{
+          System.out.println("invalid api");
+		}
+		
 	}
 
-	@RequestMapping(value = "/deleteLabelFromNote/{noteId}/{labelId}", method = RequestMethod.DELETE, produces = MediaType.APPLICATION_JSON_VALUE)
-	public ResponseEntity<?> deleteLabelFromNote(@PathVariable("noteId") int noteId,
-			@PathVariable("labelId") int labelId, HttpServletRequest request) {
-		noteService.deleteLabelFromNote(noteId, labelId);
+	
+    
+	@RequestMapping(value = "/getNoteLabels/{noteId}", method = RequestMethod.GET, produces = MediaType.APPLICATION_JSON_VALUE)
+	public ResponseEntity<List<Label>> getAllLabels(HttpServletRequest request,@PathVariable("noteId") int noteId) 
+	{
 		Response response = new Response();
-		response.setMsg("label deleted successfully");
+		List<Label> labels = noteService.getNoteLabels(noteId);
+		response.setMsg("labels received successfully");
 		response.setStatus(1);
 
-		logger.info("label deleted successfully");
-		return new ResponseEntity<Response>(response, HttpStatus.OK);
+		logger.info("labels received succesfully");
+
+		return new ResponseEntity<List<Label>>(labels, HttpStatus.OK);
+
 	}
 
 }

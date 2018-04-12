@@ -1,6 +1,8 @@
 package com.bridgelabz.note.model;
 
 import java.util.Date;
+import java.util.HashSet;
+import java.util.Set;
 
 import com.bridgelabz.user.model.User;
 
@@ -14,6 +16,15 @@ public class Note {
 	private int status;
 	private String color;
 	private Date reminder;
+	private Set<Label> labels = new HashSet<>();
+
+	public Set<Label> getLabels() {
+		return labels;
+	}
+
+	public void setLabels(Set<Label> labels) {
+		this.labels = labels;
+	}
 
 	public Note() {
 	}

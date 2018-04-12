@@ -138,9 +138,9 @@ public class INoteDaoImpl implements INoteDao {
 
 			System.out.println(" indao date" + note.getReminder());
 
-			User user = new User();
-			user.setId(userId);
-			note.setUser(user);
+//			User user = new User();
+//			user.setId(userId);
+//			note.setUser(user);
 			return note;
 		}
 	}
@@ -171,10 +171,10 @@ public class INoteDaoImpl implements INoteDao {
 			Label label = new Label();
 			label.setLabelId(rs.getInt("labelId"));
 			label.setLabelTitle(rs.getString("labelTitle"));
-			int userId = rs.getInt("userId");
+			/*int userId = rs.getInt("userId");
 			User user = new User();
 			user.setId(userId);
-			label.setUser(user);
+			label.setUser(user);*/
 			return label;
 
 		}
@@ -257,6 +257,26 @@ public class INoteDaoImpl implements INoteDao {
 			throw new DatabaseException();
 		}
 
+	}
+
+	@Override
+	public List<Label> getNoteLabels(int noteId) {
+		String sql = "select Note_Label.noteId,Labels.labelId,Labels.labelTitle From Note_Label inner join Labels on Note_Label.labelId=Labels.labelId\n" + 
+				"where Note_Label.noteId=?";
+	List<Label> labels= jdbcTemplate.query(sql, new Object[] { noteId }, new LabelMapper());
+	return labels;
+		
+	}
+
+	@Override
+	public boolean isLabelExists(String labelTitle) {
+		 String sql = "select count(*) from Labels where labelTitle = ?";
+		    boolean result = false;//if label is not available
+		    int count = jdbcTemplate.queryForObject(sql, new Object[] { labelTitle }, Integer.class);
+		    if (count > 0) {
+		      result = true;
+		    }
+		    return result;
 	}
 
 }

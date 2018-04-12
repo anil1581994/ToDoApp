@@ -33,6 +33,17 @@ public interface INoteService {
 	void addLabel(int noteId,int labelId);
 	
 	void deleteLabelFromNote(int noteId,int labelId);
-	
+	 List<Label> getNoteLabels(int noteId);
+	 boolean isLabelExists(String labelTitle);
+	 
+	 
+	 
+	 
+	 
+	 
+	 
+	 
+	 
+	 
 
 }

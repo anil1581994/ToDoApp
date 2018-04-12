@@ -1,6 +1,7 @@
 package com.bridgelabz.note.dao;
 
 import java.util.List;
+
 import java.util.Set;
 
 import com.bridgelabz.note.model.Label;
@@ -40,6 +41,8 @@ public interface INoteDao {
 	Set<Label> getLabelsByNote(Note note);
 	void addLabel(NoteLabel noteLabel);
 	void deleteLabelFromNote(NoteLabel noteLabel);
+	 List<Label> getNoteLabels(int noteId);
+	 boolean isLabelExists(String labelTitle);
 
 	
 
