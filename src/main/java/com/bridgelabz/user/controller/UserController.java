@@ -4,6 +4,7 @@ import java.util.List;
 
 
 
+
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 
@@ -91,11 +92,7 @@ public class UserController {
       
 			return new ResponseEntity<CustomResponse>(customRes, HttpStatus.OK);
 		} else {
-			/*customRes.setMessage("login fail");
-			customRes.setStatusCode(410);
-			customRes.setMsg("login fail");
-			customRes.setStatus(410);
-			return new ResponseEntity<CustomResponse>(customRes, HttpStatus.CONFLICT);*/
+		
 			throw new UnAuthorizedAccessUser();
 		}
 

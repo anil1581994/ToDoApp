@@ -8,9 +8,12 @@ import org.apache.log4j.Logger;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
+import com.bridgelabz.exceptions.EmailAlreadyExistsException;
 import com.bridgelabz.exceptions.UnAuthorizedAccessUser;
 import com.bridgelabz.note.controller.NoteController;
 import com.bridgelabz.note.dao.INoteDao;
+import com.bridgelabz.note.model.Collaborator;
+import com.bridgelabz.note.model.CollaboratorResponseDto;
 import com.bridgelabz.note.model.Label;
 import com.bridgelabz.note.model.Note;
 import com.bridgelabz.note.model.NoteLabel;
@@ -25,7 +28,7 @@ public class INoteServiceImpl implements INoteService {
 
 	@Autowired
 	INoteDao noteDao;
-	
+
 	@Autowired
 	UserDao userDao;
 
@@ -50,37 +53,18 @@ public class INoteServiceImpl implements INoteService {
 
 	@Override
 	public boolean updateNote(UpdateNoteDto updateNoteDto) {
-		
+
 		Note note = new Note(updateNoteDto);
-		
+
 		Date date = new Date();
 		note.setLastUpdateDate(date);
-		//set reminder null
+		// set reminder null
 		note.setReminder(updateNoteDto.getReminder());
-		
+
 		boolean status = noteDao.updateNote(note);
 		return status;
 	}
-	/*@Override
-	public NoteResponseDto updateNote(UpdateNoteDto updateNoteDto) {
-	
-		System.out.println("reminder :"+updateNoteDto.getReminder());
-		
-		Note note =new Note(updateNoteDto);
-		note.setTitle(updateNoteDto.getTitle());
-		note.setDescription(updateNoteDto.getDescription());
-		
-		Date date = new Date();
-		note.setLastUpdateDate(date);
-		
-		
-		note.setReminder(updateNoteDto.getReminder());
-		noteDao.updateNote(note);
-	
-		return new NoteResponseDto(note);
-		
-}*/
-	
+
 	@Override
 	public Note getNoteById(int noteId) {
 		return noteDao.getNoteById(noteId);
@@ -97,39 +81,63 @@ public class INoteServiceImpl implements INoteService {
 
 	@Override
 	public List<NoteResponseDto> getAllNotes(int userId) {
+
 		
 		List<Note> list = noteDao.getAllNotes(userId);
 
-		List<NoteResponseDto> notes = new ArrayList<>();
-		for (Note note : list) 
+		User user = userDao.getUserById(userId);//sana
+		List<Collaborator> collaboratorList = noteDao.getCollaboratorBySharedId(user.getEmail());// get list of
+																									// collaborator
+
+		if (collaboratorList != null) 
 		{
+			for (Collaborator object : collaboratorList)
+			{
+
+				   Note note = noteDao.getNoteById(object.getNoteId());
+                   user=userDao.getUserById(object.getUserId());
+				   
+
+                   String collaboratorName=user.getName();
+                   System.out.println("shaerd user name-->"+collaboratorName);
+				    note.setCollaboratorName(collaboratorName);
+				    note.setOwnerId(object.getUserId());
+				    list.add(note);
+			}
+		}
+
+		List<NoteResponseDto> notes = new ArrayList<>();
+		for (Note note : list) {
 			NoteResponseDto dto = new NoteResponseDto(note);
-			dto.setLabels(noteDao.getLabelsByNote(note));
+			dto.setLabels(noteDao.getLabelsByNote(note));// set all label to note
+			// set  all collaborator
+			List<CollaboratorResponseDto> collaborators = noteDao.getCollaboratorsByNote(dto.getNoteId());
+
+			dto.setCollaborators(collaborators);
+
 			notes.add(dto);
 		}
 		return notes;
 	}
-	//label 
+
+	// label
 	@Override
 	public void createLabel(Label label, int userId) {
-
 		User user = new User();
 		user.setId(userId);
 		label.setUser(user);
-
 		noteDao.saveLabel(label);
 
-		
 	}
+
 	@Override
 	public List<Label> getAllLabels(int userId) {
-		
+
 		List<Label> list = noteDao.getAllLabels(userId);
 
 		List<Label> labels = new ArrayList<>();
-		for (Label label : list) 
-		{
-			//Label dto = new Label(label);
+		for (Label label : list) {
+			// Label dto = new Label(label);
 			labels.add(label);
 		}
 		return labels;
@@ -137,15 +145,14 @@ public class INoteServiceImpl implements INoteService {
 
 	@Override
 	public boolean updateLabel(Label label) {
-		boolean status=noteDao.updateLabel(label);
+		boolean status = noteDao.updateLabel(label);
 		return status;
 	}
 
 	@Override
 	public void deleteLabel(int labelId, int userId) {
-		Label label=noteDao.getLabelById(labelId);
-		if(label.getUser().getId()!=userId)
-		{
+		Label label = noteDao.getLabelById(labelId);
+		if (label.getUser().getId() != userId) {
 			throw new UnAuthorizedAccessUser();
 		}
 		noteDao.deleteLabel(labelId);
@@ -153,23 +160,23 @@ public class INoteServiceImpl implements INoteService {
 
 	@Override
 	public void addLabel(int noteId, int labelId) {
-		//get all labels by noteId
-		             
-		  //noteDao.
-		NoteLabel noteLabel=new NoteLabel();
+		// get all labels by noteId
+
+		// noteDao.
+		NoteLabel noteLabel = new NoteLabel();
 		noteLabel.setLabelId(labelId);
 		noteLabel.setNoteId(noteId);
 		noteDao.addLabel(noteLabel);
-		
+
 	}
 
 	@Override
 	public void deleteLabelFromNote(int noteId, int labelId) {
-		NoteLabel noteLabel=new NoteLabel();
+		NoteLabel noteLabel = new NoteLabel();
 		noteLabel.setLabelId(labelId);
 		noteLabel.setNoteId(noteId);
 		noteDao.deleteLabelFromNote(noteLabel);
-		
+
 	}
 
 	@Override
@@ -177,19 +184,42 @@ public class INoteServiceImpl implements INoteService {
 		List<Label> list = noteDao.getNoteLabels(noteId);
 
 		List<Label> labels = new ArrayList<>();
-		for (Label label : list) 
-		{
-			
+		for (Label label : list) {
+
 			labels.add(label);
 		}
 		return labels;
-		
+
 	}
 
 	@Override
 	public boolean isLabelExists(String labelTitle) {
-          boolean status=noteDao.isLabelExists(labelTitle);
-		  return status;
+		boolean status = noteDao.isLabelExists(labelTitle);
+		return status;
 	}
-    
+
+	public int saveCollaborator(Collaborator collaborator, int userId) {
+
+		User sharedUser = userDao.getUserByEmailId(collaborator.getSharedUserId());
+
+		if (sharedUser != null) {
+			if (sharedUser.getId() == userId) {
+				return -1;
+			}
+			noteDao.saveCollaborator(collaborator, userId);
+			return 1;
+		}
+		return 10;
+
+	}
+
+	@Override
+	public void removeCollaborator(Collaborator collaborator,int userId) {
+		if (collaborator.getUserId()!= userId) {
+			throw new UnAuthorizedAccessUser();
+		}
+		         noteDao.removeCollaborator(collaborator);
+	}
+
+
 }

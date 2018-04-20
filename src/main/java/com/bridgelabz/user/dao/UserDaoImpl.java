@@ -14,6 +14,7 @@ import org.springframework.jdbc.core.RowMapper;
 import org.springframework.stereotype.Repository;
 
 import com.bridgelabz.exceptions.DatabaseException;
+import com.bridgelabz.note.model.CollaboratorResponseDto;
 import com.bridgelabz.user.model.User;
 import com.bridgelabz.user.model.UserDto;
 
@@ -157,12 +158,7 @@ public class UserDaoImpl implements UserDao {
 		}
 
 	}
-	/*int noteCreatorByNoteId(int noteId)
-	{
-		return creatorId;
-		
-	}
-*/
+	
 	class UserMapper implements RowMapper {
 
 		public User mapRow(ResultSet rs, int rowNum) throws SQLException {
@@ -176,5 +172,19 @@ public class UserDaoImpl implements UserDao {
 
 		}
 	}
+	@Override
+	public User getOwnerEmail(int userId) {
+		String sql = "select * from Users where id= ?";
+		List<User> list = jdbcTemplate.query(sql, new Object[] { userId }, new UserMapper());
+		if (list.size() > 0) {
+			System.out.println(list.get(0));
+			return list.get(0);
+		} else {
+			return null;
+		}
+   }
+	///CollaboratorsharedResponseDTO getSharedNotes(int noteId,int userId);
 
+
+  
 }

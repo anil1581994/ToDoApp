@@ -2,6 +2,9 @@ package com.bridgelabz.note.dao;
 
 import java.sql.Connection;
 
+
+
+
 import java.sql.Date;
 import java.sql.PreparedStatement;
 import java.sql.ResultSet;
@@ -22,9 +25,13 @@ import org.springframework.jdbc.support.KeyHolder;
 import org.springframework.stereotype.Repository;
 
 import com.bridgelabz.exceptions.DatabaseException;
+import com.bridgelabz.note.model.Collaborator;
+import com.bridgelabz.note.model.CollaboratorResponseDto;
 import com.bridgelabz.note.model.Label;
 import com.bridgelabz.note.model.Note;
 import com.bridgelabz.note.model.NoteLabel;
+//import com.bridgelabz.user.dao.GetSharedNotes;
+//import com.bridgelabz.user.dao.UserDaoImpl.UserMapper;
 import com.bridgelabz.user.model.User;
 
 @Repository
@@ -136,15 +143,15 @@ public class INoteDaoImpl implements INoteDao {
 				e.printStackTrace();
 			}
 
-			System.out.println(" indao date" + note.getReminder());
+			//System.out.println(" indao date" + note.getReminder());
 
-//			User user = new User();
-//			user.setId(userId);
-//			note.setUser(user);
+		///User user = new User();
+	//	user.setId(userId);
+	///	note.setUser(user);
 			return note;
 		}
 	}
-	// label insertion
+	
 
 	public void saveLabel(Label label) {
 
@@ -171,10 +178,6 @@ public class INoteDaoImpl implements INoteDao {
 			Label label = new Label();
 			label.setLabelId(rs.getInt("labelId"));
 			label.setLabelTitle(rs.getString("labelTitle"));
-			/*int userId = rs.getInt("userId");
-			User user = new User();
-			user.setId(userId);
-			label.setUser(user);*/
 			return label;
 
 		}
@@ -216,7 +219,7 @@ public class INoteDaoImpl implements INoteDao {
 		}
 
 	}
-
+    //labels belong to particular note
 	@Override
 	public Set<Label> getLabelsByNote(Note note) {
 		String sql = "select * from Note_Label where noteId=?";
@@ -267,6 +270,32 @@ public class INoteDaoImpl implements INoteDao {
 	return labels;
 		
 	}
+	//-------------------------------------------------------------------------------------
+	//ok
+	@Override
+	public List<CollaboratorResponseDto> getCollaboratorsByNote(int noteId) {
+		String sql="SELECT Users.name,Users.email FROM Users INNER JOIN Collaborators ON Users.id=Collaborators.userId where Collaborators.noteId=?";
+/*    String sql="SELECT Collaborators.sharedUserId,( select name from Users where Users.email=Collaborators.sharedUserId)\n" + 
+    		"     FROM Users\n" + 
+    		"     INNER JOIN Collaborators\n" + 
+    		"     ON Users.id=Collaborators.userId\n" + 
+    		"    where Collaborators.noteId=?;";
+*/		List<CollaboratorResponseDto> list = jdbcTemplate.query(sql, new Object[] {noteId}, new GetCollaboratorMapper());
+        return list.size() > 0 ? list : null;
+		
+		
+	}
+	class GetCollaboratorMapper implements RowMapper {
+
+		public CollaboratorResponseDto mapRow(ResultSet rs, int rowNum) throws SQLException 
+		   {
+            //future along with email you need to get photo from user S3
+		    CollaboratorResponseDto collaboratorResponseDto=new CollaboratorResponseDto();
+		    collaboratorResponseDto.setName(rs.getString("name"));//
+	     	collaboratorResponseDto.setEmail(rs.getString("email"));
+	     	return collaboratorResponseDto;
+	     	}
+	}
 
 	@Override
 	public boolean isLabelExists(String labelTitle) {
@@ -278,5 +307,127 @@ public class INoteDaoImpl implements INoteDao {
 		    }
 		    return result;
 	}
+//ok
+	@Override
+	public boolean saveCollaborator(Collaborator collaborator,int userId) {
+		String query = "insert into Collaborators values (?,?,?,?)";
+		int update = jdbcTemplate.update(query,
+				new Object[] { collaborator.getCollaboratorId(),collaborator.getNoteId(),userId,collaborator.getSharedUserId()});
+
+		if (update != 1) {
+			throw new DatabaseException();
+		}
+		return false;
+	}
+
+	@Override
+	public User getUserById(int userId) {
+		String sql = "select * from Users where id= ?";
+		List<User> list = jdbcTemplate.query(sql, new Object[] { userId }, new UserMapper());
+		if (list.size() > 0) {
+			System.out.println(list.get(0));
+			return list.get(0);
+		} else {
+			return null;
+		}
+	}
+	
+
+
+     //userMapper
+	class UserMapper implements RowMapper {
+
+		public User mapRow(ResultSet rs, int rowNum) throws SQLException {
+			User user = new User();
+			user.setEmail(rs.getString("email"));
+			
+			return user;
+
+		}
+	}
+    //collaborator object...0k
+	@Override
+	public List<Collaborator> getCollaboratorBySharedId(String email)
+	{
+		String query="select * from Collaborators where sharedUserId=?";
+	     List<Collaborator> list = jdbcTemplate.query(query, new Object[] {email}, new CollaboratorMapper());
+	      return list.size() > 0 ? list : null;
+		
+    }
+	
+	class CollaboratorMapper implements RowMapper {
+
+		public Collaborator mapRow(ResultSet rs, int rowNum) throws SQLException {
+
+			Collaborator collaborator=new Collaborator();
+			collaborator.setNoteId(rs.getInt("noteId"));
+			collaborator.setCollaboratorId(rs.getInt("collaboratorId"));
+			collaborator.setUserId(rs.getInt("userId"));
+			collaborator.setSharedUserId(rs.getString("sharedUserId"));
+			return collaborator;
+			
+		}
+	}
+   //shared note details..from collaborator object
+	@Override
+	public CollaboratorResponseDto getSharedNotes(int noteId, int userId) {
+	
+		 String sql="SELECT Notes.title,Notes.description,Users.name\n" + 
+		            "FROM Notes,Users \n" + 
+		            "where Notes.noteId=? and Users.id=? ;";
+		      
+		      List<CollaboratorResponseDto> list = jdbcTemplate.query(sql, new Object[] {noteId,userId}, new GetSharedNotes());
+		      return list.size() > 0 ? list.get(0) : null;
+		     
+	}
+	
+	class GetSharedNotes implements org.springframework.jdbc.core.RowMapper<CollaboratorResponseDto>
+	{
+	   public CollaboratorResponseDto mapRow(ResultSet rs, int rowNum) throws SQLException
+	   {
+		   CollaboratorResponseDto sharedNote = new CollaboratorResponseDto();
+	      
+		   sharedNote.setTitle(rs.getString("title"));
+		   sharedNote.setDescription(rs.getString("description"));
+		   sharedNote.setName(rs.getString("name"));
+		   return sharedNote;
+	   }
+	}
+
+
+	@Override
+	public User getsharedUserByEmail(String email)
+	{
+		String sql = "select * from Users where email = ?";
+		List<User> list = jdbcTemplate.query(sql, new Object[] { email }, new SharedUserMapper());
+		if (list.size() > 0) {
+			System.out.println(list.get(0));
+			return list.get(0);
+		} else {
+			return null;
+		}
+	}
+	class SharedUserMapper implements RowMapper {
+
+		public User mapRow(ResultSet rs, int rowNum) throws SQLException {
+			User user = new User();
+			user.setEmail(rs.getString("email"));
+			user.setName(rs.getString("name"));
+			return user;
+
+		}
+	}
+
+
+	@Override
+	public void removeCollaborator(Collaborator collaborator) {
+		String sql = "delete from Collaborators where noteId=? and sharedUserId=?";
+		int count = jdbcTemplate.update(sql, new Object[] { collaborator.getNoteId(),collaborator.getSharedUserId()});
+		if (count == 0) {
+			throw new DatabaseException();
+		}
+	}
+
+
 
 }

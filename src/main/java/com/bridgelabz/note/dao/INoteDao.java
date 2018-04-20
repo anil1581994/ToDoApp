@@ -4,6 +4,8 @@ import java.util.List;
 
 import java.util.Set;
 
+import com.bridgelabz.note.model.Collaborator;
+import com.bridgelabz.note.model.CollaboratorResponseDto;
 import com.bridgelabz.note.model.Label;
 import com.bridgelabz.note.model.Note;
 import com.bridgelabz.note.model.NoteLabel;
@@ -33,17 +35,29 @@ public interface INoteDao {
 	boolean deleteLabel(int labelId);
 	
 	Label getLabelById(int labelId);
-//	
-//    boolean updateLabelToNote(int noteId,int labelId);
-//    
-//    boolean  deleteLabelFromNote(int noteId,int labelId);
 
 	Set<Label> getLabelsByNote(Note note);
 	void addLabel(NoteLabel noteLabel);
 	void deleteLabelFromNote(NoteLabel noteLabel);
-	 List<Label> getNoteLabels(int noteId);
-	 boolean isLabelExists(String labelTitle);
+    List<Label> getNoteLabels(int noteId);
+	boolean isLabelExists(String labelTitle);
+	 
+	 //.......................collaborator..................
+     boolean saveCollaborator(Collaborator collaborator,int userId);
+     
+     public  User getUserById(int userId); 
+     
+ 	
 
+ 	 
+ 	 List<CollaboratorResponseDto> getCollaboratorsByNote(int noteId);
+ 	 
+ 	CollaboratorResponseDto getSharedNotes(int noteId,int userId);//get shared note response
+
+	List<Collaborator> getCollaboratorBySharedId(String email);
+	 User getsharedUserByEmail(String email);
+	 void removeCollaborator(Collaborator collaborator);
+  	  
 	
 
 }

@@ -16,6 +16,7 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.RestController;
 
+import com.bridgelabz.note.model.Collaborator;
 import com.bridgelabz.note.model.Label;
 import com.bridgelabz.note.model.Note;
 import com.bridgelabz.note.model.NoteRequestDto;
@@ -23,6 +24,7 @@ import com.bridgelabz.note.model.NoteResponseDto;
 import com.bridgelabz.note.model.UpdateNoteDto;
 import com.bridgelabz.note.service.INoteService;
 import com.bridgelabz.user.ResponseDTO.Response;
+import com.bridgelabz.user.model.User;
 
 /**
  * 
@@ -114,7 +116,8 @@ public class NoteController {
 		logger.info("note deleted successfully");
 		return new ResponseEntity<Response>(response, HttpStatus.OK);
 	}
-       //add labels to this notes whichever i add by clicking whoose labelId=1
+
+	// add labels to this notes whichever i add by clicking whoose labelId=1 and now get collaborator object
 	@RequestMapping(value = "/getAllNotes", method = RequestMethod.GET, produces = MediaType.APPLICATION_JSON_VALUE)
 	public ResponseEntity<List<NoteResponseDto>> getAllNotes(HttpServletRequest request) {
 
@@ -201,41 +204,35 @@ public class NoteController {
 	}
 
 	@RequestMapping(value = "/addLabelToNote/{noteId}/{labelId}/{operation}", method = RequestMethod.PUT, produces = MediaType.APPLICATION_JSON_VALUE)
-	public void addLabelToNote(@PathVariable("noteId") int noteId, @PathVariable("labelId") int labelId,@PathVariable("operation") String operation,
-			HttpServletRequest request) 
-	  {
-		boolean operation1=Boolean.valueOf(operation);
-		//boolean operation1=false;
-		if(operation1 ==true) 
-		 {
+	public void addLabelToNote(@PathVariable("noteId") int noteId, @PathVariable("labelId") int labelId,
+			@PathVariable("operation") String operation, HttpServletRequest request) {
+		boolean operation1 = Boolean.valueOf(operation);
+		// boolean operation1=false;
+		if (operation1 == true) {
 			noteService.addLabel(noteId, labelId);
 			Response response = new Response();
 			response.setMsg("note update with label");
 			response.setStatus(1);
 
 			logger.info("note update with label successfully");
-			//return new ResponseEntity<Response>(response, HttpStatus.OK);
-			
-		   }else if(operation1== false) {
+			// return new ResponseEntity<Response>(response, HttpStatus.OK);
+
+		} else if (operation1 == false) {
 			noteService.deleteLabelFromNote(noteId, labelId);
 			Response response = new Response();
 			response.setMsg("label deleted successfully");
 			response.setStatus(1);
 
 			logger.info("label deleted successfully");
-			//return new ResponseEntity<Response>(response, HttpStatus.OK);
-		}else
-		{
-          System.out.println("invalid api");
+			// return new ResponseEntity<Response>(response, HttpStatus.OK);
+		} else {
+			System.out.println("invalid api");
 		}
-		
+
 	}
 
-	
-    
 	@RequestMapping(value = "/getNoteLabels/{noteId}", method = RequestMethod.GET, produces = MediaType.APPLICATION_JSON_VALUE)
-	public ResponseEntity<List<Label>> getAllLabels(HttpServletRequest request,@PathVariable("noteId") int noteId) 
-	{
+	public ResponseEntity<List<Label>> getAllLabels(HttpServletRequest request, @PathVariable("noteId") int noteId) {
 		Response response = new Response();
 		List<Label> labels = noteService.getNoteLabels(noteId);
 		response.setMsg("labels received successfully");
@@ -246,5 +243,46 @@ public class NoteController {
 		return new ResponseEntity<List<Label>>(labels, HttpStatus.OK);
 
 	}
+	// .....................Collaborator.API.................................................................
+
+	@RequestMapping(value = "/addCollaborator", method = RequestMethod.POST, produces = MediaType.APPLICATION_JSON_VALUE)
+	public ResponseEntity<?> createCollaborator(@RequestBody Collaborator collaborator, HttpServletRequest request) 
+	{
+		int userId = (int) request.getAttribute("userId");// get owner
+		Response response = new Response();
+	  
+			int status=noteService.saveCollaborator(collaborator, userId);
+			if(status==1) 
+			{
+			    response.setMsg("collaborator created successfully");
+		    	response.setStatus(1);
+			return new ResponseEntity<Response>(response, HttpStatus.OK);
+			}else if(status==-1) 
+			{
+				response.setMsg("collaborator not created");
+				response.setStatus(-1);
+				return new ResponseEntity<Response>(response, HttpStatus.OK);
+			}else 
+			{
+				response.setMsg("Email does not exist in database");
+				response.setStatus(10);
+		
+				return new ResponseEntity<Response>(response, HttpStatus.OK);
+			}
+      }
+
+	@RequestMapping(value = "/removeCollborator", method = RequestMethod.DELETE)
+	public ResponseEntity<Void> removeCollaborator(@RequestBody Collaborator collaborator, HttpServletRequest request) {
+		System.out.println("here.." + collaborator.getSharedUserId() +" "+collaborator.getNoteId());
+		int userId = (int) request.getAttribute("userId");
+		try {
+			noteService.removeCollaborator(collaborator,userId);
+			return new ResponseEntity<Void>(HttpStatus.OK);
+		} catch (Exception e) {
+			e.printStackTrace();
+			return new ResponseEntity<Void>(HttpStatus.CONFLICT);
+		}
+	}
+
 
 }

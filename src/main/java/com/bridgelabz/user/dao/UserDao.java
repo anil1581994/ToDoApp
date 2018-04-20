@@ -1,5 +1,6 @@
 package com.bridgelabz.user.dao;
 
+import com.bridgelabz.note.model.CollaboratorResponseDto;
 import com.bridgelabz.user.model.User;
 import com.bridgelabz.user.model.UserDto;
 
@@ -23,8 +24,11 @@ public interface UserDao
 	
 	public int getIdByEmail(String email);
 	
-
-	public  User getUserById(int userId); 
+   public User getUserById(int userId);
+   
+	public  User getOwnerEmail(int userId); 
+	
+	//CollaboratorResponseDto getSharedNotes(int noteId,int userId);
 		
 	//public boolean saveToken(String email, String token);
 	

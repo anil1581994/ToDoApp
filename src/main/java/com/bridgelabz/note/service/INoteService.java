@@ -2,6 +2,7 @@ package com.bridgelabz.note.service;
 
 import java.util.List;
 
+import com.bridgelabz.note.model.Collaborator;
 import com.bridgelabz.note.model.Label;
 import com.bridgelabz.note.model.Note;
 import com.bridgelabz.note.model.NoteLabel;
@@ -33,17 +34,14 @@ public interface INoteService {
 	void addLabel(int noteId,int labelId);
 	
 	void deleteLabelFromNote(int noteId,int labelId);
+	
 	 List<Label> getNoteLabels(int noteId);
+	 
 	 boolean isLabelExists(String labelTitle);
 	 
+    int saveCollaborator(Collaborator collaborator, int userId);
+    
+    void removeCollaborator(Collaborator collaborator,int userId);
+    
 	 
-	 
-	 
-	 
-	 
-	 
-	 
-	 
-	 
-
-}
+	 }

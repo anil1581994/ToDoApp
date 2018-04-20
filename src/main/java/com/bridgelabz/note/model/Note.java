@@ -1,7 +1,9 @@
 package com.bridgelabz.note.model;
 
+import java.util.ArrayList;
 import java.util.Date;
 import java.util.HashSet;
+import java.util.List;
 import java.util.Set;
 
 import com.bridgelabz.user.model.User;
@@ -16,7 +18,37 @@ public class Note {
 	private int status;
 	private String color;
 	private Date reminder;
+	private String name;
+	private int ownerId;
+
+	public int getOwnerId() {
+		return ownerId;
+	}
+
+	public void setOwnerId(int ownerId) {
+		this.ownerId = ownerId;
+	}
+
+	private String collaboratorName;//
+	
+	public String getCollaboratorName() {
+		return collaboratorName;
+	}
+
+	public void setCollaboratorName(String collaboratorName) {
+		this.collaboratorName = collaboratorName;
+	}
+
 	private Set<Label> labels = new HashSet<>();
+    private List<CollaboratorResponseDto> CollaboratorResponseDto=new ArrayList();
+
+	public List<CollaboratorResponseDto> getCollaboratorResponseDto() {
+		return CollaboratorResponseDto;
+	}
+
+	public void setCollaboratorResponseDto(List<CollaboratorResponseDto> collaboratorResponseDto) {
+		CollaboratorResponseDto = collaboratorResponseDto;
+	}
 
 	public Set<Label> getLabels() {
 		return labels;
@@ -33,6 +65,13 @@ public class Note {
 
 		this.title = noteRequestDto.getTitle();
 		this.description = noteRequestDto.getDescription();
+	} 
+	public Note(CollaboratorResponseDto  collaboratorResponseDto) {
+		this.title=collaboratorResponseDto.getTitle();
+		this.description=collaboratorResponseDto.getDescription();
+	    this.name=collaboratorResponseDto.getName();
+	    this.noteId=collaboratorResponseDto.getNoteId();
+	    this.collaboratorName=collaboratorResponseDto.getName();//
 	}
 
 	public Note(UpdateNoteDto updateNoteDto) {

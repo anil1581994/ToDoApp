@@ -17,7 +17,4 @@ public class Response
 		this.msg = msg;
 	}
 	
-	
-	
-	
 }

@@ -46,7 +46,7 @@ public class GlobalExceptionHandler {
 		response.setMsg("Something went wrong");
 		response.setStatus(-1);
 		e.printStackTrace();
-		return new ResponseEntity<>(response, HttpStatus.CONFLICT);
+		return new ResponseEntity<>(response, HttpStatus.INTERNAL_SERVER_ERROR);
 	}
 
 }
