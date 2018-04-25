@@ -1,5 +1,6 @@
 package com.bridgelabz.note.controller;
 
+import java.io.IOException;
 import java.util.List;
 
 import javax.servlet.http.HttpServletRequest;
@@ -25,6 +26,8 @@ import com.bridgelabz.note.model.UpdateNoteDto;
 import com.bridgelabz.note.service.INoteService;
 import com.bridgelabz.user.ResponseDTO.Response;
 import com.bridgelabz.user.model.User;
+import com.bridgelabz.user.util.LinkScrapper;
+import com.bridgelabz.user.util.UrlData;
 
 /**
  * 
@@ -284,5 +287,41 @@ public class NoteController {
 		}
 	}
 
+	/*@RequestMapping(value = "/getCollaboratedNotes", method = RequestMethod.GET, produces = MediaType.APPLICATION_JSON_VALUE)
+	public ResponseEntity<List<Label>> getCollaboratedNotes(HttpServletRequest request) {
 
+		int userId = (int) request.getAttribute("userId");
+		Response response = new Response();
+		List<Note> labels = noteService.getCollaboratedNotes(userId);
+		response.setMsg("labels received successfully");
+		response.setStatus(1);
+
+		logger.info("labels received succesfully");
+
+		return new ResponseEntity<Note<Note>>(Note, HttpStatus.OK);
+
+	}
+*/
+  //get url data..image, title
+	/*----------------------------------URL INFO-------------------------------*/
+
+	@RequestMapping(value = "/getUrl", method = RequestMethod.POST)
+	public ResponseEntity<?> getUrlData(HttpServletRequest request)
+	{
+		String url=request.getHeader("url");
+		LinkScrapper link=new LinkScrapper();
+		UrlData urlData=null;
+		try {
+			urlData = link.getMetaData(url);
+		} catch (IOException e) 
+		{
+			e.printStackTrace();
+		}
+		return ResponseEntity.ok(urlData);
+	}
+
+
+	
+	
+	
 }

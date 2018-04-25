@@ -80,34 +80,35 @@ public class INoteServiceImpl implements INoteService {
 	}
 
 	@Override
-	public List<NoteResponseDto> getAllNotes(int userId) {
+	public List<NoteResponseDto> getAllNotes(int userId)
+	{
 
 		
-		List<Note> list = noteDao.getAllNotes(userId);
+		List<Note> list = noteDao.getAllNotes(userId);//2391
 
-		User user = userDao.getUserById(userId);//sana
-		List<Collaborator> collaboratorList = noteDao.getCollaboratorBySharedId(user.getEmail());// get list of
-																									// collaborator
+		//User user = userDao.getUserById(userId);//sana
+		//List<Collaborator> collaboratorList = noteDao.getCollaboratorBySharedId(user.getEmail());// get list of
+		//get shared noteId and userid
+		List<Collaborator> collaboratorList = noteDao.getCollaboratorNoteIdAndUserId(userId);//2391																						// collaborator
 
 		if (collaboratorList != null) 
 		{
 			for (Collaborator object : collaboratorList)
 			{
-
-				   Note note = noteDao.getNoteById(object.getNoteId());
-                   user=userDao.getUserById(object.getUserId());
-				   
-
-                   String collaboratorName=user.getName();
-                   System.out.println("shaerd user name-->"+collaboratorName);
-				    note.setCollaboratorName(collaboratorName);
-				    note.setOwnerId(object.getUserId());
-				    list.add(note);
+				
+				CollaboratorResponseDto collabObj=noteDao.getSharedNotes(object.getNoteId(),object.getSharedUserId());
+				
+				collabObj.setOwnerId(object.getUserId());
+		
+	            Note obj = new Note(collabObj);
+	               //  obj.setCollaboratorName(collabObj.getName());
+	                list.add(obj);
 			}
 		}
 
 		List<NoteResponseDto> notes = new ArrayList<>();
-		for (Note note : list) {
+		for (Note note : list)
+		{
 			NoteResponseDto dto = new NoteResponseDto(note);
 			dto.setLabels(noteDao.getLabelsByNote(note));// set all label to note
 			// set  all collaborator
@@ -116,10 +117,14 @@ public class INoteServiceImpl implements INoteService {
 			dto.setCollaborators(collaborators);
 
 			notes.add(dto);
+			
 		}
 		return notes;
 	}
+		
+	
 
+	
 	// label
 	@Override
 	public void createLabel(Label label, int userId) {

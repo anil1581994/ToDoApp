@@ -3,6 +3,7 @@ package com.bridgelabz.note.service;
 import java.util.List;
 
 import com.bridgelabz.note.model.Collaborator;
+import com.bridgelabz.note.model.CollaboratorResponseDto;
 import com.bridgelabz.note.model.Label;
 import com.bridgelabz.note.model.Note;
 import com.bridgelabz.note.model.NoteLabel;
@@ -42,6 +43,7 @@ public interface INoteService {
     int saveCollaborator(Collaborator collaborator, int userId);
     
     void removeCollaborator(Collaborator collaborator,int userId);
+   // CollaboratorResponseDto getSharedNotes(int noteId,int userId);
     
 	 
 	 }

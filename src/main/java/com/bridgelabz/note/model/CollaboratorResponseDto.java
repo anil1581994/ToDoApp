@@ -5,7 +5,15 @@ public class CollaboratorResponseDto {
  private String email;
  private String title;
  private int noteId;
- public int getNoteId() {
+ private int ownerId;
+ 
+ public int getOwnerId() {
+	return ownerId;
+}
+public void setOwnerId(int ownerId) {
+	this.ownerId = ownerId;
+}
+public int getNoteId() {
 	return noteId;
 }
 public void setNoteId(int noteId) {

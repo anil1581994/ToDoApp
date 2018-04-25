@@ -5,6 +5,7 @@ import java.sql.Connection;
 
 
 
+
 import java.sql.Date;
 import java.sql.PreparedStatement;
 import java.sql.ResultSet;
@@ -274,7 +275,8 @@ public class INoteDaoImpl implements INoteDao {
 	//ok
 	@Override
 	public List<CollaboratorResponseDto> getCollaboratorsByNote(int noteId) {
-		String sql="SELECT Users.name,Users.email FROM Users INNER JOIN Collaborators ON Users.id=Collaborators.userId where Collaborators.noteId=?";
+	//	SELECT USER.fullName,USER.userEmail FROM USER INNER JOIN Collaborators ON USER.id=Collaborators.sharedUserId where Collaborators.noteId=?;
+		String sql="select Users.name,Users.email from  Users inner join Collaborators on Users.email=Collaborators.sharedUserId where Collaborators.noteId=?";
 /*    String sql="SELECT Collaborators.sharedUserId,( select name from Users where Users.email=Collaborators.sharedUserId)\n" + 
     		"     FROM Users\n" + 
     		"     INNER JOIN Collaborators\n" + 
@@ -347,10 +349,11 @@ public class INoteDaoImpl implements INoteDao {
 	}
     //collaborator object...0k
 	@Override
-	public List<Collaborator> getCollaboratorBySharedId(String email)
+	//public List<Collaborator> getCollaboratorBySharedId(String email)
+	public List<Collaborator> getCollaboratorNoteIdAndUserId(int userId)
 	{
-		String query="select * from Collaborators where sharedUserId=?";
-	     List<Collaborator> list = jdbcTemplate.query(query, new Object[] {email}, new CollaboratorMapper());
+		String query="select * from Collaborators where userId=?";
+	     List<Collaborator> list = jdbcTemplate.query(query, new Object[] {userId}, new CollaboratorMapper());
 	      return list.size() > 0 ? list : null;
 		
     }
@@ -370,17 +373,19 @@ public class INoteDaoImpl implements INoteDao {
 	}
    //shared note details..from collaborator object
 	@Override
-	public CollaboratorResponseDto getSharedNotes(int noteId, int userId) {
-	
+	public CollaboratorResponseDto getSharedNotes(int noteId, String sharedUserId) {
+	//1
+		
+//		String sql="SELECT Usersname,Users.email FROM Users INNER JOIN Collaborators ON Users.email=Collaborators.sharedUserId where Collaborators.noteId=?;";
 		 String sql="SELECT Notes.title,Notes.description,Users.name\n" + 
 		            "FROM Notes,Users \n" + 
-		            "where Notes.noteId=? and Users.id=? ;";
+		            "where Notes.noteId=? and Users.email=? ;";
 		      
-		      List<CollaboratorResponseDto> list = jdbcTemplate.query(sql, new Object[] {noteId,userId}, new GetSharedNotes());
+		      List<CollaboratorResponseDto> list = jdbcTemplate.query(sql, new Object[] {noteId,sharedUserId}, new GetSharedNotes());
 		      return list.size() > 0 ? list.get(0) : null;
 		     
 	}
-	
+
 	class GetSharedNotes implements org.springframework.jdbc.core.RowMapper<CollaboratorResponseDto>
 	{
 	   public CollaboratorResponseDto mapRow(ResultSet rs, int rowNum) throws SQLException
@@ -389,7 +394,7 @@ public class INoteDaoImpl implements INoteDao {
 	      
 		   sharedNote.setTitle(rs.getString("title"));
 		   sharedNote.setDescription(rs.getString("description"));
-		   sharedNote.setName(rs.getString("name"));
+		   sharedNote.setName(rs.getString("name"));//person-2
 		   return sharedNote;
 	   }
 	}
@@ -427,7 +432,5 @@ public class INoteDaoImpl implements INoteDao {
 			throw new DatabaseException();
 		}
 	}
-
-
 
 }

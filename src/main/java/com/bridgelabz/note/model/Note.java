@@ -20,7 +20,7 @@ public class Note {
 	private Date reminder;
 	private String name;
 	private int ownerId;
-
+	private String collaboratorName;//
 	public int getOwnerId() {
 		return ownerId;
 	}
@@ -29,7 +29,7 @@ public class Note {
 		this.ownerId = ownerId;
 	}
 
-	private String collaboratorName;//
+	
 	
 	public String getCollaboratorName() {
 		return collaboratorName;
@@ -69,9 +69,10 @@ public class Note {
 	public Note(CollaboratorResponseDto  collaboratorResponseDto) {
 		this.title=collaboratorResponseDto.getTitle();
 		this.description=collaboratorResponseDto.getDescription();
-	    this.name=collaboratorResponseDto.getName();
+	  //  this.name=collaboratorResponseDto.getName();
 	    this.noteId=collaboratorResponseDto.getNoteId();
 	    this.collaboratorName=collaboratorResponseDto.getName();//
+	    this.ownerId = collaboratorResponseDto.getOwnerId();
 	}
 
 	public Note(UpdateNoteDto updateNoteDto) {

@@ -52,11 +52,14 @@ public interface INoteDao {
  	 
  	 List<CollaboratorResponseDto> getCollaboratorsByNote(int noteId);
  	 
- 	CollaboratorResponseDto getSharedNotes(int noteId,int userId);//get shared note response
+ 	CollaboratorResponseDto getSharedNotes(int noteId,String shareUserId);//get shared note response
 
-	List<Collaborator> getCollaboratorBySharedId(String email);
+	//List<Collaborator> getCollaboratorBySharedId(String email);
+ 	List<Collaborator> getCollaboratorNoteIdAndUserId(int userId);
 	 User getsharedUserByEmail(String email);
 	 void removeCollaborator(Collaborator collaborator);
+	/*	public List<Note> getCollaboratedNotes(int noteId,String sharedUserId);*/
+
   	  
 	
 
