@@ -16,11 +16,11 @@ public class UrlData {
 		// TODO Auto-generated constructor stub
 	}
 	
-	public UrlData(String urlTitle,String urlImage)
+	public UrlData(String urlTitle,String urlImage, String urlDomain)
 	{
 		this.urlTitle=urlTitle;
 		this.ulrImage=urlImage;
-		
+		this.urlDomain = urlDomain;
 	}
 
 	public String getUrlTitle() {

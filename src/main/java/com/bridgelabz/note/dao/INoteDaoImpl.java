@@ -34,6 +34,7 @@ import com.bridgelabz.note.model.NoteLabel;
 //import com.bridgelabz.user.dao.GetSharedNotes;
 //import com.bridgelabz.user.dao.UserDaoImpl.UserMapper;
 import com.bridgelabz.user.model.User;
+import com.bridgelabz.user.util.UrlData;
 
 @Repository
 public class INoteDaoImpl implements INoteDao {
@@ -433,4 +434,24 @@ public class INoteDaoImpl implements INoteDao {
 		}
 	}
 
+	@Override
+	public List<UrlData> getAllUrls(int noteId) {
+		// TODO Auto-generated method stub
+		return null;
+	}
+
+//	@Override
+//	public List<UrlData> getAllUrls(int noteId)
+//	{
+//		String sql = "select UrlTitle,UrlImage from Notes where noteId=?";
+//		List<UrlData> list = jdbcTemplate.query(sql, new Object[] {noteId}, new NoteLabelMapper());
+//		Set<UrlData> urlDatas = new HashSet<>();
+//		for (UrlData urlData : list) 
+//		{
+//			urlDatas.add(getLabelById(noteLabel.getLabelId()));
+//		}
+//		return urlDatas;
+//	
+//	}
+//   
 }

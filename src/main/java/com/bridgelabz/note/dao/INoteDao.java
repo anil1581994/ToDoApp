@@ -10,6 +10,7 @@ import com.bridgelabz.note.model.Label;
 import com.bridgelabz.note.model.Note;
 import com.bridgelabz.note.model.NoteLabel;
 import com.bridgelabz.user.model.User;
+import com.bridgelabz.user.util.UrlData;
 
 public interface INoteDao {
 
@@ -59,6 +60,7 @@ public interface INoteDao {
 	 User getsharedUserByEmail(String email);
 	 void removeCollaborator(Collaborator collaborator);
 	/*	public List<Note> getCollaboratedNotes(int noteId,String sharedUserId);*/
+	 List<UrlData> getAllUrls(int noteId);
 
   	  
 	

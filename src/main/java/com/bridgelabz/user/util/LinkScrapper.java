@@ -18,8 +18,15 @@ public class LinkScrapper {
 
 		String urlTitle=null;
 		String urlImage=null;
-       
-
+		String urlDomain=null;
+		
+		try {
+			URI uri=new URI(url);
+			urlDomain=uri.getHost();
+		} catch (URISyntaxException e) {
+			
+			e.printStackTrace();
+		}
 		Document document = Jsoup.connect(url).get();
 
 		Elements metaOgTitle = document.select("meta[property=og:title]");
@@ -41,10 +48,11 @@ public class LinkScrapper {
 				if (metaOgImage != null) 
 				{
 					urlImage = metaOgImage.attr("content");	
-					System.out.println(urlImage);
+					System.out.println(document.select("meta[property=og:image]").attr("content"));
 				}
 				
-				return new UrlData(urlTitle, urlImage);
+				
+				return new UrlData(urlTitle, urlImage,urlDomain );
 		 
 	}
 }

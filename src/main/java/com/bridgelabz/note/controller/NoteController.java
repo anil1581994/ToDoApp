@@ -1,6 +1,7 @@
 package com.bridgelabz.note.controller;
 
 import java.io.IOException;
+import java.util.ArrayList;
 import java.util.List;
 
 import javax.servlet.http.HttpServletRequest;
@@ -15,6 +16,8 @@ import org.springframework.web.bind.annotation.RequestAttribute;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
+import org.springframework.web.bind.annotation.RequestParam;
+import org.springframework.web.bind.annotation.ResponseBody;
 import org.springframework.web.bind.annotation.RestController;
 
 import com.bridgelabz.note.model.Collaborator;
@@ -305,7 +308,7 @@ public class NoteController {
   //get url data..image, title
 	/*----------------------------------URL INFO-------------------------------*/
 
-	@RequestMapping(value = "/getUrl", method = RequestMethod.POST)
+	/*@RequestMapping(value = "/getUrl", method = RequestMethod.POST)
 	public ResponseEntity<?> getUrlData(HttpServletRequest request)
 	{
 		String url=request.getHeader("url");
@@ -318,10 +321,34 @@ public class NoteController {
 			e.printStackTrace();
 		}
 		return ResponseEntity.ok(urlData);
-	}
-
-
+	}*/
 	
+  
+	@RequestMapping(value = "/getUrls", method = RequestMethod.POST)
+	public List<UrlData> getUrlInfo(@RequestBody List<String> urls,HttpServletRequest request)
+	{
+	  
+	      LinkScrapper link=new LinkScrapper();
+	      UrlData urlData=null;
+	     List<UrlData> urlDatas = new ArrayList<>();
+	      
+	     for (String url : urls) 
+		  {
+	    	 System.out.println(urls);
+		     try{
+			    urlData = link.getMetaData(url);
+			    urlDatas.add(urlData);
+				
+			} catch (IOException e) 
+		    {
+			e.printStackTrace();
+		    }
+	
+		  }
+		  return urlDatas;
+    }
+
+
 	
 	
 }
