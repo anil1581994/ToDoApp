@@ -21,6 +21,15 @@ public class Note {
 	private String name;
 	private int ownerId;
 	private String collaboratorName;//
+	private String image;
+	public String getImage() {
+		return image;
+	}
+
+	public void setImage(String image) {
+		this.image = image;
+	}
+
 	public int getOwnerId() {
 		return ownerId;
 	}
@@ -82,6 +91,7 @@ public class Note {
 		this.lastUpdateDate = updateNoteDto.getLastUpdateDate();
 		this.status=updateNoteDto.getStatus();
 		this.color=updateNoteDto.getColor();
+		this.image=updateNoteDto.getImage();
 	}
 
 	public int getNoteId() {

@@ -289,7 +289,17 @@ public class NoteController {
 			return new ResponseEntity<Void>(HttpStatus.CONFLICT);
 		}
 	}
-
+ 
+	 
+	   @RequestMapping(value="/uploadImage",method =RequestMethod.PUT,produces = MediaType.APPLICATION_JSON_VALUE)
+	   public void uploadImage(@RequestBody UpdateNoteDto updateNoteDto,HttpServletRequest req,@RequestAttribute(name = "userId") int userId) 
+	   {
+		   System.out.println("image is uploaded suceessFully");
+		   noteService.updateNote(updateNoteDto);
+	       
+	   
+	     
+	   }
 	/*@RequestMapping(value = "/getCollaboratedNotes", method = RequestMethod.GET, produces = MediaType.APPLICATION_JSON_VALUE)
 	public ResponseEntity<List<Label>> getCollaboratedNotes(HttpServletRequest request) {
 

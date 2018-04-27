@@ -43,6 +43,7 @@ public interface INoteService {
     int saveCollaborator(Collaborator collaborator, int userId);
     
     void removeCollaborator(Collaborator collaborator,int userId);
+    
    // CollaboratorResponseDto getSharedNotes(int noteId,int userId);
     
 	 

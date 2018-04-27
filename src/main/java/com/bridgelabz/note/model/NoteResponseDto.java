@@ -24,6 +24,16 @@ public class NoteResponseDto {
 
 	private Date reminder;
 	
+	private String image;
+	
+	public String getImage() {
+		return image;
+	}
+
+	public void setImage(String image) {
+		this.image = image;
+	}
+
 	private String collaboratorName;
 	private int ownerId;
 
@@ -94,6 +104,7 @@ public class NoteResponseDto {
 		this.collaborators=note.getCollaboratorResponseDto();
 		this.collaboratorName=note.getCollaboratorName();
 		this.ownerId=note.getOwnerId();
+		this.image=note.getImage();
 
 	}
 
