@@ -1,10 +1,9 @@
 package com.bridgelabz.user.controller;
 
+import java.io.IOException;
 import java.util.List;
 
-
-
-
+import javax.servlet.http.HttpServlet;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 
@@ -100,33 +99,40 @@ public class UserController {
 
 	// .............forgot password api.............
 	@RequestMapping(value = "/forgotPassword", method = RequestMethod.POST)
-	public ResponseEntity<Void> forgotPassword(@RequestBody UserDto userDto, HttpServletRequest request) {
+	public ResponseEntity<CustomResponse> forgotPassword(@RequestBody UserDto userDto, HttpServletRequest request) {
+		CustomResponse customRes = new CustomResponse();
 		try {
 			System.out.println(userDto.getEmail());
 			String url = request.getRequestURL().toString().substring(0, request.getRequestURL().lastIndexOf("/"));
-			if (userService.forgetPassword(userDto.getEmail(), url)) {
-				return new ResponseEntity<Void>(HttpStatus.OK);
+			if (userService.forgetPassword(userDto.getEmail(), url))
+				
+			{   customRes.setMessage("forgot password");
+			    customRes.setStatusCode(100);
+		       return new ResponseEntity<CustomResponse>(HttpStatus.OK);
 			} else {
-				return new ResponseEntity<Void>(HttpStatus.CONFLICT);
+				return new ResponseEntity<CustomResponse>(HttpStatus.CONFLICT);
 			}
 		} catch (Exception e) {
 			e.printStackTrace();
-			return new ResponseEntity<Void>(HttpStatus.NO_CONTENT);
+			return new ResponseEntity<CustomResponse>(HttpStatus.NO_CONTENT);
 		}
 	}
 	// ........reset password api................
 
 	@RequestMapping(value = "/resetPassword/{randomUUID}", method = RequestMethod.POST)
 	public ResponseEntity<CustomResponse> resetPassword(@RequestBody UserDto userDto,
-			@PathVariable("randomUUID") String randomUUID) {
+			@PathVariable("randomUUID") String randomUUID,HttpServlet request) {
 
 		CustomResponse customRes = new CustomResponse();
+		
+		//int userId = TokenUtils.verifyToken(request.);
+		
 		String email = userService.getUserEmailId(randomUUID);
 		userDto.setEmail(email);
 
 		if (userService.resetPassword(userDto)) {
 			customRes.setMessage("Reset Password Sucessfully........");
-			/*customRes.setMsg("Reset Password Sucessfully........");*/
+			customRes.setStatusCode(100);
 			return new ResponseEntity<CustomResponse>(customRes, HttpStatus.OK);
 
 		} else {
@@ -136,14 +142,22 @@ public class UserController {
 			return new ResponseEntity<CustomResponse>(customRes, HttpStatus.BAD_REQUEST);
 		}
 	}
+   //new api for front side 
+	@RequestMapping(value = "/resetPasswordLink/{jwtToken:.+}", method = RequestMethod.GET)
+	public ResponseEntity<Void> resetPasswordLink(@PathVariable("jwtToken") String jwtToken, HttpServletResponse response) throws IOException  {
 
+	System.out.println("In side reset password link");
+	response.sendRedirect("http://localhost:4200/resetpassword");
+	return null;
+	}
 	// ............./isActivUser Api............................
 	@RequestMapping(value = "/RegistrationConfirm/{randomUUID}", method = RequestMethod.POST)
 	public ResponseEntity<CustomResponse> isActiveUser(@PathVariable("randomUUID") String randomUUID) {
 
 		CustomResponse customRes = new CustomResponse();
 
-		if (userService.userActivation(randomUUID)) {
+		if (userService.userActivation(randomUUID)) 
+		{
 			
 			customRes.setMessage("user activation done successfully");
 			customRes.setStatusCode(200);
@@ -171,4 +185,5 @@ public class UserController {
 		customRes.setStatusCode(409);
 		return new ResponseEntity<CustomResponse>(customRes,HttpStatus.CONFLICT); 
 	}
+	
 }

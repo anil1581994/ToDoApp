@@ -32,11 +32,11 @@ public class MailService {
 		try {
 			
 			
-			if(emailProperties.getEmailAddress() != null && emailProperties.getEmailAddress() != ""&& emailProperties.getEmailAddress().isEmpty()==false && !emailProperties.getEmailAddress().equals("null")) {
-				System.out.println("Email  :"+emailProperties.getEmailAddress());
-				to = emailProperties.getEmailAddress(); 
-			}
-			
+		if(emailProperties.getEmailAddress() != null && emailProperties.getEmailAddress() != ""&& emailProperties.getEmailAddress().isEmpty()==false && !emailProperties.getEmailAddress().equals("null")) {
+			System.out.println("Email  :"+emailProperties.getEmailAddress());
+			to = emailProperties.getEmailAddress(); 
+	}
+		
 			System.out.println("email :"+to);
 		    message.setFrom(emailProperties.getEmail());//sender dummy
 			message.setTo(to);//if user available then send only to user else send to default mail(yourself)

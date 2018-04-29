@@ -92,10 +92,13 @@ public class UserServiceImpl implements UserService {
 		if (user != null) {
 			String emailID = user.getEmail();
 			String randomUUID = UUID.randomUUID().toString();
-
-			String to = "anilrspatil1992@gmail.com";
+         
+          String jwtToken = TokenUtils.generateToken(user.getId());//get jswt as per userId
+			//String to = "anilrspatil1992@gmail.com";
+            String to = user.getEmail();
 			String subject = "Link to reset password";
-			String message = requestURL + "/resetPassword/" + randomUUID;
+			
+			String message = requestURL + "/resetPasswordLink/" + jwtToken;
 			mailService.sendMail(to, subject, message);
 			flag = true;
 
