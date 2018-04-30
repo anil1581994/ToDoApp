@@ -279,7 +279,7 @@ public class INoteDaoImpl implements INoteDao {
 	@Override
 	public List<CollaboratorResponseDto> getCollaboratorsByNote(int noteId) {
 	//	SELECT USER.fullName,USER.userEmail FROM USER INNER JOIN Collaborators ON USER.id=Collaborators.sharedUserId where Collaborators.noteId=?;
-		String sql="select Users.name,Users.email from  Users inner join Collaborators on Users.email=Collaborators.sharedUserId where Collaborators.noteId=?";
+		String sql="select Users.name,Users.email from  Users inner join Collaborators on Users.id=Collaborators.sharedUserId where Collaborators.noteId=?";
 /*    String sql="SELECT Collaborators.sharedUserId,( select name from Users where Users.email=Collaborators.sharedUserId)\n" + 
     		"     FROM Users\n" + 
     		"     INNER JOIN Collaborators\n" + 
@@ -312,12 +312,12 @@ public class INoteDaoImpl implements INoteDao {
 		    }
 		    return result;
 	}
-//ok
+//ok step-1
 	@Override
 	public boolean saveCollaborator(Collaborator collaborator,int userId) {
 		String query = "insert into Collaborators values (?,?,?,?)";
 		int update = jdbcTemplate.update(query,
-				new Object[] { collaborator.getCollaboratorId(),collaborator.getNoteId(),userId,collaborator.getSharedUserId()});
+				new Object[] { collaborator.getCollaboratorId(),collaborator.getNoteId(),collaborator.getSharedUserId(),userId});
 
 		if (update != 1) {
 			throw new DatabaseException();
@@ -355,7 +355,7 @@ public class INoteDaoImpl implements INoteDao {
 	//public List<Collaborator> getCollaboratorBySharedId(String email)
 	public List<Collaborator> getCollaboratorNoteIdAndUserId(int userId)
 	{
-		String query="select * from Collaborators where userId=?";
+		String query="select * from Collaborators where sharedUserId=?";
 	     List<Collaborator> list = jdbcTemplate.query(query, new Object[] {userId}, new CollaboratorMapper());
 	      return list.size() > 0 ? list : null;
 		
@@ -369,20 +369,21 @@ public class INoteDaoImpl implements INoteDao {
 			collaborator.setNoteId(rs.getInt("noteId"));
 			collaborator.setCollaboratorId(rs.getInt("collaboratorId"));
 			collaborator.setUserId(rs.getInt("userId"));
-			collaborator.setSharedUserId(rs.getString("sharedUserId"));
+			//collaborator.setSharedUserId(rs.getString("sharedUserId"));
+			collaborator.setSharedUserId(rs.getInt("sharedUserId"));
 			return collaborator;
 			
 		}
 	}
    //shared note details..from collaborator object
 	@Override
-	public CollaboratorResponseDto getSharedNotes(int noteId, String sharedUserId) {
+	public CollaboratorResponseDto getSharedNotes(int noteId, int sharedUserId) {
 	//1
 		
 //		String sql="SELECT Usersname,Users.email FROM Users INNER JOIN Collaborators ON Users.email=Collaborators.sharedUserId where Collaborators.noteId=?;";
 		 String sql="SELECT Notes.title,Notes.description,Users.name\n" + 
 		            "FROM Notes,Users \n" + 
-		            "where Notes.noteId=? and Users.email=? ;";
+		            "where Notes.noteId=? and Users.id=? ;";
 		      
 		      List<CollaboratorResponseDto> list = jdbcTemplate.query(sql, new Object[] {noteId,sharedUserId}, new GetSharedNotes());
 		      return list.size() > 0 ? list.get(0) : null;
@@ -456,4 +457,5 @@ public class INoteDaoImpl implements INoteDao {
 //	
 //	}
 //   
+	
 }

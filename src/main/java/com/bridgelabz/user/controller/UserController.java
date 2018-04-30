@@ -170,8 +170,8 @@ public class UserController {
 		}
 
 	}
-	// ......................./tokenGenartion Api
-	//.................//loggeduser..APi
+	
+	//.................loggedUser..APi....................................
 	
 	@RequestMapping(value="/user/loggeduser" , method = RequestMethod.GET)
 	public ResponseEntity<?> getLoggeddUser(@RequestAttribute(name="userId") int userId) {

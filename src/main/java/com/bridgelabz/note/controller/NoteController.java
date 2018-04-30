@@ -251,7 +251,7 @@ public class NoteController {
 	}
 	// .....................Collaborator.API.................................................................
 
-	@RequestMapping(value = "/addCollaborator", method = RequestMethod.POST, produces = MediaType.APPLICATION_JSON_VALUE)
+/*	@RequestMapping(value = "/addCollaborator", method = RequestMethod.POST, produces = MediaType.APPLICATION_JSON_VALUE)
 	public ResponseEntity<?> createCollaborator(@RequestBody Collaborator collaborator, HttpServletRequest request) 
 	{
 		int userId = (int) request.getAttribute("userId");// get owner
@@ -275,8 +275,36 @@ public class NoteController {
 		
 				return new ResponseEntity<Response>(response, HttpStatus.OK);
 			}
-      }
-
+      }*/
+	
+	@RequestMapping(value = "/addCollaborator", method = RequestMethod.POST)
+	public ResponseEntity<?> createCollaborator(@RequestParam String sharedUserId, @RequestParam int noteId, HttpServletRequest request)
+	{
+     
+	    int userId = (int) request.getAttribute("userId");// get owner
+		    Response response = new Response();
+	  
+			int status=noteService.addCollaborator(sharedUserId, noteId, userId);
+			if(status==1) 
+			{
+			    response.setMsg("collaborator created successfully");
+		    	response.setStatus(1);
+			return new ResponseEntity<Response>(response, HttpStatus.OK);
+			}else if(status==-1) 
+			{
+				response.setMsg("collaborator not created");
+				response.setStatus(-1);
+				return new ResponseEntity<Response>(response, HttpStatus.OK);
+			}else 
+			{
+				response.setMsg("Email does not exist in database");
+				response.setStatus(10);
+		
+				return new ResponseEntity<Response>(response, HttpStatus.OK);
+			}
+	
+	}
+	
 	@RequestMapping(value = "/removeCollborator", method = RequestMethod.DELETE)
 	public ResponseEntity<Void> removeCollaborator(@RequestBody Collaborator collaborator, HttpServletRequest request) {
 		System.out.println("here.." + collaborator.getSharedUserId() +" "+collaborator.getNoteId());

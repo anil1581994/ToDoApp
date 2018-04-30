@@ -25,6 +25,10 @@ public class NoteResponseDto {
 	private Date reminder;
 	
 	private String image;
+
+	private String collaboratorName;
+	
+	private int ownerId;
 	
 	public String getImage() {
 		return image;
@@ -34,8 +38,6 @@ public class NoteResponseDto {
 		this.image = image;
 	}
 
-	private String collaboratorName;
-	private int ownerId;
 
 	public int getOwnerId() {
 		return ownerId;
