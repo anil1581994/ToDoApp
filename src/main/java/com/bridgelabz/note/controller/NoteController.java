@@ -305,18 +305,33 @@ public class NoteController {
 	
 	}
 	
-	@RequestMapping(value = "/removeCollborator", method = RequestMethod.DELETE)
+	/*@RequestMapping(value = "/removeCollborator", method = RequestMethod.DELETE)
 	public ResponseEntity<Void> removeCollaborator(@RequestBody Collaborator collaborator, HttpServletRequest request) {
 		System.out.println("here.." + collaborator.getSharedUserId() +" "+collaborator.getNoteId());
 		int userId = (int) request.getAttribute("userId");
 		try {
+		
 			noteService.removeCollaborator(collaborator,userId);
 			return new ResponseEntity<Void>(HttpStatus.OK);
 		} catch (Exception e) {
 			e.printStackTrace();
 			return new ResponseEntity<Void>(HttpStatus.CONFLICT);
 		}
+	}*/
+	@RequestMapping(value = "/removeCollborator", method = RequestMethod.DELETE)
+	public ResponseEntity<Void> removeCollaborator(@RequestParam String sharedUserId, @RequestParam int noteId, HttpServletRequest request) {
+	//	System.out.println("here.." + collaborator.getSharedUserId() +" "+collaborator.getNoteId());
+		int userId = (int) request.getAttribute("userId");
+		try {
+		
+			noteService.removeCollaborator(sharedUserId,noteId,userId);
+			return new ResponseEntity<Void>(HttpStatus.OK);
+		} catch (Exception e) {
+			e.printStackTrace();
+			return new ResponseEntity<Void>(HttpStatus.CONFLICT);
+		}
 	}
+	
  
 	 
 	   @RequestMapping(value="/uploadImage",method =RequestMethod.PUT,produces = MediaType.APPLICATION_JSON_VALUE)

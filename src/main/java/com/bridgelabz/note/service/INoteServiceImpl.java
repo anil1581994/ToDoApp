@@ -31,7 +31,8 @@ public class INoteServiceImpl implements INoteService {
 
 	@Autowired
 	UserDao userDao;
-
+	@Autowired
+    Collaborator collaborator;
 	@Override
 	public NoteResponseDto createNote(NoteRequestDto noteRequestDto, int userId) {
 
@@ -223,14 +224,16 @@ public class INoteServiceImpl implements INoteService {
 //
 //	}
 
-	@Override
+	/*@Override
 	public void removeCollaborator(Collaborator collaborator,int userId) {
-		if (collaborator.getUserId()!= userId) {
-			throw new UnAuthorizedAccessUser();
+	if (collaborator.getUserId()!= userId) {
+		throw new UnAuthorizedAccessUser();
 		}
+		       
 		         noteDao.removeCollaborator(collaborator);
 	}
-
+	
+*/	
 	@Override
 	public int addCollaborator(String sharedUserId, int noteId, int userId)
 	{
@@ -260,4 +263,16 @@ public class INoteServiceImpl implements INoteService {
 	     	}
 		return 10;
 		}
+
+
+	public void removeCollaborator(String sharedUserId, int noteId, int userId) 
+	{
+
+		    User sharedUser=userDao.getUserByEmailId(sharedUserId);
+		      int sharedId=sharedUser.getId();
+		      collaborator.setSharedUserId(sharedId);
+		      collaborator.setNoteId(noteId);
+		      noteDao.removeCollaborator(collaborator);
+		
+	}
 }

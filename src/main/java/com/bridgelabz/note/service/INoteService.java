@@ -42,8 +42,8 @@ public interface INoteService {
 	 
   //  int saveCollaborator(Collaborator collaborator, int userId);
     
-    void removeCollaborator(Collaborator collaborator,int userId);
-    
+    void removeCollaborator(String sharedUserId, int noteId, int userId);
+    //void removeCollaborator(Collaborator collaborator,int userId);
    // CollaboratorResponseDto getSharedNotes(int noteId,int userId);
     int addCollaborator(String sharedUserId, int noteId, int userId);
 	 
