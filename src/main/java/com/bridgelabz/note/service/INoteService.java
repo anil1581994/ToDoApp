@@ -40,9 +40,10 @@ public interface INoteService {
 	 
 	 boolean isLabelExists(String labelTitle);
 	 
-    int saveCollaborator(Collaborator collaborator, int userId);
+ //   int saveCollaborator(Collaborator collaborator, int userId);
     
-    void removeCollaborator(Collaborator collaborator,int userId);
+  //  void removeCollaborator(Collaborator collaborator,int userId);
+    int addCollaborator(String sharedUserId, int noteId, int userId);
     
    // CollaboratorResponseDto getSharedNotes(int noteId,int userId);
     

@@ -52,8 +52,9 @@ public interface INoteDao {
 
  	 
  	 List<CollaboratorResponseDto> getCollaboratorsByNote(int noteId);
+ 	CollaboratorResponseDto getSharedNotes(int noteId,int shareUserId);
  	 
- 	CollaboratorResponseDto getSharedNotes(int noteId,String shareUserId);//get shared note response
+ 	//get shared note response
 
 	//List<Collaborator> getCollaboratorBySharedId(String email);
  	List<Collaborator> getCollaboratorNoteIdAndUserId(int userId);

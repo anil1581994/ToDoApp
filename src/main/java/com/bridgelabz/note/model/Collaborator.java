@@ -2,7 +2,13 @@ package com.bridgelabz.note.model;
 public class Collaborator {
 	private int collaboratorId;//
 	private int noteId;
-	private  String sharedUserId;
+	private  int sharedUserId;
+	public int getSharedUserId() {
+		return sharedUserId;
+	}
+	public void setSharedUserId(int sharedUserId) {
+		this.sharedUserId = sharedUserId;
+	}
 	private int userId;
 	
 	public int getUserId() {
@@ -23,11 +29,6 @@ public class Collaborator {
 	public void setNoteId(int noteId) {
 		this.noteId = noteId;
 	}
-	public String getSharedUserId() {
-		return sharedUserId;
-	}
-	public void setSharedUserId(String sharedUserId) {
-		this.sharedUserId = sharedUserId;
-	}
+	
 }
 	
