@@ -340,8 +340,6 @@ public class NoteController {
 		   System.out.println("image is uploaded suceessFully");
 		   noteService.updateNote(updateNoteDto);
 	       
-	   
-	     
 	   }
 	/*@RequestMapping(value = "/getCollaboratedNotes", method = RequestMethod.GET, produces = MediaType.APPLICATION_JSON_VALUE)
 	public ResponseEntity<List<Label>> getCollaboratedNotes(HttpServletRequest request) {

@@ -16,6 +16,8 @@ public class LinkScrapper {
 	public UrlData getMetaData(String url) throws IOException 
 	{
 
+		
+		
 		String urlTitle=null;
 		String urlImage=null;
 		String urlDomain=null;

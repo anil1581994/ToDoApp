@@ -8,7 +8,7 @@ public class UrlData {
 
 	private String urlTitle;
 	
-	private String ulrImage;
+	private String urlImage;
 	
 	private String urlDomain;
 	
@@ -19,7 +19,7 @@ public class UrlData {
 	public UrlData(String urlTitle,String urlImage, String urlDomain)
 	{
 		this.urlTitle=urlTitle;
-		this.ulrImage=urlImage;
+		this.urlImage=urlImage;
 		this.urlDomain = urlDomain;
 	}
 
@@ -31,12 +31,12 @@ public class UrlData {
 		this.urlTitle = urlTitle;
 	}
 
-	public String getUlrImage() {
-		return ulrImage;
+	public String getUrlImage() {
+		return urlImage;
 	}
 
-	public void setUlrImage(String ulrImage) {
-		this.ulrImage = ulrImage;
+	public void setUrlImage(String urlImage) {
+		this.urlImage = urlImage;
 	}
 
 	public String getUrlDomain() {
