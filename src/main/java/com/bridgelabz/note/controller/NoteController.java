@@ -320,7 +320,7 @@ public class NoteController {
 	}*/
 	@RequestMapping(value = "/removeCollborator", method = RequestMethod.DELETE)
 	public ResponseEntity<Void> removeCollaborator(@RequestParam String sharedUserId, @RequestParam int noteId, HttpServletRequest request) {
-	//	System.out.println("here.." + collaborator.getSharedUserId() +" "+collaborator.getNoteId());
+
 		int userId = (int) request.getAttribute("userId");
 		try {
 		

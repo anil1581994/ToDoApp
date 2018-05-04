@@ -55,12 +55,16 @@ public class UserController {
 		List<FieldError> errors = bindingResult.getFieldErrors();
 
 		RegisterErrors response = new RegisterErrors();
+		CustomResponse customRes = new CustomResponse();
 		if (bindingResult.hasErrors()) {
 			logger.info("This is an info log entry");
-			response.setMsg("fill your details properly");
-			
-			response.setErrors(errors);
-			response.setStatus(400);
+			//response.setMsg("fill your details properly");
+			//customRes.setMessage("fill your details properly");
+			//customRes.setStatusCode(100);
+			response.setMsg("registrtion fail");
+			response.setStatus(-200);
+			//response.setErrors(errors);
+		//	response.setStatus(400);
 		
 			return new ResponseEntity<RegisterErrors>(response, HttpStatus.CONFLICT);
 		}

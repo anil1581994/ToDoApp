@@ -88,7 +88,7 @@ public class INoteDaoImpl implements INoteDao {
 		String sql = "select * from Notes where noteId= ?";
 		List<Note> list = jdbcTemplate.query(sql, new Object[] { noteId }, new NoteMapper());
 		if (list.size() > 0) {
-			System.out.println(list.get(0));
+			System.out.println("note titile"+list.get(0).getTitle());
 			return list.get(0);
 		} else {
 			return null;
@@ -96,8 +96,27 @@ public class INoteDaoImpl implements INoteDao {
 
 	}
 
+		public boolean isLabeled(int noteId) {
+			String query="select * from Note_Label where noteId=?";
+			List<NoteLabel> list = jdbcTemplate.query(query, new Object[] { noteId}, new NoteLabelMapper());
+			
+			if (list.size() > 0) {
+				return true;
+			} else {
+				return false;
+			}
+		}
 	@Override
 	public boolean deleteNote(int noteId) {
+		
+		if(isLabeled(noteId)) {
+			 try{
+				 deleteNoteLabel(noteId);
+			 }catch(Exception e) {
+				 
+			 }
+		}
+		
 		String sql = "delete from Notes where noteId=?";
 		int count = jdbcTemplate.update(sql, noteId);
 		if (count == 0) {
@@ -107,7 +126,15 @@ public class INoteDaoImpl implements INoteDao {
 		}
 
 	}
+	public boolean deleteNoteLabel(int noteId) {
+		String sql = "delete from  Note_Label where noteId=?";
+		int count = jdbcTemplate.update(sql, noteId);
 
+		if (count== 0) {
+			throw new DatabaseException();
+		}
+		return true;
+	}
 	@Override
 	public List<Note> getAllNotes(int userId) {
 		String sql = "select * from Notes where userId = ?";
@@ -134,9 +161,10 @@ public class INoteDaoImpl implements INoteDao {
 			note.setStatus(rs.getInt("status"));
 			note.setColor(rs.getString("color"));
 			note.setImage(rs.getString("image"));
-
+			User user = new User();
 			int userId = rs.getInt("userId");
-
+			user.setId(userId);
+			note.setUser(user);
 			try {
 				java.util.Date date = null;
 				Timestamp timestamp = rs.getTimestamp("reminder");
@@ -240,6 +268,7 @@ public class INoteDaoImpl implements INoteDao {
 		public NoteLabel mapRow(ResultSet rs, int rowNum) throws SQLException {
 			NoteLabel noteLabel = new NoteLabel();
 			noteLabel.setLabelId(rs.getInt("labelId"));
+			noteLabel.setNoteId(rs.getInt("noteId"));
 			return noteLabel;
 
 		}

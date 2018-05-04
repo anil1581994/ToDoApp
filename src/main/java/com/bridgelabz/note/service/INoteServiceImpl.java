@@ -75,7 +75,10 @@ public class INoteServiceImpl implements INoteService {
 	@Override
 	public void deleteNote(int noteId, int userId) {
 		Note note = noteDao.getNoteById(noteId);
+		System.out.println("user"+note.getUser().getId());
+		System.out.println("note"+note.getNoteId());
 		if (note.getUser().getId() != userId) {
+			
 			throw new UnAuthorizedAccessUser();
 		}
 		noteDao.deleteNote(noteId);
