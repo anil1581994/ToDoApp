@@ -251,31 +251,7 @@ public class NoteController {
 	}
 	// .....................Collaborator.API.................................................................
 
-/*	@RequestMapping(value = "/addCollaborator", method = RequestMethod.POST, produces = MediaType.APPLICATION_JSON_VALUE)
-	public ResponseEntity<?> createCollaborator(@RequestBody Collaborator collaborator, HttpServletRequest request) 
-	{
-		int userId = (int) request.getAttribute("userId");// get owner
-		Response response = new Response();
-	  
-			int status=noteService.saveCollaborator(collaborator, userId);
-			if(status==1) 
-			{
-			    response.setMsg("collaborator created successfully");
-		    	response.setStatus(1);
-			return new ResponseEntity<Response>(response, HttpStatus.OK);
-			}else if(status==-1) 
-			{
-				response.setMsg("collaborator not created");
-				response.setStatus(-1);
-				return new ResponseEntity<Response>(response, HttpStatus.OK);
-			}else 
-			{
-				response.setMsg("Email does not exist in database");
-				response.setStatus(10);
-		
-				return new ResponseEntity<Response>(response, HttpStatus.OK);
-			}
-      }*/
+
 	
 	@RequestMapping(value = "/addCollaborator", method = RequestMethod.POST)
 	public ResponseEntity<?> createCollaborator(@RequestParam String sharedUserId, @RequestParam int noteId, HttpServletRequest request)
@@ -305,19 +281,7 @@ public class NoteController {
 	
 	}
 	
-	/*@RequestMapping(value = "/removeCollborator", method = RequestMethod.DELETE)
-	public ResponseEntity<Void> removeCollaborator(@RequestBody Collaborator collaborator, HttpServletRequest request) {
-		System.out.println("here.." + collaborator.getSharedUserId() +" "+collaborator.getNoteId());
-		int userId = (int) request.getAttribute("userId");
-		try {
-		
-			noteService.removeCollaborator(collaborator,userId);
-			return new ResponseEntity<Void>(HttpStatus.OK);
-		} catch (Exception e) {
-			e.printStackTrace();
-			return new ResponseEntity<Void>(HttpStatus.CONFLICT);
-		}
-	}*/
+	//--------------------------------------------------------------------------------------------------------------------------
 	@RequestMapping(value = "/removeCollborator", method = RequestMethod.DELETE)
 	public ResponseEntity<Void> removeCollaborator(@RequestParam String sharedUserId, @RequestParam int noteId, HttpServletRequest request) {
 
@@ -333,7 +297,7 @@ public class NoteController {
 	}
 	
  
-	 
+	 //--------------------------------------------------------------------------------------------------------------------
 	   @RequestMapping(value="/uploadImage",method =RequestMethod.PUT,produces = MediaType.APPLICATION_JSON_VALUE)
 	   public void uploadImage(@RequestBody UpdateNoteDto updateNoteDto,HttpServletRequest req,@RequestAttribute(name = "userId") int userId) 
 	   {
@@ -341,39 +305,8 @@ public class NoteController {
 		   noteService.updateNote(updateNoteDto);
 	       
 	   }
-	/*@RequestMapping(value = "/getCollaboratedNotes", method = RequestMethod.GET, produces = MediaType.APPLICATION_JSON_VALUE)
-	public ResponseEntity<List<Label>> getCollaboratedNotes(HttpServletRequest request) {
 
-		int userId = (int) request.getAttribute("userId");
-		Response response = new Response();
-		List<Note> labels = noteService.getCollaboratedNotes(userId);
-		response.setMsg("labels received successfully");
-		response.setStatus(1);
-
-		logger.info("labels received succesfully");
-
-		return new ResponseEntity<Note<Note>>(Note, HttpStatus.OK);
-
-	}
-*/
-  //get url data..image, title
-	/*----------------------------------URL INFO-------------------------------*/
-
-	/*@RequestMapping(value = "/getUrl", method = RequestMethod.POST)
-	public ResponseEntity<?> getUrlData(HttpServletRequest request)
-	{
-		String url=request.getHeader("url");
-		LinkScrapper link=new LinkScrapper();
-		UrlData urlData=null;
-		try {
-			urlData = link.getMetaData(url);
-		} catch (IOException e) 
-		{
-			e.printStackTrace();
-		}
-		return ResponseEntity.ok(urlData);
-	}*/
-	
+	//------------------------------------------------------------------------------------------------------------------------
   
 	@RequestMapping(value = "/getUrls", method = RequestMethod.POST)
 	public List<UrlData> getUrlInfo(@RequestBody List<String> urls,HttpServletRequest request)

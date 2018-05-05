@@ -29,7 +29,8 @@ public class LinkScrapper {
 			
 			e.printStackTrace();
 		}
-	Document document = Jsoup.connect(url).timeout(0).userAgent("Mozilla").get();
+		
+		Document document = Jsoup.connect(url).userAgent("Mozilla").get();
 
 		//Document document = Jsoup.connect("https://timesofindia.indiatimes.com/people/flipkart-co-founder-likely-to-quit-after-walmart-takeover/articleshow/64022101.cms").timeout(0).userAgent("Mozilla").get();
 		Elements metaOgTitle = document.select("meta[property=og:title]");

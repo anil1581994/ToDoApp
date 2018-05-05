@@ -92,7 +92,7 @@ public class UserServiceImpl implements UserService {
 		if (user != null) {
 			String emailID = user.getEmail();
 			String randomUUID = UUID.randomUUID().toString();
-         
+           //from userId genrate one token for him add in rset password link
           String jwtToken = TokenUtils.generateToken(user.getId());//get jswt as per userId
 			//String to = "anilrspatil1992@gmail.com";
             String to = user.getEmail();
