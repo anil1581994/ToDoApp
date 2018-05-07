@@ -23,12 +23,13 @@ public class CorsFilter extends OncePerRequestFilter {
 	System.out.println("in filter starting");
 		response.addHeader("Access-Control-Allow-Origin","*");
 		response.addHeader("Access-Control-Allow-Methods", "GET, POST, PUT, DELETE");
-		response.addHeader("Access-Control-Allow-Headers", "Authorization, Content-Type,Accept, X-Requested-With");// get token
-		response.addHeader("Access-Control-Expose-Headers", "Authorization, Content-Type");
+		response.addHeader("Access-Control-Allow-Headers", "Authorization,Content-Type,Accept, X-Requested-With");// get token
+		response.addHeader("Access-Control-Expose-Headers", "Authorization,Content-Type");
 		response.addHeader("Access-Control-Max-Age", "600");
 		response.setStatus(HttpServletResponse.SC_OK);
         System.out.println("from corse filter");
-		filterChain.doFilter(request, response);
+		filterChain.doFilter(request, response);//bean insatnce eception
+		
 
 	}
 

@@ -14,6 +14,7 @@ public class UrlData {
 	
 	public UrlData() {
 		// TODO Auto-generated constructor stub
+		
 	}
 	
 	public UrlData(String urlTitle,String urlImage, String urlDomain)

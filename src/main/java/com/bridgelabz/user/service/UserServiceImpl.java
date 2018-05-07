@@ -113,7 +113,7 @@ public class UserServiceImpl implements UserService {
 		user.setPassword(userDto.getPassword());
 		String hascode = passwordEncoder.encode(userDto.getPassword());
 		user.setPassword(hascode);
-		boolean status = userDao.resetPassword(user.getPassword(), user.getEmail());
+		boolean status = userDao.resetPassword(user.getPassword(),user.getEmail());
 		return status;
 	}
 

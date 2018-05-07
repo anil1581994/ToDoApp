@@ -96,10 +96,10 @@ public class UserDaoImpl implements UserDao {
 		return username;
 	}
 
-	public boolean resetPassword(String name, String password) {
+	public boolean resetPassword(String email, String password) {
 		int record = 0;
-		String sqlUpdate = "UPDATE Users set password=? where name=?";
-		record = jdbcTemplate.update(sqlUpdate, new Object[] { password, name });
+		String sqlUpdate = "UPDATE Users set password=? where email=?";
+		record = jdbcTemplate.update(sqlUpdate, new Object[] { password, email });
 		if (record == 0) {
 			return false;
 		}

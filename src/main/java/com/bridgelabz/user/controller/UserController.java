@@ -22,6 +22,7 @@ import org.springframework.web.bind.annotation.RequestAttribute;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
+import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
 
 import com.bridgelabz.exceptions.UnAuthorizedAccessUser;
@@ -46,8 +47,15 @@ public class UserController {
 	private TokenUtils tokenUtils;
 	RegisterErrors response = new RegisterErrors();
 
-	// .................register api...............
+	
 
+	/**
+	 * @param userDto
+	 * @param bindingResult
+	 * @param request
+	 * @return
+	 * @throws Exception
+	 */
 	@RequestMapping(value = "register", method = RequestMethod.POST, produces = MediaType.APPLICATION_JSON_VALUE)
 	public ResponseEntity<?> registerUser(@Validated @RequestBody UserDto userDto, BindingResult bindingResult,
 			HttpServletRequest request) throws Exception {
@@ -82,7 +90,12 @@ public class UserController {
 
 	}
 	// ........login api...........
-
+   
+	/**
+	 * @param userDto
+	 * @param response
+	 * @return
+	 */
 	@RequestMapping(value = "/login", method = RequestMethod.POST, produces = MediaType.APPLICATION_JSON_VALUE)
 	public ResponseEntity<?> login(@RequestBody UserDto userDto, HttpServletResponse response) {
 
@@ -103,6 +116,12 @@ public class UserController {
 	}
 
 	// .............forgot password api.............
+	
+	/**
+	 * @param userDto
+	 * @param request
+	 * @return
+	 */
 	@RequestMapping(value = "/forgotPassword", method = RequestMethod.POST)
 	public ResponseEntity<CustomResponse> forgotPassword(@RequestBody UserDto userDto, HttpServletRequest request) {
 		CustomResponse customRes = new CustomResponse();
@@ -123,10 +142,16 @@ public class UserController {
 		}
 	}
 	// ........reset password api................
-
-	@RequestMapping(value = "/resetPassword/{jwtToken}", method = RequestMethod.POST)
+  
+	/**
+	 * @param userDto
+	 * @param jwtToken
+	 * @param request
+	 * @return
+	 */
+	@RequestMapping(value = "/resetPassword", method = RequestMethod.POST)
 	public ResponseEntity<CustomResponse> resetPassword(@RequestBody UserDto userDto,
-			@PathVariable("jwtToken") String jwtToken,HttpServlet request) {
+			@RequestParam("jwtToken") String jwtToken) {
 
 		CustomResponse customRes = new CustomResponse();
 		 int id=TokenUtils.verifyToken(jwtToken);
@@ -138,7 +163,7 @@ public class UserController {
 		 userDto.setEmail( user.getEmail());
 
 		if (userService.resetPassword(userDto)) {
-			customRes.setMessage("Reset Password Sucessfully........");
+			customRes.setMessage("Reset Password Sucessfully........");	
 			customRes.setStatusCode(100);
 			return new ResponseEntity<CustomResponse>(customRes, HttpStatus.OK);
 
@@ -150,17 +175,33 @@ public class UserController {
 		}
 	}
    //new api for front side 
+	
+	/**
+	 * @param jwtToken
+	 * @param response
+	 * @param request
+	 * @throws IOException
+	 */
 	@RequestMapping(value = "/resetPasswordLink/{jwtToken:.+}", method = RequestMethod.GET)
-	public void resetPasswordLink(@PathVariable("jwtToken") String jwtToken, HttpServletResponse response) throws IOException  {
+	public void resetPasswordLink(@PathVariable("jwtToken") String jwtToken, HttpServletResponse response,HttpServletRequest request) throws IOException  {
 		
     // int id=TokenUtils.verifyToken(jwtToken);
 	
      System.out.println("token is null or not");
 	System.out.println("In side reset password link");
-	response.sendRedirect("http://localhost:4200/resetpassword/"+jwtToken);
+
+	     System.out.print("url for front end-->"+request.getHeader("origin"));
 	
+
+	response.sendRedirect("http://localhost:4200/resetpassword?jwtToken="+jwtToken);
+	//response.sendRedirect("http://localhost:4200/resetpassword?token=" + token);
 	}
 	// ............./isActivUser Api............................
+	
+	/**
+	 * @param randomUUID
+	 * @return
+	 */
 	@RequestMapping(value = "/RegistrationConfirm/{randomUUID}", method = RequestMethod.POST)
 	public ResponseEntity<CustomResponse> isActiveUser(@PathVariable("randomUUID") String randomUUID) {
 
@@ -183,6 +224,10 @@ public class UserController {
 	
 	//.................loggedUser..APi....................................
 	
+	/**
+	 * @param userId
+	 * @return
+	 */
 	@RequestMapping(value="/user/loggeduser" , method = RequestMethod.GET)
 	public ResponseEntity<?> getLoggeddUser(@RequestAttribute(name="userId") int userId) {
 	     CustomResponse customRes = new CustomResponse();
