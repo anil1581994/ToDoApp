@@ -77,7 +77,6 @@ public class UserDaoImpl implements UserDao {
 		}
 	}
 
-	
 	public int getIdByEmail(String email) {
 
 		String query = "select id from Users where email=?";
@@ -158,7 +157,7 @@ public class UserDaoImpl implements UserDao {
 		}
 
 	}
-	
+
 	class UserMapper implements RowMapper {
 
 		public User mapRow(ResultSet rs, int rowNum) throws SQLException {
@@ -172,6 +171,7 @@ public class UserDaoImpl implements UserDao {
 
 		}
 	}
+
 	@Override
 	public User getOwnerEmail(int userId) {
 		String sql = "select * from Users where id= ?";
@@ -182,9 +182,6 @@ public class UserDaoImpl implements UserDao {
 		} else {
 			return null;
 		}
-   }
-	///CollaboratorsharedResponseDTO getSharedNotes(int noteId,int userId);
+	}
 
-
-  
 }

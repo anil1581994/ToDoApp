@@ -4,23 +4,20 @@ import org.springframework.stereotype.Component;
 
 @Component
 public class UrlData {
-	
 
 	private String urlTitle;
-	
+
 	private String urlImage;
-	
+
 	private String urlDomain;
-	
+
 	public UrlData() {
-		// TODO Auto-generated constructor stub
-		
+
 	}
-	
-	public UrlData(String urlTitle,String urlImage, String urlDomain)
-	{
-		this.urlTitle=urlTitle;
-		this.urlImage=urlImage;
+
+	public UrlData(String urlTitle, String urlImage, String urlDomain) {
+		this.urlTitle = urlTitle;
+		this.urlImage = urlImage;
 		this.urlDomain = urlDomain;
 	}
 
@@ -47,6 +44,5 @@ public class UrlData {
 	public void setUrlDomain(String urlDomain) {
 		this.urlDomain = urlDomain;
 	}
-	
 
 }

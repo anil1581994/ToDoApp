@@ -8,7 +8,7 @@ public class Label {
 	private int labelId;
 	private String labelTitle;
 	private User user;
-	private Set<Note> notes;//set notes
+	private Set<Note> notes;
 
 	public int getLabelId() {
 		return labelId;
@@ -33,6 +33,7 @@ public class Label {
 	public void setUser(User user) {
 		this.user = user;
 	}
+
 	public Set<Note> getNotes() {
 		return notes;
 	}

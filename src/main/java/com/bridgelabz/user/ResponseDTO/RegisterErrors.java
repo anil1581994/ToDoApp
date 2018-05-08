@@ -4,8 +4,7 @@ import java.util.List;
 
 import org.springframework.validation.FieldError;
 
-public class RegisterErrors extends Response 
-{
+public class RegisterErrors extends Response {
 	List<FieldError> errors;
 
 	public List<FieldError> getErrors() {
@@ -15,5 +14,5 @@ public class RegisterErrors extends Response
 	public void setErrors(List<FieldError> errors) {
 		this.errors = errors;
 	}
-	
+
 }

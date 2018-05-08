@@ -28,14 +28,18 @@ import org.springframework.web.bind.annotation.RestController;
 import com.bridgelabz.exceptions.UnAuthorizedAccessUser;
 import com.bridgelabz.user.ResponseDTO.CustomResponse;
 import com.bridgelabz.user.ResponseDTO.RegisterErrors;
+import com.bridgelabz.user.model.EmailProperties;
 import com.bridgelabz.user.model.User;
 import com.bridgelabz.user.model.UserDto;
 import com.bridgelabz.user.service.UserService;
 import com.bridgelabz.user.util.TokenUtils;
 import com.bridgelabz.user.validation.UserValidator;
 
+/**<p>This is RestController class map the requestUrl to respected API <p>
+ * @author bridgeit
+ *
+ */
 @RestController
-//@RequestMapping("/user")
 public class UserController {
 
 	private static final Logger logger = Logger.getLogger(UserController.class);
@@ -46,10 +50,16 @@ public class UserController {
 	@Autowired
 	private TokenUtils tokenUtils;
 	RegisterErrors response = new RegisterErrors();
-
 	
+	@Autowired
+	EmailProperties emailProperties;
+
 
 	/**
+	 * <p>
+	 * The API is register to the new User TODOApplication
+	 * </p>
+	 * 
 	 * @param userDto
 	 * @param bindingResult
 	 * @param request
@@ -67,14 +77,9 @@ public class UserController {
 		CustomResponse customRes = new CustomResponse();
 		if (bindingResult.hasErrors()) {
 			logger.info("This is an info log entry");
-			//response.setMsg("fill your details properly");
-			//customRes.setMessage("fill your details properly");
-			//customRes.setStatusCode(100);
 			response.setMsg("registrtion fail");
 			response.setStatus(-200);
-			//response.setErrors(errors);
-		//	response.setStatus(400);
-		
+
 			return new ResponseEntity<RegisterErrors>(response, HttpStatus.CONFLICT);
 		}
 
@@ -83,18 +88,22 @@ public class UserController {
 
 		response.setMsg("user register successfully");
 		response.setStatus(200);
-		
+
 		logger.info("This is info message");
 
 		return new ResponseEntity<RegisterErrors>(response, HttpStatus.CREATED);
 
 	}
-	// ........login api...........
-   
+
 	/**
+	 * <p>
+	 * This API is used to login purpose user is going to login in TODOApplication
+	 * and sucessfully login jwtToken is going to return to user
+	 * </p>
+	 * 
 	 * @param userDto
 	 * @param response
-	 * @return
+	 * @return JwtToken
 	 */
 	@RequestMapping(value = "/login", method = RequestMethod.POST, produces = MediaType.APPLICATION_JSON_VALUE)
 	public ResponseEntity<?> login(@RequestBody UserDto userDto, HttpServletResponse response) {
@@ -105,19 +114,20 @@ public class UserController {
 			response.setHeader("Authorization", token);
 			customRes.setMessage("user login successfully");
 			customRes.setStatusCode(100);
-			
-      
+
 			return new ResponseEntity<CustomResponse>(customRes, HttpStatus.OK);
 		} else {
-		
+
 			throw new UnAuthorizedAccessUser();
 		}
 
 	}
 
-	// .............forgot password api.............
-	
 	/**
+	 * <p>
+	 * This API handle the forgotPassword request of user and redirect to him to reset his password
+	 * </p>
+	 * 
 	 * @param userDto
 	 * @param request
 	 * @return
@@ -129,116 +139,115 @@ public class UserController {
 			System.out.println(userDto.getEmail());
 			String url = request.getRequestURL().toString().substring(0, request.getRequestURL().lastIndexOf("/"));
 			if (userService.forgetPassword(userDto.getEmail(), url))
-				
-			{   customRes.setMessage("forgot password");
-			    customRes.setStatusCode(100);
-		       return new ResponseEntity<CustomResponse> (customRes, HttpStatus.OK);
+
+			{
+				customRes.setMessage("forgot password");
+				customRes.setStatusCode(100);
+				return new ResponseEntity<CustomResponse>(customRes, HttpStatus.OK);
 			} else {
-				return new ResponseEntity<CustomResponse>( HttpStatus.CONFLICT);
+				return new ResponseEntity<CustomResponse>(HttpStatus.CONFLICT);
 			}
 		} catch (Exception e) {
 			e.printStackTrace();
 			return new ResponseEntity<CustomResponse>(HttpStatus.NO_CONTENT);
 		}
 	}
-	// ........reset password api................
-  
+
 	/**
+	 * <p>
+	 * This is resetPassword API is used to reset password
+	 * </p>
+	 * 
 	 * @param userDto
 	 * @param jwtToken
 	 * @param request
-	 * @return
+	 * @return updated password
 	 */
 	@RequestMapping(value = "/resetPassword", method = RequestMethod.POST)
 	public ResponseEntity<CustomResponse> resetPassword(@RequestBody UserDto userDto,
 			@RequestParam("jwtToken") String jwtToken) {
 
 		CustomResponse customRes = new CustomResponse();
-		 int id=TokenUtils.verifyToken(jwtToken);
-		//int userId = TokenUtils.verifyToken(request.);
-        //	int userId = (int) request).getAttribute("userId");
-
-		//String email = userService.getUserEmailId(randomUUID);
-		 User user= userService.getUserById(id);
-		 userDto.setEmail( user.getEmail());
+		int id = TokenUtils.verifyToken(jwtToken);
+		User user = userService.getUserById(id);
+		userDto.setEmail(user.getEmail());
 
 		if (userService.resetPassword(userDto)) {
-			customRes.setMessage("Reset Password Sucessfully........");	
+			customRes.setMessage("Reset Password Sucessfully........");
 			customRes.setStatusCode(100);
 			return new ResponseEntity<CustomResponse>(customRes, HttpStatus.OK);
 
 		} else {
 			customRes.setMessage("Password Not Updated.......");
-		/*	customRes.setMsg("Password Not Updated.......");*/
-
 			return new ResponseEntity<CustomResponse>(customRes, HttpStatus.BAD_REQUEST);
 		}
 	}
-   //new api for front side 
-	
+
 	/**
+	 * <p>
+	 * This is resetPasswordLink API is used redirect the request to front resetPassword view component
+	 * </p>
+	 * 
 	 * @param jwtToken
 	 * @param response
 	 * @param request
 	 * @throws IOException
 	 */
 	@RequestMapping(value = "/resetPasswordLink/{jwtToken:.+}", method = RequestMethod.GET)
-	public void resetPasswordLink(@PathVariable("jwtToken") String jwtToken, HttpServletResponse response,HttpServletRequest request) throws IOException  {
-		
-    // int id=TokenUtils.verifyToken(jwtToken);
-	
-     System.out.println("token is null or not");
-	System.out.println("In side reset password link");
+	public void resetPasswordLink(@PathVariable("jwtToken") String jwtToken, HttpServletResponse response,
+			HttpServletRequest request) throws IOException {
 
-	     System.out.print("url for front end-->"+request.getHeader("origin"));
-	
+		logger.info("In side reset password link");
+		System.out.print("url for front end-->" + request.getHeader("origin"));
+		response.sendRedirect(emailProperties.getFrontEndHost()+"/resetpassword?jwtToken=" + jwtToken);
 
-	response.sendRedirect("http://localhost:4200/resetpassword?jwtToken="+jwtToken);
-	//response.sendRedirect("http://localhost:4200/resetpassword?token=" + token);
 	}
-	// ............./isActivUser Api............................
-	
+
 	/**
+	 * <p>
+	 * This is isActivUser API to Activate the user when user is register successfully in TODOApplication
+	 * </p>
+	 * 
 	 * @param randomUUID
-	 * @return
+	 * @return Active state of user
 	 */
 	@RequestMapping(value = "/RegistrationConfirm/{randomUUID}", method = RequestMethod.POST)
 	public ResponseEntity<CustomResponse> isActiveUser(@PathVariable("randomUUID") String randomUUID) {
 
 		CustomResponse customRes = new CustomResponse();
 
-		if (userService.userActivation(randomUUID)) 
-		{
-			
+		if (userService.userActivation(randomUUID)) {
+
 			customRes.setMessage("user activation done successfully");
 			customRes.setStatusCode(200);
 			return new ResponseEntity<CustomResponse>(customRes, HttpStatus.CREATED);
 		} else {
-			
+
 			customRes.setMessage("activation fail");
 			customRes.setStatusCode(409);
 			return new ResponseEntity<CustomResponse>(customRes, HttpStatus.CONFLICT);
 		}
 
 	}
-	
-	//.................loggedUser..APi....................................
-	
+
 	/**
+	 * <p>
+	 * This is loggedUser API used to get the currently logged user
+	 * </p>
+	 * 
 	 * @param userId
-	 * @return
+	 * @return LoggedUser
 	 */
-	@RequestMapping(value="/user/loggeduser" , method = RequestMethod.GET)
-	public ResponseEntity<?> getLoggeddUser(@RequestAttribute(name="userId") int userId) {
-	     CustomResponse customRes = new CustomResponse();
-		User user =userService.getUserById(userId); 
-			if(user!=null) 
-			{
-				return new ResponseEntity<User>(user,HttpStatus.OK);
-			}
+	@RequestMapping(value = "/user/loggeduser", method = RequestMethod.GET)
+	public ResponseEntity<?> getLoggeddUser(@RequestAttribute(name = "userId") int userId) {
+		CustomResponse customRes = new CustomResponse();
+		User user = userService.getUserById(userId);
+		if (user != null) {
+			return new ResponseEntity<User>(user, HttpStatus.OK);
+		}
 		customRes.setMessage("no logged user");
 		customRes.setStatusCode(409);
-		return new ResponseEntity<CustomResponse>(customRes,HttpStatus.CONFLICT); 
+		return new ResponseEntity<CustomResponse>(customRes, HttpStatus.CONFLICT);
 	}
-	
+
 }

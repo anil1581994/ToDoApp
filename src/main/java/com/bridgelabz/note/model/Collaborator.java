@@ -1,8 +1,8 @@
 package com.bridgelabz.note.model;
 public class Collaborator {
-	private int collaboratorId;//
+	private int collaboratorId;
 	private int noteId;
-	private int sharedUserId; //changing string to integer
+	private int sharedUserId;
 	
 	private int userId;
 	

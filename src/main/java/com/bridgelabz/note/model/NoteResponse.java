@@ -29,9 +29,9 @@ public class NoteResponse {
 	private List<CollaboratorResponseDto> collaborators = new ArrayList<>();
 
 	private Set<Label> labels = new HashSet<>();
-	
+
 	public NoteResponse() {
-		
+
 	}
 
 	public NoteResponse(Note note) {

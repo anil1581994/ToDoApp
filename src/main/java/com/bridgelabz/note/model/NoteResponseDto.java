@@ -23,13 +23,13 @@ public class NoteResponseDto {
 	private String color;
 
 	private Date reminder;
-	
+
 	private String image;
 
 	private String collaboratorName;
-	
+
 	private int ownerId;
-	
+
 	public String getImage() {
 		return image;
 	}
@@ -37,7 +37,6 @@ public class NoteResponseDto {
 	public void setImage(String image) {
 		this.image = image;
 	}
-
 
 	public int getOwnerId() {
 		return ownerId;
@@ -55,16 +54,8 @@ public class NoteResponseDto {
 		this.collaboratorName = collaboratorName;
 	}
 
-	private Set<Label> labels = new HashSet<>();//get all label
-	private List<CollaboratorResponseDto> collaborators = new ArrayList<>();//get all collaborator
-
-//	public Set<Collaborator> getCollaborators() {
-//		return collaborators;
-//	}
-//
-//	public void setCollaborators(Set<Collaborator> collaborators) {
-//		this.collaborators = collaborators;
-//	}
+	private Set<Label> labels = new HashSet<>();// get all label
+	private List<CollaboratorResponseDto> collaborators = new ArrayList<>();// get all collaborator
 
 	public List<CollaboratorResponseDto> getCollaborators() {
 		return collaborators;
@@ -74,14 +65,6 @@ public class NoteResponseDto {
 		this.collaborators = collaborators;
 	}
 
-	/*public List<Collaborator> getCollaborators() {
-		return collaborators;
-	}
-
-	public void setCollaborators(List<Collaborator> collaborators) {
-		this.collaborators = collaborators;
-	}
-*/
 	public Date getReminder() {
 		return reminder;
 	}
@@ -102,11 +85,11 @@ public class NoteResponseDto {
 		this.status = note.getStatus();
 		this.color = note.getColor();
 		this.reminder = note.getReminder();
-		this.labels=note.getLabels();
-		this.collaborators=note.getCollaboratorResponseDto();
-		this.collaboratorName=note.getCollaboratorName();
-		this.ownerId=note.getOwnerId();
-		this.image=note.getImage();
+		this.labels = note.getLabels();
+		this.collaborators = note.getCollaboratorResponseDto();
+		this.collaboratorName = note.getCollaboratorName();
+		this.ownerId = note.getOwnerId();
+		this.image = note.getImage();
 
 	}
 

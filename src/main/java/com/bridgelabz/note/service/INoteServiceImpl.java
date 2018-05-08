@@ -59,7 +59,6 @@ public class INoteServiceImpl implements INoteService {
 
 		Date date = new Date();
 		note.setLastUpdateDate(date);
-		// set reminder null
 		note.setReminder(updateNoteDto.getReminder());
 		note.setImage(updateNoteDto.getImage());
 
@@ -91,9 +90,6 @@ public class INoteServiceImpl implements INoteService {
 		
 		List<Note> list = noteDao.getAllNotes(userId);//2391
 
-		//User user = userDao.getUserById(userId);//sana
-		//List<Collaborator> collaboratorList = noteDao.getCollaboratorBySharedId(user.getEmail());// get list of
-		//get shared noteId and userid ie coolaborator object
 		List<Collaborator> collaboratorList = noteDao.getCollaboratorNoteIdAndUserId(userId);//2391																						// collaborator
 
 		if (collaboratorList != null) 
@@ -132,7 +128,6 @@ public class INoteServiceImpl implements INoteService {
 	
 
 	
-	// label
 	@Override
 	public void createLabel(Label label, int userId) {
 		User user = new User();
@@ -149,7 +144,6 @@ public class INoteServiceImpl implements INoteService {
 
 		List<Label> labels = new ArrayList<>();
 		for (Label label : list) {
-			// Label dto = new Label(label);
 			labels.add(label);
 		}
 		return labels;
@@ -172,9 +166,7 @@ public class INoteServiceImpl implements INoteService {
 
 	@Override
 	public void addLabel(int noteId, int labelId) {
-		// get all labels by noteId
-
-		// noteDao.
+		
 		NoteLabel noteLabel = new NoteLabel();
 		noteLabel.setLabelId(labelId);
 		noteLabel.setNoteId(noteId);
@@ -210,58 +202,24 @@ public class INoteServiceImpl implements INoteService {
 		return status;
 	}
 
-//	public int saveCollaborator(Collaborator collaborator, int userId) {
-//
-//		//User sharedUser = userDao.getUserByEmailId(collaborator.getSharedUserId());
-//         User sharedUser=userDao.getUserById(collaborator.getSharedUserId());
-//		if (sharedUser != null) 
-	     //{  //if shared user null
-//			if (sharedUser.getId() == userId)
-	//      {//owner unable to share himself
-//				return -1;
-//			}
-//			noteDao.saveCollaborator(collaborator, userId);//save collaborator
-//			return 1;
-//		}
-//		return 10;
-//
-//	}
-
-	/*@Override
-	public void removeCollaborator(Collaborator collaborator,int userId) {
-	if (collaborator.getUserId()!= userId) {
-		throw new UnAuthorizedAccessUser();
-		}
-		       
-		         noteDao.removeCollaborator(collaborator);
-	}
 	
-*/	
 	@Override
 	public int addCollaborator(String sharedUserId, int noteId, int userId)
 	{
 
 	Collaborator collaborator = new Collaborator();
 	
-	//collaborator.setUserId(userId);
-	//User user=userDao.getUserByEmailId(sharedUserId);
-	//collaborator.setSharedUserId(user.getId());
 	
-	//Note note = noteDao.getNoteById(noteId);
-	
-	//collaborator.setNoteId(noteId);
-	
-	//User sharedUser=userDao.getUserById(collaborator.getSharedUserId());
 	   User sharedUser=userDao.getUserByEmailId(sharedUserId);
              if (sharedUser != null) 
-            {  //if shared user null
+            {  
 			   if (sharedUser.getId() == userId)
-			   {//owner unable to share himself
+			   {
 				return -1;
 			   }
 			   collaborator.setNoteId(noteId);
 			   collaborator.setSharedUserId(sharedUser.getId());
-			   noteDao.saveCollaborator(collaborator, userId);//save collaborator
+			   noteDao.saveCollaborator(collaborator, userId);
 			  return 1;
 	     	}
 		return 10;
