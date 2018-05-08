@@ -32,7 +32,7 @@ public interface UserService {
 	 * @param userDto
 	 * @return
 	 */
-	boolean resetPassword(UserDto userDto);
+	public boolean resetPassword(UserDto userDto);
 
 	/**<p>This is getUserEmailId service it will return respective EmailId of randomUUID </p>
 	 * @param randomUUID

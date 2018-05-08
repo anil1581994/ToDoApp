@@ -95,7 +95,7 @@ public class UserDaoImpl implements UserDao {
 		return username;
 	}
 
-	public boolean resetPassword(String email, String password) {
+	public boolean resetPassword( String password,String email) {
 		int record = 0;
 		String sqlUpdate = "UPDATE Users set password=? where email=?";
 		record = jdbcTemplate.update(sqlUpdate, new Object[] { password, email });

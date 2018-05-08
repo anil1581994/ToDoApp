@@ -90,6 +90,8 @@ http://www.springframework.org/schema/context http://www.springframework.org/sch
 		<property name="email" value="${userId}"></property>
 		<property name="password" value="${password}"></property>
 		<property name="emailAddress" value="${emailAddress:#{null}}" />
+		<property name="frontEndHost" value="${frontEndHost}"></property>
+		
 	</bean>
 	<bean id="tokenObj" class="com.bridgelabz.user.util.TokenUtils">
 	</bean>

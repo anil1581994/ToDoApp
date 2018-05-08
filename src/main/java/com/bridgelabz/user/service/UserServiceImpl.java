@@ -107,10 +107,11 @@ public class UserServiceImpl implements UserService {
 		User user = new User();
 		user.setEmail(userDto.getEmail());
 		user.setPassword(userDto.getPassword());
-		String hascode = passwordEncoder.encode(userDto.getPassword());
+		String hascode = passwordEncoder.encode(user.getPassword());
 		user.setPassword(hascode);
-		boolean status = userDao.resetPassword(user.getPassword(), user.getEmail());
-		return status;
+		return userDao.resetPassword(user.getPassword(),user.getEmail());
+			
+		
 	}
 
 	@Override

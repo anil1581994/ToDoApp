@@ -199,6 +199,7 @@ public class UserController {
 
 		logger.info("In side reset password link");
 		System.out.print("url for front end-->" + request.getHeader("origin"));
+		System.out.print("your fronENd url "+emailProperties.getFrontEndHost());
 		response.sendRedirect(emailProperties.getFrontEndHost()+"/resetpassword?jwtToken=" + jwtToken);
 
 	}
