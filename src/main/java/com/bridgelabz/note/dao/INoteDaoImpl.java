@@ -203,6 +203,10 @@ public class INoteDaoImpl implements INoteDao {
 			Label label = new Label();
 			label.setLabelId(rs.getInt("labelId"));
 			label.setLabelTitle(rs.getString("labelTitle"));
+			User user = new User();
+			int userId = rs.getInt("userId");
+			user.setId(userId);
+			label.setUser(user);
 			return label;
 
 		}
@@ -224,6 +228,14 @@ public class INoteDaoImpl implements INoteDao {
 
 	@Override
 	public boolean deleteLabel(int labelId) {
+		//delete the label from Note_label where pk--fk relation
+		if (isLabel(labelId)) {
+			try {
+				deletedialogLabel(labelId);
+			} catch (Exception e) {
+
+			}
+		}
 		String sql = "delete from Labels where labelId=?";
 		int count = jdbcTemplate.update(sql, labelId);
 		if (count == 0) {
@@ -232,7 +244,34 @@ public class INoteDaoImpl implements INoteDao {
 			return true;
 		}
 	}
+      public boolean isLabel(int labelId) {
+    	  String query = "select * from Note_Label where labelId=?";
+  		List<NoteLabel> list = jdbcTemplate.query(query, new Object[] { labelId }, new NoteLabelMapper());
 
+  		if (list.size() > 0) {
+  			return true;
+  		} else {
+  			return false;
+  		}
+    	  
+      }
+     public boolean deletedialogLabel(int labelId)
+      {
+    	  String sql = "delete from  Note_Label where labelId=?";
+  		int count = jdbcTemplate.update(sql, labelId);
+
+  		if (count == 0) {
+  			throw new DatabaseException();
+  		}
+  		return true;
+      }
+	
+	
+	
+	
+	
+	
+	
 	@Override
 	public Label getLabelById(int labelId) {
 		String sql = "select * from Labels where labelId= ?";

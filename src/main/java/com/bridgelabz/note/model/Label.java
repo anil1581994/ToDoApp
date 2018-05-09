@@ -9,7 +9,7 @@ public class Label {
 	private String labelTitle;
 	private User user;
 	private Set<Note> notes;
-
+   public Label() {}
 	public int getLabelId() {
 		return labelId;
 	}
