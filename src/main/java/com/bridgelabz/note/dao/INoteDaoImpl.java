@@ -137,7 +137,9 @@ public class INoteDaoImpl implements INoteDao {
 
 	@Override
 	public List<Note> getAllNotes(int userId) {
-		String sql = "select * from Notes where userId = ?";
+		//String sql = "select * from Notes where userId = ?";
+		//String sql = "select * from Notes where userId = ? order by noteId desc";
+		String sql="select * from (select * from Notes  order by noteId desc) e where userId=?";
 		List<Note> notes = jdbcTemplate.query(sql, new Object[] { userId }, new NoteMapper());
 		return notes;
 	}
