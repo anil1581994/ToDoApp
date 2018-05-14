@@ -1,6 +1,7 @@
 package com.bridgelabz.note.controller;
 
 import java.io.IOException;
+
 import java.util.ArrayList;
 import java.util.List;
 
@@ -451,6 +452,28 @@ public class NoteController {
 
 		}
 		return urlDatas;
+	}
+	/**
+	 * <p>
+	 * This API is used get all Labeled Notes of particular labelId
+	 * </p>
+	 * 
+	 * @param request
+	 * @return
+	 */
+	@RequestMapping(value = "/getlabeldnotes/{labelId}", method = RequestMethod.GET, produces = MediaType.APPLICATION_JSON_VALUE)
+	public ResponseEntity<List<NoteResponseDto>> getLabeldNotes(@PathVariable("labelId") int labelId,HttpServletRequest request) {
+
+        Response response = new Response();
+   	    int userId = (int) request.getAttribute("userId");
+		List<NoteResponseDto> notes = noteService.getLabeldNotes(labelId);
+		
+		response.setMsg("notes receieve successfully");
+		response.setStatus(1);
+        logger.info("notes receieve successfully");
+
+		return new ResponseEntity<List<NoteResponseDto>>(notes, HttpStatus.OK);
+
 	}
 
 }

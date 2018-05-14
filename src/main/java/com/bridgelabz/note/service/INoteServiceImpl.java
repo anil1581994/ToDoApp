@@ -236,4 +236,23 @@ public class INoteServiceImpl implements INoteService {
 		      noteDao.removeCollaborator(collaborator);
 		
 	}
+
+	@Override
+	public List<NoteResponseDto> getLabeldNotes(int labelId) {
+	     List<Note> list=noteDao.getLabeldNotes(labelId);
+		
+		List<NoteResponseDto> notes=new ArrayList<>();
+	       for (Note note : list) 
+	       {
+	    		NoteResponseDto dto = new NoteResponseDto(note);
+	    		dto.setLabels(noteDao.getLabelsByNote(note));// set all label to note
+				
+				List<CollaboratorResponseDto> collaborators = noteDao.getCollaboratorsByNote(dto.getNoteId());
+
+				dto.setCollaborators(collaborators);
+	    		notes.add(dto);
+	         }
+		
+		return notes;
+	}
 }

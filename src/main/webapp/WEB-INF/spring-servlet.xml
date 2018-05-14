@@ -51,6 +51,7 @@ http://www.springframework.org/schema/context http://www.springframework.org/sch
 		<property name="username" value="${dbuser}" />
 		<property name="password" value="${dbpassword}" />
 	</bean>
+	
 	<bean id="urlData" class="com.bridgelabz.user.util.UrlData"></bean>
 	<bean id="collaborator" class="com.bridgelabz.note.model.Collaborator"></bean>
 

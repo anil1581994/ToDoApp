@@ -479,4 +479,12 @@ public class INoteDaoImpl implements INoteDao {
 		}
 	}
 
+	@Override
+	public List<Note> getLabeldNotes(int labelId) {
+		String sql= "SELECT * FROM Notes INNER JOIN  Note_Label ON Notes.noteId= Note_Label.noteId where Note_Label.labelId=?";
+		List<Note> notes = jdbcTemplate.query(sql, new Object[] {labelId}, new NoteMapper());
+		return notes;
+	
+	}
+
 }

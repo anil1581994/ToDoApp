@@ -59,6 +59,11 @@ public interface INoteDao {
 	User getsharedUserByEmail(String email);
 
 	void removeCollaborator(Collaborator collaborator);
+	
+	List<Note> getLabeldNotes(int labelId);
+
+	
+	
 
 	
 

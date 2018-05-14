@@ -116,5 +116,13 @@ public interface INoteService {
 	 * @return
 	 */
 	int addCollaborator(String sharedUserId, int noteId, int userId);
+	
+	/**<p>This is getAllNotes service is used to get AllNotes labeled with particular label</p>
+	 * @param labelId
+	 * @return
+	 */
+	
+	List<NoteResponseDto> getLabeldNotes(int labelId);
+
 
 	 }
