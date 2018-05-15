@@ -1,7 +1,6 @@
 package com.bridgelabz.socialLogin;
 
-import java.io.UnsupportedEncodingException;
-import java.net.URLEncoder;
+import java.io.UnsupportedEncodingException;import java.net.URLEncoder;
 import org.springframework.stereotype.Component;
 
 @Component
