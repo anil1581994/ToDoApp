@@ -99,7 +99,7 @@ public class INoteServiceImpl implements INoteService {
 				
 				CollaboratorResponseDto collabObj=noteDao.getSharedNotes(object.getNoteId(),object.getSharedUserId());
 				
-			collabObj.setOwnerId(object.getUserId());
+			    collabObj.setOwnerId(object.getUserId());
 			
 		
 	           Note obj = new Note(collabObj);

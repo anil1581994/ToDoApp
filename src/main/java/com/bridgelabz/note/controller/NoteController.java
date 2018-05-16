@@ -180,7 +180,7 @@ public class NoteController {
 	 * <p>
 	 * This API is used to create a new Label
 	 * </p>
-	 * 
+	 * @RequestAttribute(name = "userId") int userId
 	 * @param label
 	 * @param userId
 	 * @return
@@ -199,7 +199,7 @@ public class NoteController {
 
 	}
 
-	/**
+	/**npm jss
 	 * <p>
 	 * This is getAllLabels API is used get all the labels created by particular
 	 * User
@@ -226,7 +226,7 @@ public class NoteController {
 	/**
 	 * <p>
 	 * This API used update the label of particular labelId
-	 * </p>
+	 * </p>@RequestAttribute(name = "userId") int userId
 	 * 
 	 * @param label
 	 * @param request
