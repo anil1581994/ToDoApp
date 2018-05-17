@@ -405,7 +405,7 @@ public class INoteDaoImpl implements INoteDao {
 	@Override
 	public List<Collaborator> getCollaboratorNoteIdAndUserId(int userId) {
 		String query = "select * from Collaborators where sharedUserId=?";
-		List<Collaborator> list = jdbcTemplate.query(query, new Object[] { userId }, new CollaboratorMapper());
+		List<Collaborator> list = jdbcTemplate.query(query, new Object[] {userId }, new CollaboratorMapper());
 		return list.size() > 0 ? list : null;
 
 	}
@@ -428,7 +428,7 @@ public class INoteDaoImpl implements INoteDao {
 	public CollaboratorResponseDto getSharedNotes(int noteId, int sharedUserId) {
 
 		String sql = "SELECT Notes.title,Notes.description,Users.name\n" + "FROM Notes,Users \n"
-				+ "where Notes.noteId=? and Users.id=? ;";
+				+ "where Notes.noteId=? and Users.id=?";
 
 		List<CollaboratorResponseDto> list = jdbcTemplate.query(sql, new Object[] { noteId, sharedUserId },
 				new GetSharedNotes());

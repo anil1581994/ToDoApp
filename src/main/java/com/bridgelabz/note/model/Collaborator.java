@@ -6,6 +6,7 @@ public class Collaborator {
 	
 	private int userId;
 	
+
 	public int getUserId() {
 		return userId;
 	}
