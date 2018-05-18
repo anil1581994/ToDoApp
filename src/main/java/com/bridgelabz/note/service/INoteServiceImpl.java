@@ -211,7 +211,7 @@ public class INoteServiceImpl implements INoteService {
 	
 	
 	   User sharedUser=userDao.getUserByEmailId(sharedUserId);
-             if (sharedUser != null) 
+            if (sharedUser != null) 
             {  
 			   if (sharedUser.getId() == userId)
 			   {
