@@ -2,9 +2,6 @@ package com.bridgelabz.user.service;
 
 import java.util.UUID;
 
-
-
-
 import javax.servlet.http.HttpServletRequest;
 
 import org.apache.log4j.Logger;
@@ -24,14 +21,19 @@ import com.bridgelabz.user.util.TokenUtils;
 
 @Service
 public class UserServiceImpl implements UserService {
+	
 	@Autowired
 	private UserDao userDao;
+	
 	@Autowired
 	private PasswordEncoder passwordEncoder;
+	
 	@Autowired
 	public MailService mailService;
+	
 	@Autowired
 	TokenUtils tokenObj;
+	
 	private static final Logger logger = Logger.getLogger(UserServiceImpl.class);
 
 	@Transactional(rollbackFor = Exception.class)
@@ -53,7 +55,6 @@ public class UserServiceImpl implements UserService {
 		userDao.register(user);
 
 		String to = user.getEmail();
-		// String to="anilrspatil1992@gmail.com";
 		String subject = "FundooPay registration verification";
 		String message = requestURL + "/RegistrationConfirm/" + randomUUID;
 		mailService.sendMail(to, subject, message);
@@ -74,12 +75,9 @@ public class UserServiceImpl implements UserService {
 				&& BCrypt.checkpw(user.getPassword(), userDbObj.getPassword())) {
 			int id = userDbObj.getId();
 			String token = TokenUtils.generateToken(id);
-			// String token=tokenObj.generateToken(id);
 			System.out.println("toekn genrated :" + token);
 			logger.info("token genrate" + token);
-			// String hashCode = passwordEncoder.encode(user.getPassword());
-
-			// user.setPassword(hashCode);
+			
 			return token;
 		}
 		return null;
@@ -92,10 +90,11 @@ public class UserServiceImpl implements UserService {
 		if (user != null) {
 			String emailID = user.getEmail();
 			String randomUUID = UUID.randomUUID().toString();
-
-			String to = "anilrspatil1992@gmail.com";
+			String jwtToken = TokenUtils.generateToken(user.getId());
+			String to = user.getEmail();
 			String subject = "Link to reset password";
-			String message = requestURL + "/resetPassword/" + randomUUID;
+
+			String message = requestURL + "/resetPasswordLink/" + jwtToken;
 			mailService.sendMail(to, subject, message);
 			flag = true;
 
@@ -108,10 +107,11 @@ public class UserServiceImpl implements UserService {
 		User user = new User();
 		user.setEmail(userDto.getEmail());
 		user.setPassword(userDto.getPassword());
-		String hascode = passwordEncoder.encode(userDto.getPassword());
+		String hascode = passwordEncoder.encode(user.getPassword());
 		user.setPassword(hascode);
-		boolean status = userDao.resetPassword(user.getPassword(), user.getEmail());
-		return status;
+		return userDao.resetPassword(user.getPassword(),user.getEmail());
+			
+		
 	}
 
 	@Override
@@ -134,11 +134,10 @@ public class UserServiceImpl implements UserService {
 
 	@Override
 	public User getUserById(int userId) {
-		User user=userDao.getUserById(userId);
-		System.out.println("name of user"+user.getName());
-		System.out.println("email of user"+user.getEmail());
+		User user = userDao.getUserById(userId);
+		System.out.println("name of user" + user.getName());
+		System.out.println("email of user" + user.getEmail());
 		return user;
 	}
-
 
 }

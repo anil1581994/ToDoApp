@@ -51,7 +51,9 @@ http://www.springframework.org/schema/context http://www.springframework.org/sch
 		<property name="username" value="${dbuser}" />
 		<property name="password" value="${dbpassword}" />
 	</bean>
+	
 	<bean id="urlData" class="com.bridgelabz.user.util.UrlData"></bean>
+	<bean id="collaborator" class="com.bridgelabz.note.model.Collaborator"></bean>
 
 	<bean id="jdbcTemplate" class="org.springframework.jdbc.core.JdbcTemplate">
 		<property name="dataSource" ref="dataSource"></property>
@@ -89,6 +91,8 @@ http://www.springframework.org/schema/context http://www.springframework.org/sch
 		<property name="email" value="${userId}"></property>
 		<property name="password" value="${password}"></property>
 		<property name="emailAddress" value="${emailAddress:#{null}}" />
+		<property name="frontEndHost" value="${frontEndHost}"></property>
+		
 	</bean>
 	<bean id="tokenObj" class="com.bridgelabz.user.util.TokenUtils">
 	</bean>

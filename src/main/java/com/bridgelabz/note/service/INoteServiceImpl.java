@@ -59,7 +59,6 @@ public class INoteServiceImpl implements INoteService {
 
 		Date date = new Date();
 		note.setLastUpdateDate(date);
-		// set reminder null
 		note.setReminder(updateNoteDto.getReminder());
 		note.setImage(updateNoteDto.getImage());
 
@@ -75,7 +74,10 @@ public class INoteServiceImpl implements INoteService {
 	@Override
 	public void deleteNote(int noteId, int userId) {
 		Note note = noteDao.getNoteById(noteId);
+		System.out.println("user"+note.getUser().getId());
+		System.out.println("note"+note.getNoteId());
 		if (note.getUser().getId() != userId) {
+			
 			throw new UnAuthorizedAccessUser();
 		}
 		noteDao.deleteNote(noteId);
@@ -88,9 +90,12 @@ public class INoteServiceImpl implements INoteService {
 		
 		List<Note> list = noteDao.getAllNotes(userId);//2391
 
+<<<<<<< HEAD
 		//User user = userDao.getUserById(userId);//sana
 		//List<Collaborator> collaboratorList = noteDao.getCollaboratorBySharedId(user.getEmail());// get list of
 		//get shared noteId and userid ie coolaborator object
+=======
+>>>>>>> e3806fb236aa17bcf5ebe6870e5c48db1f8e85e4
 		List<Collaborator> collaboratorList = noteDao.getCollaboratorNoteIdAndUserId(userId);//2391																						// collaborator
 
 		if (collaboratorList != null) 
@@ -100,7 +105,11 @@ public class INoteServiceImpl implements INoteService {
 				
 				CollaboratorResponseDto collabObj=noteDao.getSharedNotes(object.getNoteId(),object.getSharedUserId());
 				
+<<<<<<< HEAD
 			collabObj.setOwnerId(object.getUserId());
+=======
+			    collabObj.setOwnerId(object.getUserId());
+>>>>>>> e3806fb236aa17bcf5ebe6870e5c48db1f8e85e4
 			
 		
 	           Note obj = new Note(collabObj);
@@ -129,7 +138,6 @@ public class INoteServiceImpl implements INoteService {
 	
 
 	
-	// label
 	@Override
 	public void createLabel(Label label, int userId) {
 		User user = new User();
@@ -146,7 +154,6 @@ public class INoteServiceImpl implements INoteService {
 
 		List<Label> labels = new ArrayList<>();
 		for (Label label : list) {
-			// Label dto = new Label(label);
 			labels.add(label);
 		}
 		return labels;
@@ -169,9 +176,7 @@ public class INoteServiceImpl implements INoteService {
 
 	@Override
 	public void addLabel(int noteId, int labelId) {
-		// get all labels by noteId
-
-		// noteDao.
+		
 		NoteLabel noteLabel = new NoteLabel();
 		noteLabel.setLabelId(labelId);
 		noteLabel.setNoteId(noteId);
@@ -207,6 +212,7 @@ public class INoteServiceImpl implements INoteService {
 		return status;
 	}
 
+<<<<<<< HEAD
 //	public int saveCollaborator(Collaborator collaborator, int userId) {
 //
 //		//User sharedUser = userDao.getUserByEmailId(collaborator.getSharedUserId());
@@ -231,6 +237,41 @@ public class INoteServiceImpl implements INoteService {
 		}
 		       
 		         noteDao.removeCollaborator(collaborator);
+=======
+	
+	@Override
+	public int addCollaborator(String sharedUserId, int noteId, int userId)
+	{
+
+	Collaborator collaborator = new Collaborator();
+	
+	
+	   User sharedUser=userDao.getUserByEmailId(sharedUserId);
+            if (sharedUser != null) 
+            {  
+			   if (sharedUser.getId() == userId)
+			   {
+				return -1;
+			   }
+			   collaborator.setNoteId(noteId);
+			   collaborator.setSharedUserId(sharedUser.getId());
+			   noteDao.saveCollaborator(collaborator, userId);
+			  return 1;
+	     	}
+		return 10;
+		}
+
+
+	public void removeCollaborator(String sharedUserId, int noteId, int userId) 
+	{
+
+		    User sharedUser=userDao.getUserByEmailId(sharedUserId);
+		      int sharedId=sharedUser.getId();
+		      collaborator.setSharedUserId(sharedId);
+		      collaborator.setNoteId(noteId);
+		      noteDao.removeCollaborator(collaborator);
+		
+>>>>>>> e3806fb236aa17bcf5ebe6870e5c48db1f8e85e4
 	}
 	
 */	
@@ -264,7 +305,19 @@ public class INoteServiceImpl implements INoteService {
 		return 10;
 		}
 
+	@Override
+	public List<NoteResponseDto> getLabeldNotes(int labelId) {
+	     List<Note> list=noteDao.getLabeldNotes(labelId);
+		
+		List<NoteResponseDto> notes=new ArrayList<>();
+	       for (Note note : list) 
+	       {
+	    		NoteResponseDto dto = new NoteResponseDto(note);
+	    		dto.setLabels(noteDao.getLabelsByNote(note));// set all label to note
+				
+				List<CollaboratorResponseDto> collaborators = noteDao.getCollaboratorsByNote(dto.getNoteId());
 
+<<<<<<< HEAD
 //	public void removeCollaborator(String sharedUserId, int noteId, int userId) 
 //	{
 //
@@ -275,4 +328,12 @@ public class INoteServiceImpl implements INoteService {
 //		      noteDao.removeCollaborator(collaborator);
 //		
 //	}
+=======
+				dto.setCollaborators(collaborators);
+	    		notes.add(dto);
+	         }
+		
+		return notes;
+	}
+>>>>>>> e3806fb236aa17bcf5ebe6870e5c48db1f8e85e4
 }

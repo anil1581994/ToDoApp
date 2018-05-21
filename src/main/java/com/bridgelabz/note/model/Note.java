@@ -20,8 +20,9 @@ public class Note {
 	private Date reminder;
 	private String name;
 	private int ownerId;
-	private String collaboratorName;//
+	private String collaboratorName;
 	private String image;
+
 	public String getImage() {
 		return image;
 	}
@@ -38,8 +39,6 @@ public class Note {
 		this.ownerId = ownerId;
 	}
 
-	
-	
 	public String getCollaboratorName() {
 		return collaboratorName;
 	}
@@ -49,7 +48,7 @@ public class Note {
 	}
 
 	private Set<Label> labels = new HashSet<>();
-    private List<CollaboratorResponseDto> CollaboratorResponseDto=new ArrayList();
+	private List<CollaboratorResponseDto> CollaboratorResponseDto = new ArrayList();
 
 	public List<CollaboratorResponseDto> getCollaboratorResponseDto() {
 		return CollaboratorResponseDto;
@@ -74,14 +73,14 @@ public class Note {
 
 		this.title = noteRequestDto.getTitle();
 		this.description = noteRequestDto.getDescription();
-	} 
-	public Note(CollaboratorResponseDto  collaboratorResponseDto) {
-		this.title=collaboratorResponseDto.getTitle();
-		this.description=collaboratorResponseDto.getDescription();
-	  //  this.name=collaboratorResponseDto.getName();
-	    this.noteId=collaboratorResponseDto.getNoteId();
-	    this.collaboratorName=collaboratorResponseDto.getName();//
-	    this.ownerId = collaboratorResponseDto.getOwnerId();
+	}
+
+	public Note(CollaboratorResponseDto collaboratorResponseDto) {
+		this.title = collaboratorResponseDto.getTitle();
+		this.description = collaboratorResponseDto.getDescription();
+		this.noteId = collaboratorResponseDto.getNoteId();
+		this.collaboratorName = collaboratorResponseDto.getName();//
+		this.ownerId = collaboratorResponseDto.getOwnerId();
 	}
 
 	public Note(UpdateNoteDto updateNoteDto) {
@@ -89,9 +88,9 @@ public class Note {
 		this.title = updateNoteDto.getTitle();
 		this.description = updateNoteDto.getDescription();
 		this.lastUpdateDate = updateNoteDto.getLastUpdateDate();
-		this.status=updateNoteDto.getStatus();
-		this.color=updateNoteDto.getColor();
-		this.image=updateNoteDto.getImage();
+		this.status = updateNoteDto.getStatus();
+		this.color = updateNoteDto.getColor();
+		this.image = updateNoteDto.getImage();
 	}
 
 	public int getNoteId() {
@@ -141,6 +140,7 @@ public class Note {
 	public void setUser(User user) {
 		this.user = user;
 	}
+
 	public String getColor() {
 		return color;
 	}
@@ -156,6 +156,7 @@ public class Note {
 	public void setStatus(int status) {
 		this.status = status;
 	}
+
 	public Date getReminder() {
 		return reminder;
 	}

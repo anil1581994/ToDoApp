@@ -1,7 +1,7 @@
 package com.bridgelabz.user.model;
 
 public class User {
-	
+
 	private int id;
 	private String name;
 	private String email;
@@ -11,11 +11,9 @@ public class User {
 	private boolean isActive;
 	private String token;
 
-	
 	public User() {
-		
-	}
 
+	}
 
 	public User(UserDto userDto) {
 		this.setName(userDto.getName());

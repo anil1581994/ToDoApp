@@ -25,23 +25,27 @@ public interface INoteDao {
 	List<Note> getAllNotes(int userId);
 
 	int noteCreatorByNoteId(int noteId);
-	
-   //.............Label......................//
+
 	void saveLabel(Label label);
 
 	List<Label> getAllLabels(int userId);
-	
+
 	boolean updateLabel(Label label);
-	
+
 	boolean deleteLabel(int labelId);
-	
+
 	Label getLabelById(int labelId);
 
 	Set<Label> getLabelsByNote(Note note);
+
 	void addLabel(NoteLabel noteLabel);
+
 	void deleteLabelFromNote(NoteLabel noteLabel);
-    List<Label> getNoteLabels(int noteId);
+
+	List<Label> getNoteLabels(int noteId);
+
 	boolean isLabelExists(String labelTitle);
+<<<<<<< HEAD
 	 
 	 //.......................collaborator..................
      boolean saveCollaborator(Collaborator collaborator,int userId);
@@ -62,6 +66,29 @@ public interface INoteDao {
 	 void removeCollaborator(Collaborator collaborator);
 	/*	public List<Note> getCollaboratedNotes(int noteId,String sharedUserId);*/
 	 List<UrlData> getAllUrls(int noteId);
+=======
+
+	boolean saveCollaborator(Collaborator collaborator, int userId);
+
+	public User getUserById(int userId);
+
+	List<CollaboratorResponseDto> getCollaboratorsByNote(int noteId);
+
+	CollaboratorResponseDto getSharedNotes(int noteId, int shareUserId);
+
+	List<Collaborator> getCollaboratorNoteIdAndUserId(int userId);
+
+	User getsharedUserByEmail(String email);
+
+	void removeCollaborator(Collaborator collaborator);
+	
+	List<Note> getLabeldNotes(int labelId);
+
+	
+	
+
+	
+>>>>>>> e3806fb236aa17bcf5ebe6870e5c48db1f8e85e4
 
   	  
 	

@@ -77,7 +77,6 @@ public class UserDaoImpl implements UserDao {
 		}
 	}
 
-	
 	public int getIdByEmail(String email) {
 
 		String query = "select id from Users where email=?";
@@ -96,10 +95,10 @@ public class UserDaoImpl implements UserDao {
 		return username;
 	}
 
-	public boolean resetPassword(String name, String password) {
+	public boolean resetPassword( String password,String email) {
 		int record = 0;
-		String sqlUpdate = "UPDATE Users set password=? where name=?";
-		record = jdbcTemplate.update(sqlUpdate, new Object[] { password, name });
+		String sqlUpdate = "UPDATE Users set password=? where email=?";
+		record = jdbcTemplate.update(sqlUpdate, new Object[] { password, email });
 		if (record == 0) {
 			return false;
 		}
@@ -158,7 +157,7 @@ public class UserDaoImpl implements UserDao {
 		}
 
 	}
-	
+
 	class UserMapper implements RowMapper {
 
 		public User mapRow(ResultSet rs, int rowNum) throws SQLException {
@@ -172,6 +171,7 @@ public class UserDaoImpl implements UserDao {
 
 		}
 	}
+
 	@Override
 	public User getOwnerEmail(int userId) {
 		String sql = "select * from Users where id= ?";
@@ -182,9 +182,6 @@ public class UserDaoImpl implements UserDao {
 		} else {
 			return null;
 		}
-   }
-	///CollaboratorsharedResponseDTO getSharedNotes(int noteId,int userId);
+	}
 
-
-  
 }
